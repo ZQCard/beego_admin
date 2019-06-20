@@ -1,0 +1,184 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增管理员</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="AdminHasRole" data-title="分配角色" style="display: none">
+                    <div id="root" style="margin: 3%"></div>
+                    <div class="layui-btn-group" style="margin-left:45%;">
+                        <button class="layui-btn right">提交右边数据</button>
+                    </div>
+                </div>
+
+                <div class="layui-card-body">
+                    <form action="/auth/administrator" id="AddForm" data-title="添加管理员" style="display: none;margin-top:5%">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">管理员名称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="username" required="" lay-verify="required" placeholder="请输入管理员用户名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">管理员昵称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="nickname" required="" lay-verify="required" placeholder="请输入管理员昵称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">管理员密码</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="password" name="password" required="" lay-verify="required" placeholder="请输入管理员密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱地址</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="email" required="" lay-verify="required" placeholder="请输入管理员邮箱地址" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a class="layui-btn" id="AddFormSubmit">立即提交</a>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>管理员用户名</th>
+                                <th>管理员昵称</th>
+                                <th>管理员邮箱</th>
+                                <th>创建时间</th>
+                                <th>更新时间</th>
+                                <th>删除时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Administrators}}
+                            <tr>
+                                <td>{{.Id}}</td>
+                                <td>{{.Username}}</td>
+                                <td>{{.Nickname}}</td>
+                                <td>{{.Email}}</td>
+                                <td>{{date .CreatedAt "Y-m-d"}}</td>
+                                <td>{{date .UpdatedAt "Y-m-d"}}</td>
+                                <td>
+                                    {{if ne .DeletedAt 0}}
+                                        {{.DeletedAt | TimestampToDate}}
+                                    {{else}}
+                                        未删除
+                                    {{end}}
+                                </td>
+                                <td>
+                                    {{/*编辑模态框*/}}
+                                    <form action="/auth/administrator" id="EditForm{{.Id}}" data-title="编辑管理员" style="display: none;margin-top:5%">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">用户名</label>
+                                            <div class="layui-input-block">
+                                                <input value="{{.Id}}" type="hidden" name="id" required="" autocomplete="off" class="layui-input">
+                                                <input type="hidden" name="_method" value="PUT">
+                                                <input style="width:80%" value="{{.Username}}" disabled type="text" name="username" required="" lay-verify="required" placeholder="用户名无法更改" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">昵称</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="text" name="nickname" value="{{.Nickname}}" required="" lay-verify="required" placeholder="请输入管理员昵称" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">密码</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="password" name="password" required="" lay-verify="required" placeholder="为空则不修改密码" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">邮箱地址</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="text" name="email" value="{{.Email}}" required="" lay-verify="required" placeholder="请输入管理员邮箱地址" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.Id}}">立即提交</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.Id}}" onclick="openForm('EditForm{{.Id}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.Id}}" data-tips="{{.Username}}" data-url="/auth/administrator">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.Id}}" data-tips="{{.Username}}" data-url="/auth/administrator">恢复</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs AdminHasRole" data-id="{{.Id}}">分配角色</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>
+
+<script>
+    // 全局角色id
+    let adminId = 0;
+    //数据源
+    $(function () {
+        $(".AdminHasRole").click(function () {
+            let id = $(this).data("id");
+            adminId = id;
+            // 请求数据源
+            $.get("/auth/administrator/roles",{id:id, _method:"GET", _xsrf:xsrf_token},function (resp) {
+                if (resp.statusCode === 1) {
+                    showData(resp.data.not, resp.data.has);
+                } else {
+                    layer.alert(data.message)
+                }
+            });
+            openForm("AdminHasRole", 1300, 600)
+        });
+    });
+    function showData(data1, data2) {
+        layui.use(['transfer'],function () {
+            var transfer = layui.transfer,$ = layui.$;
+            //表格列
+            var cols = [
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'Id', title: 'ID', width: 60},
+                {field: 'Name', title: '角色名'},
+            ];
+            //表格配置文件
+            var tabConfig = {'page':true,'limits':[10,50,100],'height':400};
+
+            var tb1 = transfer.render({
+                elem: "#root", //指定元素
+                cols: cols, //表格列  支持layui数据表格所有配置
+                data: [data1,data2], //[左表数据,右表数据[非必填]]
+                tabConfig: tabConfig //表格配置项 支持layui数据表格所有配置
+            });
+
+            $('.right').on('click',function () {
+                var data = transfer.get(tb1,'r');
+                var ids = [];
+                for (let i in data){
+                    ids.push(data[i].Id)
+                }
+                // 发送数据
+                $.post("/auth/administrator/roles", {adminId:adminId, roleIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
+                    processAjaxReturnData(data)
+                });
+            });
+        })
+    }
+</script>

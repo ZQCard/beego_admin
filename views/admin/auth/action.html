@@ -1,0 +1,97 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增行为</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <form action="/auth/action" id="AddForm" data-title="添加行为" style="display: none;margin-top:5%">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">行为名称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="name" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">请求方法</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="method" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">路由</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="route" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a class="layui-btn" id="AddFormSubmit">立即提交</a>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>行为名称</th>
+                                <th>请求方法</th>
+                                <th>路由</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Actions}}
+                            <tr>
+                                <td>{{.Id}}</td>
+                                <td>{{.Name}}</td>
+                                <td>{{.Method}}</td>
+                                <td>{{.Route}}</td>
+                                <td>
+                                    {{/*编辑模态框*/}}
+                                    <form action="/auth/action" id="EditForm{{.Id}}" data-title="编辑行为" style="display: none;margin-top:5%">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">行为名称</label>
+                                            <div class="layui-input-block">
+                                                <input value="{{.Id}}" type="hidden" name="id" required="" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                                                <input style="width:80%" value="{{.Name}}" type="text" name="name" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                                                <input type="hidden" name="_method" value="PUT">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">请求方法</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="text" value="{{.Method}}" name="method" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">路由</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="text" name="route" value="{{.Route}}" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.Id}}">立即提交</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.Id}}" onclick="openForm('EditForm{{.Id}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.Id}}" data-tips="{{.Name}}" data-url="/auth/action">删除</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>

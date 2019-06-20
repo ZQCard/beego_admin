@@ -1,0 +1,45 @@
+<div class="layui-side layui-side-menu">
+    <div class="layui-side-scroll">
+        <div class="layui-logo" lay-href="home/console.html">
+            <span>Beego Admin</span>
+        </div>
+        <div id="admin-navbar-side">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let html = "";
+    let navs = $.parseJSON({{.MenuLeft}});
+    html+='<ul class="layui-nav layui-nav-tree"  lay-filter="test">';
+    html+='<ul class="layui-nav layui-nav-tree"  lay-filter="test">';
+    $.each(navs,function (i,item) {
+        html=html+'<li class="layui-nav-item">';
+        html += '<a href="javascript:;" data-url="'+item.route+'" nav-id="'+item.id+'">' +
+            '<cite>'+item.name+'</cite></a>';
+        if(item.children.length>0){
+            html += '<dl class="layui-nav-child">';
+            $.each(item.children,function (j,item2) {
+                html+='<dd>'
+                html += '<a href="javascript:;" data-url="'+item2.route+'" ' +
+                    'nav-id="'+item2.id+'">' +
+                    '<cite>'+item2.name+'</cite></a>';
+                if(item2.children.length>0){
+                    html += '<ol class="layui-nav-child">';
+                    $.each(item2.children,function (k,item3) {
+                        html += '<li>'+
+                            '<a href="'+item3.route+'" data-url="'+item3.route+'" nav-id="'+item3.id+'">'+
+                            '<cite>'+item3.name+'</cite>'+
+                            '</a>'+
+                            '</li>';
+                    });
+                    html+= '</ol>';
+                }
+            });
+            html+= '</dl>' ;
+        }
+        html+= '</li>';
+    });
+    html+='</ul>';
+    $('#admin-navbar-side').html(html);
+</script>
