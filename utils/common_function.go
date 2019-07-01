@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"math/rand"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -47,4 +48,14 @@ func VerifyEmailFormat(email string) bool {
 	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`
 	reg := regexp.MustCompile(pattern)
 	return reg.MatchString(email)
+}
+
+func RandString(len int) string {
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	bytes := make([]byte, len)
+	for i := 0; i < len; i++ {
+		b := r.Intn(26)+65
+		bytes[i] = byte(b)
+	}
+	return string(bytes)
 }

@@ -1,5 +1,6 @@
 /conf/my.conf
 /.idea
-/.beego_admin.exe
-/.storage
-/.beego_admin.exe~
+/beego_admin.exe
+/storage/
+/beego_admin.exe~
+static/uploadFile/
