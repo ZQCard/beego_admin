@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2019-07-01 21:11:07
+Date: 2019-07-01 22:06:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `auth_action` (
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `route` varchar(50) NOT NULL COMMENT '请求路由',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
 
 -- ----------------------------
 -- Records of auth_action
@@ -82,6 +82,13 @@ INSERT INTO `auth_action` VALUES ('28', '菜单添加', 'POST', '/auth/menu');
 INSERT INTO `auth_action` VALUES ('29', '菜单更新', 'PUT', '/auth/menu');
 INSERT INTO `auth_action` VALUES ('30', '菜单删除', 'DELETE', '/auth/menu');
 INSERT INTO `auth_action` VALUES ('31', '基本信息', 'GET', '/administrator/adminInfo');
+INSERT INTO `auth_action` VALUES ('33', '上传文件', 'POST', '/tools/uploadFile');
+INSERT INTO `auth_action` VALUES ('34', '查看管理员角色', 'GET', '/auth/administrator/roles');
+INSERT INTO `auth_action` VALUES ('35', '授予管理员角色', 'PUT', '/auth/administrator/roles');
+INSERT INTO `auth_action` VALUES ('36', '查看角色权限', 'GET', '/auth/role/permissions');
+INSERT INTO `auth_action` VALUES ('37', '授予权限角色', 'PUT', '/auth/role/permissions');
+INSERT INTO `auth_action` VALUES ('38', '查看权限行为', 'GET', '/auth/permission/actions');
+INSERT INTO `auth_action` VALUES ('39', '授予权限行为', 'PUT', '/auth/permission/actions');
 
 -- ----------------------------
 -- Table structure for `auth_administrator_role`
@@ -112,7 +119,7 @@ CREATE TABLE `auth_menu` (
   `route` varchar(60) DEFAULT '' COMMENT '跳转链接',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
 
 -- ----------------------------
 -- Records of auth_menu
@@ -126,6 +133,9 @@ INSERT INTO `auth_menu` VALUES ('20', '15', '行为列表', '4', '/auth/action')
 INSERT INTO `auth_menu` VALUES ('21', '15', '菜单列表', '5', '/auth/menu');
 INSERT INTO `auth_menu` VALUES ('22', '16', '基本信息', '1', '/administrator/adminInfo');
 INSERT INTO `auth_menu` VALUES ('23', '15', '管理员列表', '8', '/auth/administrator');
+INSERT INTO `auth_menu` VALUES ('26', '0', '工具箱', '0', '');
+INSERT INTO `auth_menu` VALUES ('27', '26', '常规功能', '0', '');
+INSERT INTO `auth_menu` VALUES ('28', '27', '文件上传', '0', '/tools/uploadFile');
 
 -- ----------------------------
 -- Table structure for `auth_permission`
@@ -135,7 +145,7 @@ CREATE TABLE `auth_permission` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` char(20) NOT NULL COMMENT '权限名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
 
 -- ----------------------------
 -- Records of auth_permission
@@ -143,6 +153,7 @@ CREATE TABLE `auth_permission` (
 INSERT INTO `auth_permission` VALUES ('22', '权限管理');
 INSERT INTO `auth_permission` VALUES ('23', '公共权限');
 INSERT INTO `auth_permission` VALUES ('24', '游客权限');
+INSERT INTO `auth_permission` VALUES ('26', '工具箱权限');
 
 -- ----------------------------
 -- Table structure for `auth_permission_action`
@@ -153,7 +164,7 @@ CREATE TABLE `auth_permission_action` (
   `permission_id` int(11) NOT NULL,
   `action_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
 
 -- ----------------------------
 -- Records of auth_permission_action
@@ -163,26 +174,33 @@ INSERT INTO `auth_permission_action` VALUES ('171', '24', '5');
 INSERT INTO `auth_permission_action` VALUES ('172', '23', '6');
 INSERT INTO `auth_permission_action` VALUES ('173', '23', '8');
 INSERT INTO `auth_permission_action` VALUES ('174', '23', '9');
-INSERT INTO `auth_permission_action` VALUES ('191', '22', '10');
-INSERT INTO `auth_permission_action` VALUES ('192', '22', '11');
-INSERT INTO `auth_permission_action` VALUES ('193', '22', '12');
-INSERT INTO `auth_permission_action` VALUES ('194', '22', '13');
-INSERT INTO `auth_permission_action` VALUES ('195', '22', '15');
-INSERT INTO `auth_permission_action` VALUES ('196', '22', '16');
-INSERT INTO `auth_permission_action` VALUES ('197', '22', '17');
-INSERT INTO `auth_permission_action` VALUES ('198', '22', '18');
-INSERT INTO `auth_permission_action` VALUES ('199', '22', '19');
-INSERT INTO `auth_permission_action` VALUES ('200', '22', '20');
-INSERT INTO `auth_permission_action` VALUES ('201', '22', '21');
-INSERT INTO `auth_permission_action` VALUES ('202', '22', '22');
-INSERT INTO `auth_permission_action` VALUES ('203', '22', '23');
-INSERT INTO `auth_permission_action` VALUES ('204', '22', '24');
-INSERT INTO `auth_permission_action` VALUES ('205', '22', '25');
-INSERT INTO `auth_permission_action` VALUES ('206', '22', '26');
-INSERT INTO `auth_permission_action` VALUES ('207', '22', '27');
-INSERT INTO `auth_permission_action` VALUES ('208', '22', '28');
-INSERT INTO `auth_permission_action` VALUES ('209', '22', '29');
-INSERT INTO `auth_permission_action` VALUES ('210', '22', '30');
+INSERT INTO `auth_permission_action` VALUES ('211', '22', '14');
+INSERT INTO `auth_permission_action` VALUES ('212', '22', '34');
+INSERT INTO `auth_permission_action` VALUES ('213', '22', '35');
+INSERT INTO `auth_permission_action` VALUES ('214', '22', '36');
+INSERT INTO `auth_permission_action` VALUES ('215', '22', '37');
+INSERT INTO `auth_permission_action` VALUES ('216', '22', '38');
+INSERT INTO `auth_permission_action` VALUES ('217', '22', '39');
+INSERT INTO `auth_permission_action` VALUES ('218', '22', '10');
+INSERT INTO `auth_permission_action` VALUES ('219', '22', '11');
+INSERT INTO `auth_permission_action` VALUES ('220', '22', '12');
+INSERT INTO `auth_permission_action` VALUES ('221', '22', '13');
+INSERT INTO `auth_permission_action` VALUES ('222', '22', '15');
+INSERT INTO `auth_permission_action` VALUES ('223', '22', '16');
+INSERT INTO `auth_permission_action` VALUES ('224', '22', '17');
+INSERT INTO `auth_permission_action` VALUES ('225', '22', '18');
+INSERT INTO `auth_permission_action` VALUES ('226', '22', '19');
+INSERT INTO `auth_permission_action` VALUES ('227', '22', '20');
+INSERT INTO `auth_permission_action` VALUES ('228', '22', '21');
+INSERT INTO `auth_permission_action` VALUES ('229', '22', '22');
+INSERT INTO `auth_permission_action` VALUES ('230', '22', '23');
+INSERT INTO `auth_permission_action` VALUES ('231', '22', '24');
+INSERT INTO `auth_permission_action` VALUES ('232', '22', '25');
+INSERT INTO `auth_permission_action` VALUES ('233', '22', '26');
+INSERT INTO `auth_permission_action` VALUES ('234', '22', '27');
+INSERT INTO `auth_permission_action` VALUES ('235', '22', '28');
+INSERT INTO `auth_permission_action` VALUES ('236', '22', '29');
+INSERT INTO `auth_permission_action` VALUES ('237', '22', '30');
 
 -- ----------------------------
 -- Table structure for `auth_role`
@@ -210,13 +228,14 @@ CREATE TABLE `auth_role_permission` (
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
 
 -- ----------------------------
 -- Records of auth_role_permission
 -- ----------------------------
 INSERT INTO `auth_role_permission` VALUES ('8', '87', '24');
 INSERT INTO `auth_role_permission` VALUES ('9', '2', '23');
-INSERT INTO `auth_role_permission` VALUES ('13', '1', '22');
-INSERT INTO `auth_role_permission` VALUES ('14', '1', '23');
-INSERT INTO `auth_role_permission` VALUES ('15', '1', '24');
+INSERT INTO `auth_role_permission` VALUES ('20', '1', '26');
+INSERT INTO `auth_role_permission` VALUES ('21', '1', '22');
+INSERT INTO `auth_role_permission` VALUES ('22', '1', '23');
+INSERT INTO `auth_role_permission` VALUES ('23', '1', '24');
