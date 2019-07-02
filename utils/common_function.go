@@ -3,6 +3,10 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"gopkg.in/gomail.v2"
 	"math/rand"
 	"reflect"
 	"regexp"
@@ -50,6 +54,7 @@ func VerifyEmailFormat(email string) bool {
 	return reg.MatchString(email)
 }
 
+// 获取随机字符串
 func RandString(len int) string {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	bytes := make([]byte, len)
@@ -58,4 +63,31 @@ func RandString(len int) string {
 		bytes[i] = byte(b)
 	}
 	return string(bytes)
+}
+
+func SendEmail(subject string, emails []string, content string) (success int, fail int) {
+	host := beego.AppConfig.String("mail_host")
+	port := MustInt(beego.AppConfig.String("mail_port"))
+	username := beego.AppConfig.String("mail_username")
+	password := beego.AppConfig.String("mail_password")
+	for _,email := range emails{
+		m := gomail.NewMessage()
+		m.SetHeader("From", username)
+		m.SetHeader("To", email)
+		m.SetHeader("Subject", subject)
+		m.SetBody("text/html", content)
+
+		d := gomail.NewDialer(host, port, username, password)
+
+		// Send the email to Bob, Cora and Dan.
+		if err := d.DialAndSend(m); err != nil {
+			fail++
+			// 发送邮件失败
+			logs.Error("邮件发送失败", err, " email=", email)
+			fmt.Println(err)
+		}else {
+			success++
+		}
+	}
+	return success, fail
 }

@@ -42,6 +42,7 @@ func init() {
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
 	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "get:GetUploadFile;post:PostUploadFile")
+	beego.Router("/tools/sendEmail", &admin.ToolsController{}, "get:GetSendEmail;post:PostSendEmail")
 
 	/************ 工具箱功能结束 ***********/
 }

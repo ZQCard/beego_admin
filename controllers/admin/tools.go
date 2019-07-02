@@ -6,6 +6,8 @@ import (
 	"github.com/astaxie/beego"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -13,6 +15,7 @@ type ToolsController struct {
 	baseController
 }
 
+/***************** 文件上传模拟功能开始 ******************/
 func (c *ToolsController)GetUploadFile()  {
 	c.Data["Title"] = "文件上传功能"
 	// 模板
@@ -56,3 +59,26 @@ func (c *ToolsController)PostUploadFile()  {
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
 }
+/***************** 文件上传模拟功能结束 ******************/
+
+/***************** 邮件模拟功能开始 ******************/
+func (c *ToolsController)GetSendEmail()  {
+	c.Data["Title"] = "邮件发送功能"
+	// 模板
+	c.TplName = "admin/tools/sendEmail.html"
+}
+
+func (c *ToolsController)PostSendEmail()  {
+	// 获取邮箱列表
+	emails := c.Input().Get("emailList")
+	content := c.Input().Get("content")
+	// 将邮件字符串进行分割,并放入slice中
+	emailSlice := strings.Split(emails, "\r\n")
+	successNum, failNum := utils.SendEmail("邮件发送测试", emailSlice, content)
+	returnJson:= ResponseJson{}
+	returnJson.StatusCode = Success
+	returnJson.Message = "请求成功,发送成功" + strconv.Itoa(successNum) + " 封;发送失败 " + strconv.Itoa(failNum)+ " 封"
+	c.Data["json"] = &returnJson
+	c.ServeJSON()
+}
+/***************** 邮件模拟功能结束 ******************/
