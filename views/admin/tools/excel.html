@@ -1,0 +1,59 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">excel上传</div>
+                <div class="layui-card-body">
+                    <div class="layui-upload">
+                        <button type="button" class="layui-btn" id="excelUpload">excel上传</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                        <input type="file" id="file" style="display: none" class="files" />
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="test-upload-normal-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <button type="button" class="layui-btn" id="excelDownload">excel下载</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 调用上传文件事件
+    $("#excelUpload").click(function () {
+        $("#file").click();
+    });
+    // ajax上传文件
+    $(document).ready(function() {
+        var xsrf_token = $('meta[name=_xsrf]').attr('content');
+        $("#file").change(function () {
+            // 图片上传地址
+            var url = "/tools/uploadFile";
+            var upload = function (f, xsrf_token) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                var formData = new FormData();
+                formData.append('file', f);
+                formData.append('_xsrf', xsrf_token);
+                formData.append('type', 'image');
+                xhr.onreadystatechange = function (response) {
+                    if ((xhr.readyState == 4) && (xhr.status == 200) && (xhr.responseText != '')){
+                        layer.msg("上传成功");
+                        var data = JSON.parse(xhr.responseText);
+                        console.log(data.url)
+                        $("#test-upload-normal-img").attr('src', data.url);
+                    }else if((xhr.status != 200) && xhr.responseText){
+                        layer.msg("上传失败");
+                    }
+                };
+                xhr.send(formData);
+            };
+            if ($("#file")[0].files.length > 0) {
+                upload($("#file")[0].files[0], xsrf_token);
+            } else {
+                console && console.log("form input error");
+            }
+        });
+    });
+</script>

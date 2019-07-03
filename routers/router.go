@@ -42,7 +42,14 @@ func init() {
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
 	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "get:GetUploadFile;post:PostUploadFile")
+	// 邮件发送
 	beego.Router("/tools/sendEmail", &admin.ToolsController{}, "get:GetSendEmail;post:PostSendEmail")
+	// excel导入导出
+	// 页面
+	beego.Router("/tools/excel", &admin.ToolsController{}, "get:GetExcel")
+	// 导入
+	beego.Router("/tools/excelImport", &admin.ToolsController{}, "post:PostExcelImport")
+	beego.Router("/tools/excelExport", &admin.ToolsController{}, "get:GetExcelExport")
 
 	/************ 工具箱功能结束 ***********/
 }

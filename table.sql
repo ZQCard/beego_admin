@@ -239,3 +239,15 @@ INSERT INTO `auth_role_permission` VALUES ('20', '1', '26');
 INSERT INTO `auth_role_permission` VALUES ('21', '1', '22');
 INSERT INTO `auth_role_permission` VALUES ('22', '1', '23');
 INSERT INTO `auth_role_permission` VALUES ('23', '1', '24');
+
+-- ----------------------------
+-- Table structure for `demo_excel`
+-- ----------------------------
+DROP TABLE IF EXISTS `demo_excel`;
+CREATE TABLE `demo_excel` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL COMMENT '姓名',
+  `age` tinyint(4) NOT NULL COMMENT '年龄',
+  `birthday` int(11) NOT NULL COMMENT '出生日期(时间戳)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='导入导出excel数据表';
