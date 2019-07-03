@@ -2,14 +2,13 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">excel上传</div>
+                <div class="layui-card-body">
+                    <a href="{{.ExampleExcelUrl}}" class="layui-btn">excel模板下载</a>
+                </div>
                 <div class="layui-card-body">
                     <div class="layui-upload">
                         <button type="button" class="layui-btn" id="excelUpload">excel上传</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
                         <input type="file" id="file" style="display: none" class="files" />
-                        <div class="layui-upload-list">
-                            <img class="layui-upload-img" id="test-upload-normal-img">
-                        </div>
                     </div>
                 </div>
                 <div class="layui-card-body">
@@ -29,7 +28,7 @@
         var xsrf_token = $('meta[name=_xsrf]').attr('content');
         $("#file").change(function () {
             // 图片上传地址
-            var url = "/tools/uploadFile";
+            var url = "/tools/excelImport";
             var upload = function (f, xsrf_token) {
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', url, true);
