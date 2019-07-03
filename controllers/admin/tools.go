@@ -74,10 +74,13 @@ func (c *ToolsController)PostSendEmail()  {
 	content := c.Input().Get("content")
 	// 将邮件字符串进行分割,并放入slice中
 	emailSlice := strings.Split(emails, "\r\n")
-	successNum, failNum := utils.SendEmail("邮件发送测试", emailSlice, content)
+	successNum, failNum, unreachable := utils.SendEmail("邮件发送测试", emailSlice, content)
 	returnJson:= ResponseJson{}
 	returnJson.StatusCode = Success
-	returnJson.Message = "请求成功,发送成功" + strconv.Itoa(successNum) + " 封;发送失败 " + strconv.Itoa(failNum)+ " 封"
+	returnJson.Message = "请求成功,发送成功" +
+		strconv.Itoa(successNum) + " 封;发送失败 " +
+		strconv.Itoa(failNum)+ " 封;无效" +
+		strconv.Itoa(unreachable) + "封"
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
 }

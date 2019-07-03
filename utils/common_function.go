@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"gopkg.in/gomail.v2"
@@ -11,6 +10,7 @@ import (
 	"reflect"
 	"regexp"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -65,29 +65,40 @@ func RandString(len int) string {
 	return string(bytes)
 }
 
-func SendEmail(subject string, emails []string, content string) (success int, fail int) {
+func SendEmail(subject string, emails []string, content string) (success int, fail int, unreachable int) {
+	// 多goroutine发送邮件
+	var wg sync.WaitGroup
 	host := beego.AppConfig.String("mail_host")
 	port := MustInt(beego.AppConfig.String("mail_port"))
 	username := beego.AppConfig.String("mail_username")
 	password := beego.AppConfig.String("mail_password")
 	for _,email := range emails{
-		m := gomail.NewMessage()
-		m.SetHeader("From", username)
-		m.SetHeader("To", email)
-		m.SetHeader("Subject", subject)
-		m.SetBody("text/html", content)
+		// 符合邮箱规则的发送邮件
+		if VerifyEmailFormat(email) {
+			wg.Add(1)
+			go func(emailAddress string) {
+				defer wg.Done()
+				m := gomail.NewMessage()
+				m.SetHeader("From", username)
+				m.SetHeader("To", emailAddress)
+				m.SetHeader("Subject", subject)
+				m.SetBody("text/html", content)
 
-		d := gomail.NewDialer(host, port, username, password)
+				d := gomail.NewDialer(host, port, username, password)
 
-		// Send the email to Bob, Cora and Dan.
-		if err := d.DialAndSend(m); err != nil {
-			fail++
-			// 发送邮件失败
-			logs.Error("邮件发送失败", err, " email=", email)
-			fmt.Println(err)
+				// 发送邮件
+				if err := d.DialAndSend(m); err != nil {
+					fail++
+					// 发送邮件失败
+					logs.Error("邮件发送失败", err, " email=", email)
+				}else {
+					success++
+				}
+			}(email)
 		}else {
-			success++
+			unreachable++
 		}
 	}
-	return success, fail
+	wg.Wait()
+	return success, fail, unreachable
 }
