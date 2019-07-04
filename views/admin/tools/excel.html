@@ -35,13 +35,10 @@
                 var formData = new FormData();
                 formData.append('file', f);
                 formData.append('_xsrf', xsrf_token);
-                formData.append('type', 'image');
                 xhr.onreadystatechange = function (response) {
                     if ((xhr.readyState == 4) && (xhr.status == 200) && (xhr.responseText != '')){
-                        layer.msg("上传成功");
                         var data = JSON.parse(xhr.responseText);
-                        console.log(data.url)
-                        $("#test-upload-normal-img").attr('src', data.url);
+                        processAjaxReturnData(data)
                     }else if((xhr.status != 200) && xhr.responseText){
                         layer.msg("上传失败");
                     }

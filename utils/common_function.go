@@ -3,9 +3,11 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"gopkg.in/gomail.v2"
+	"log"
 	"math/rand"
 	"reflect"
 	"regexp"
@@ -101,4 +103,47 @@ func SendEmail(subject string, emails []string, content string) (success int, fa
 	}
 	wg.Wait()
 	return success, fail, unreachable
+}
+
+// 获取excel中的内容
+func GetExcelContent(filePath string) [][]string {
+	var content [][]string
+	// 读取excel文件
+	excelFile,err := excelize.OpenFile(filePath)
+	if err != nil {
+		log.Fatal("读取excel文件失败：", err)
+	}
+	// 迭代数据
+	rows, err := excelFile.Rows("Sheet1")
+
+	for rows.Next()  {
+		row, err := rows.Columns()
+		if err != nil{
+			log.Fatal("读取excel数据失败：", err)
+		}
+		content = append(content, row)
+		// 获取每个单元格内容
+		// for _, colCell := range row {
+		// 	 fmt.Println(colCell, "\t")
+		// }
+	}
+	return content
+}
+
+// excel日期字段格式化 yyyy-mm-dd
+func ConvertToFormatDay(excelDaysString string)string{
+	// 2006-01-02 距离 1900-01-01的天数
+	baseDiffDay := 38719 //在网上工具计算的天数需要加2天，什么原因没弄清楚
+	curDiffDay := excelDaysString
+	b,_ := strconv.Atoi(curDiffDay)
+	// 获取excel的日期距离2006-01-02的天数
+	realDiffDay := b - baseDiffDay
+	//fmt.Println("realDiffDay:",realDiffDay)
+	// 距离2006-01-02 秒数
+	realDiffSecond := realDiffDay * 24 * 3600
+	//fmt.Println("realDiffSecond:",realDiffSecond)
+	// 2006-01-02 15:04:05距离1970-01-01 08:00:00的秒数 网上工具可查出
+	baseOriginSecond := 1136185445
+	resultTime := time.Unix(int64(baseOriginSecond + realDiffSecond), 0).Format("2006-01-02")
+	return resultTime
 }

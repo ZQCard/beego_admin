@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"beego_admin/models/demo"
 	"beego_admin/utils"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -104,12 +105,73 @@ func (c *ToolsController)PostExcelImport()  {
 	}
 	// 关闭句柄
 	defer file.Close()
-	fmt.Println(file)
-	fmt.Println(handler.Filename)
+	// 存放临时文件
+	directory := "storage/temp/"
+	_, err = os.Stat(directory)
+	if err != nil {
+		// 建立文件夹
+		err = os.MkdirAll(directory, os.ModePerm)
+		if err != nil {
+			log.Fatal("建立文件夹失败：", err)
+		}
+	}
 
+	filePath := directory + utils.RandString(10)+"_"+handler.Filename
+	// 混淆文件名前缀，并保存文件到指定地点
+	err = c.SaveToFile("file", filePath)
+	if err != nil {
+		log.Fatal("保存文件失败：", err)
+	}
+	// 删除文件
+	defer os.Remove(filePath)
+
+	content := utils.GetExcelContent(filePath)
+	// 将excel内容除第一行 插入数据库
+	insertContent := []demo.Excel{}
+
+	for index,row := range content{
+		if index == 0 {
+			continue
+		}
+		// 将每一行设置成数据结构体
+		demo := demo.Excel{}
+		// 空值标志符
+		empty := false
+		for key,value := range row{
+			// 去除空值
+			if value == ""{
+				 empty = true
+				 continue
+			}
+			// 设置姓名
+			if key == 0 {
+				demo.Name = value
+			}
+			// 设置年龄
+			if key == 1 {
+				demo.Age,_ = strconv.Atoi(value)
+			}
+			// 将年月日改变成时间戳
+			if key == 2 {
+				// excel日期需要单独处理
+				theTime, _ := time.Parse("2006-01-02", utils.ConvertToFormatDay(value))
+				demo.Birthday = theTime.Unix()
+			}
+		}
+		if empty == false{
+			insertContent = append(insertContent, demo)
+		}
+	}
+	successNums, err := demo.Import(insertContent)
 	returnJson:= ResponseJson{}
-
-	returnJson.StatusCode = Success
+	if err != nil {
+		returnJson.StatusCode = Fail
+		returnJson.Message = "导入失败"
+	}else {
+		returnJson.StatusCode = Success
+		returnJson.Message = "导入成功" + strconv.Itoa(int(successNums)) + "条"
+	}
+	returnJson.UrlType = Reload
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
 }
