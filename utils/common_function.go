@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -128,6 +129,35 @@ func GetExcelContent(filePath string) [][]string {
 		// }
 	}
 	return content
+}
+
+func SetExcelContent(filename string, title *[]interface{}, content *[][]interface{}) (string, error) {
+	f := excelize.NewFile()
+	// 创建一个工作表
+	//  err := f.SetSheetRow("Sheet1", "B6", &[]interface{}{"1", nil, 2})
+	index := f.NewSheet("Sheet1")
+	// 生成第一行数据
+	f.SetSheetRow("Sheet1", "A1", title)
+	// 依次传入数据 行+2
+	for k, v := range *content{
+		fmt.Println(reflect.TypeOf(v))
+		rowNum := k + 2
+		err := f.SetSheetRow("Sheet1", "A" + strconv.Itoa(rowNum), &v)
+		fmt.Println("A" + strconv.Itoa(rowNum))
+		if err != nil {
+			logs.Error("写入excel数据失败", err)
+			return "", err
+		}
+	}
+	f.SetActiveSheet(index)
+	// 根据路径保存文件
+	path := "static/example/" + filename + ".xlsx"
+	err := f.SaveAs(path)
+	if err != nil {
+		log.Fatal("导出excel文件失败", err)
+		return "", err
+	}
+	return path, nil
 }
 
 // excel日期字段格式化 yyyy-mm-dd

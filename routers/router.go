@@ -49,6 +49,7 @@ func init() {
 	beego.Router("/tools/excel", &admin.ToolsController{}, "get:GetExcel")
 	// 导入
 	beego.Router("/tools/excelImport", &admin.ToolsController{}, "post:PostExcelImport")
+	// 导出
 	beego.Router("/tools/excelExport", &admin.ToolsController{}, "get:GetExcelExport")
 
 	/************ 工具箱功能结束 ***********/

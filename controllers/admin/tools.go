@@ -177,8 +177,27 @@ func (c *ToolsController)PostExcelImport()  {
 }
 
 func (c *ToolsController)GetExcelExport()  {
-	c.Data["Title"] = "excel导入导出功能"
-	// 模板
-	c.TplName = "admin/tools/excel.html"
+
+	title := &[]interface{}{"姓名", "年龄", "出生日期"}
+	// 读取数据库测试数据
+	excelData := demo.GetAllData()
+	var content [][]interface{}
+	// 将数据结构体放入 interface slice
+	for _, v := range excelData{
+		content = append(content, []interface{}{v.Name, v.Age, time.Unix(v.Birthday, 0).Format("2006-01-02")})
+	}
+	path, err := utils.SetExcelContent("excelDownload", title, &content)
+	returnJson:= ResponseJson{}
+	if err != nil {
+		returnJson.StatusCode = Fail
+		returnJson.Message = "文件生成失败"
+	}else {
+		returnJson.StatusCode = Success
+		returnJson.UrlType = Jump
+		returnJson.Url = beego.AppConfig.String("base_url") + path
+	}
+	returnJson.UrlType = Reload
+	c.Data["json"] = &returnJson
+	c.ServeJSON()
 }
 /***************** excel导入导出功能结束 ******************/

@@ -32,7 +32,13 @@ func Import(content []Excel) (num int64, err error) {
 	return num, nil
 }
 
-// 导出数据
-func Export()  {
-	
+// 获取所有数据
+func GetAllData() (excel []Excel) {
+	o := orm.NewOrm()
+	_,err := o.QueryTable("demo_excel").All(&excel)
+	if err != nil {
+		logs.Error("查询excel数据报错", err)
+		return nil
+	}
+	return excel
 }

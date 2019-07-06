@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="layui-card-body">
-                    <button type="button" class="layui-btn" id="excelDownload">excel下载</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                    <a href="javascript:;" data-url="/tools/excelExport" class="layui-btn" id="excelDownload">excel数据导出</a>
                 </div>
             </div>
         </div>
@@ -49,6 +49,26 @@
                 upload($("#file")[0].files[0], xsrf_token);
             } else {
                 console && console.log("form input error");
+            }
+        });
+    });
+    
+    
+    // 下载excel
+    $("#excelDownload").click(function () {
+        $.get($("#excelDownload").data("url"), {_xsrf:xsrf_token}, function (data) {
+            // status为0表示操作失败
+            if (data.statusCode === 0) {
+                layer.alert(data.message, {
+                    icon: 2,
+                    skin: 'layer-ext-moon',
+                    closeBtn: 0
+                })
+            }
+
+            // status为1表示操作成功
+            if (data.statusCode === 1) {
+                window.location.href = data.url
             }
         });
     });
