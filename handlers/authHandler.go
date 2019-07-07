@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"beego_admin/controllers/admin"
-	"encoding/json"
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/utils"
 )
@@ -34,16 +33,16 @@ func Auth() func(ctx *context.Context) {
 				}
 			}
 			if !utils.InSlice(ctx.Input.URL(), authSlice) {
-				ctx.ResponseWriter.WriteHeader(403)
 				// ajax请求返回json
 				if ctx.Input.IsAjax() {
 					responseJson := admin.ResponseJson{}
 					responseJson.StatusCode = admin.Fail
 					responseJson.Message = "权限不足"
-					data,_ := json.Marshal(responseJson)
-					ctx.Output.Body(data)
+					//data,_ := json.Marshal(responseJson)
+					ctx.Output.JSON(responseJson, false, false)
 				} else {
-					ctx.Output.Body([]byte("forbidden！权限不足"))
+					ctx.Output.Session("error", "权限不足")
+					ctx.Redirect(302, "/error")
 				}
 			}
 

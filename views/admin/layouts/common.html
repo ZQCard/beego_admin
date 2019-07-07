@@ -139,6 +139,7 @@
 
     // 处理通用ajax返回数据
     function processAjaxReturnData(data) {
+        console.log(typeof data);
         // status为0表示操作失败
         if (data.statusCode === 0) {
             layer.alert(data.message, {

@@ -24,7 +24,9 @@ func init() {
 	/************ 权限管理开始 ***********/
 	// 管理员操作
 	beego.Router("/auth/administrator", &admin.AdministratorController{}, "get:GetAdministratorList;post:PostAddAdministrator;put:PutUpdateAdministrator;delete:DeleteAdministrator;patch:RecoverAdministrator")
+	// 角色列表
 	beego.Router("/auth/administrator/roles", &admin.AdministratorController{}, "get:GetAdministratorRoles;put:PutAdministratorRoles")
+	beego.Router("/auth/administrator/refreshAuth", &admin.AdministratorController{}, "get:RefreshAuth")
 
 	// 角色操作
 	beego.Router("/auth/role", &admin.AuthController{}, "get:GetRoleList;post:PostAddRole;put:PutUpdateRole;delete:DeleteRole")
