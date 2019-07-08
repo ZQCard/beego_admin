@@ -68,6 +68,8 @@
 
     // 展开页面添加或者编辑模态框
     function openForm(id, width = 450, height = 500) {
+        // 关闭其他弹窗
+        layer.closeAll();
         layer.open({
             type: 1,
             shade:0,
@@ -139,7 +141,6 @@
 
     // 处理通用ajax返回数据
     function processAjaxReturnData(data) {
-        console.log(typeof data);
         // status为0表示操作失败
         if (data.statusCode === 0) {
             layer.alert(data.message, {

@@ -5,7 +5,7 @@ import (
 	"beego_admin/models/admin"
 	"beego_admin/models/common/auth"
 	"beego_admin/utils"
-	"errors"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 )
@@ -225,6 +225,53 @@ func (c *AdministratorController)RefreshAuth()  {
 	c.SetSession("MENU_LEFT", administrator.MenuList(authGetSlice))
 	returnJson.StatusCode = Success
 	returnJson.Message = "刷新成功"
+	c.Data["json"] = &returnJson
+	c.ServeJSON()
+}
+
+func (c *AdministratorController)GetAdministratorInfo(){
+	returnJson := ResponseJson{}
+	// 查找管理员
+	administrator, err := admin.FindAdministratorById(utils.MustInt(c.Input().Get("id")))
+	if err != nil {
+		returnJson.StatusCode = Fail
+		returnJson.Message = err.Error()
+	} else {
+		// 用户信息
+		returnJson.StatusCode = Success
+		returnJson.Data = administrator
+		returnJson.UrlType = Reload
+	}
+	c.Data["json"] = &returnJson
+	c.ServeJSON()
+}
+
+func (c *AdministratorController)PutAdministratorInfo()  {
+	returnJson := ResponseJson{}
+	// 查找管理员
+	administrator, err := admin.FindAdministratorById(utils.MustInt(c.Input().Get("id")))
+	if err != nil {
+		returnJson.StatusCode = Fail
+		returnJson.Message = err.Error()
+	} else {
+		// 用户存在
+		if c.Input().Get("password") != "" {
+			administrator.Password = utils.GenerateMD5String(c.Input().Get("password"))
+		}
+		administrator.Nickname = c.Input().Get("nickname")
+		administrator.Email = c.Input().Get("email")
+		ok, err := administrator.UpdateAdministrator()
+		if ok == true {
+			returnJson.StatusCode = Success
+			returnJson.Message = SaveSuccess
+			returnJson.UrlType = Reload
+			// 更新完信息 变更昵称
+			c.SetSession("nickname", administrator.Nickname)
+		} else {
+			returnJson.StatusCode = Fail
+			returnJson.Message = err.Error()
+		}
+	}
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
 }

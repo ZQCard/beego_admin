@@ -30,6 +30,7 @@ func (c *baseController)Prepare()  {
 	c.Layout = "admin/layouts/common.html"
 	c.LayoutSections = make(map[string]string)
 	c.Data["Nickname"] = c.GetSession("nickname")
+	c.Data["AdminId"] = c.GetSession("adminId")
 	c.LayoutSections["HtmlHeader"] = "admin/layouts/header.html"
 	c.LayoutSections["Menu"] = "admin/layouts/menu.html"
 }
