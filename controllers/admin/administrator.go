@@ -5,7 +5,6 @@ import (
 	"beego_admin/models/admin"
 	"beego_admin/models/common/auth"
 	"beego_admin/utils"
-	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 )
