@@ -15,6 +15,8 @@ require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.0.1
 	github.com/astaxie/beego v1.11.1
 	github.com/go-sql-driver/mysql v1.4.1
+	github.com/jinzhu/gorm v1.9.2 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
 	golang.org/x/text v0.3.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
