@@ -85,13 +85,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">创建时间</label>
             <div class="layui-input-block">
-                <input style="width:80%" type="text" id="adminCreateTime" name="create_time" value="" required="" lay-verify="required" placeholder="请输入管理员邮箱地址" autocomplete="off" class="layui-input">
+                <input style="width:80%" type="text" id="adminCreateTime" name="create_time" value="" required="" lay-verify="required" placeholder="管理员信息创建时间" disabled autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">更新时间</label>
             <div class="layui-input-block">
-                <input style="width:80%" type="text" id="adminUpdateTime"  name="update_time" value="" required="" lay-verify="required" placeholder="请输入管理员邮箱地址" autocomplete="off" class="layui-input">
+                <input style="width:80%" type="text" id="adminUpdateTime"  name="update_time" value="" required="" lay-verify="required" placeholder="管理员信息更新时间" disabled autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -131,8 +131,8 @@
             $("#adminUsername").val(data.Username);
             $("#adminNickname").val(data.Nickname);
             $("#adminEmail").val(data.Email);
-            $("#adminCreateTime").val(data.CreatedAt);
-            $("#adminUpdateTime").val(data.UpdatedAt);
+            $("#adminCreateTime").val(GMTToStr(data.CreatedAt));
+            $("#adminUpdateTime").val(GMTToStr(data.UpdatedAt));
             $("#adminPassword").val("");
         });
         openForm("viewEditAdminInfo");

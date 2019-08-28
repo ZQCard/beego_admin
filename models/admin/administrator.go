@@ -9,7 +9,9 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	utils2 "github.com/astaxie/beego/utils"
-	"github.com/astaxie/beego/validation"
+	beegoValidation "github.com/astaxie/beego/validation"
+	"github.com/go-ozzo/ozzo-validation"
+	"github.com/go-ozzo/ozzo-validation/is"
 	"time"
 )
 
@@ -22,13 +24,74 @@ type Administrator struct {
 	Email string
 }
 
+// 管理员表GORM
+type AdministratorGORM struct {
+	models.ModelGORM
+	Username string
+	Nickname string
+	Password string
+	Email string
+}
+
+func (AdministratorGORM)TableName() string {
+	return "administrator"
+}
+
+func (administrator AdministratorGORM)Validate() error {
+	return validation.ValidateStruct(&administrator,
+		// 名称不得为空,且大小为1-20字
+		validation.Field(
+			&administrator.Username,
+			validation.Required.Error("名称不得为空"),
+			validation.Length(1, 20).Error("名称为1-20字")),
+		// 邮箱验证
+		validation.Field(&administrator.Email,
+			validation.Required.Error("邮箱不得为空"),
+			is.Email.Error("邮箱格式不正确"),
+			),
+	)
+}
+
+// GORM根据条件查找管理员信息
+func (administrator *AdministratorGORM)FindAdministratorGORM() (admin AdministratorGORM, err error) {
+	err = models.DB.Where(administrator).First(&admin).Error
+	if err != nil {
+		return admin, err
+	}
+	return admin, nil
+}
+
+// GORM更新管理员信息
+func (administrator *AdministratorGORM)UpdateAdministratorGORM() (err error) {
+	// 数据验证
+	err = administrator.Validate()
+	if err != nil {
+		return err
+	}
+	// 判断用户名或者昵称未使用
+	row1 := models.DB.Unscoped().Where("id <> ?", administrator.ID).Where("username = ?", administrator.Username).RowsAffected
+	row2 := models.DB.Unscoped().Where("id <> ?", administrator.ID).Where("nickname = ?", administrator.Nickname).RowsAffected
+	if row1 != 0 || row2 != 0{
+		return errors.New("用户名或昵称已经存在")
+	}
+	
+	
+	if err = models.DB.Save(&administrator).Error; err != nil {
+		logs.Error("管理员信息保存失败", err)
+		return errors.New("信息保存失败")
+	}
+	return nil
+}
+
+
+
 func init()  {
 	// 注册模型(注册模型必须在引导(new ORM())之前运行)
 	orm.RegisterModel(new(Administrator))
 }
 
 // 数据验证
-func (administrator *Administrator)Valid(v *validation.Validation){
+func (administrator *Administrator)Valid(v *beegoValidation.Validation){
 
 	if administrator.Username == "" {
 		v.SetError("Username", "用户名不得为空")
@@ -70,7 +133,7 @@ func AdministratorList(page, pageSize int) (administrator []Administrator, total
 // 增加管理员
 func (administrator *Administrator)AddAdministrator() (bool, error) {
 	// 数据验证
-	valid := validation.Validation{}
+	valid := beegoValidation.Validation{}
 	b, err := valid.Valid(administrator)
 	if err != nil {
 		logs.Error("验证管理员数据失败：", err)
@@ -122,11 +185,11 @@ func FindAdministratorById(id int) ( *Administrator, error) {
 	return administrator, nil
 }
 
-// 更新角色
+// 更新管理员
 func (administrator *Administrator)UpdateAdministrator() (bool, error) {
 	o := orm.NewOrm()
 	// 数据验证
-	valid := validation.Validation{}
+	valid := beegoValidation.Validation{}
 	b, err := valid.Valid(administrator)
 	if err != nil {
 		logs.Error("验证管理员数据失败：", err)

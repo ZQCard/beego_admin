@@ -87,13 +87,15 @@ func (c *CommonController)Login()  {
 	// 读取post参数
 	username := c.Input().Get("username")
 	password := utils.GenerateMD5String(c.Input().Get("password"))
-	administrator := &admin.Administrator{
+	administratorGORM := admin.AdministratorGORM{
 		Username:username,
 		Password:password,
 	}
-	administrator, err := administrator.FindAdministratorByUsername()
+
+	administratorGORM, err := administratorGORM.FindAdministratorGORM()
 	// 用户验证失败
 	if err != nil{
+		fmt.Println(err)
 		c.Data["Error"] = err.Error()
 		// csrf
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
@@ -102,10 +104,14 @@ func (c *CommonController)Login()  {
 	}
 	// 保存session
 	// 保存用户信息
-	c.SetSession("adminId", administrator.Id)
-	c.SetSession("adminName", administrator.Username)
-	c.SetSession("nickname", administrator.Nickname)
-
+	c.SetSession("adminId", administratorGORM.ModelGORM.ID)
+	c.SetSession("adminName", administratorGORM.Username)
+	c.SetSession("nickname", administratorGORM.Nickname)
+	administrator := &admin.Administrator{
+		Username:username,
+		Password:password,
+	}
+	administrator.Id = administratorGORM.ModelGORM.ID
 	// 读取权限map
 	authList, err := administrator.AuthList()
 	if err != nil {
@@ -122,6 +128,7 @@ func (c *CommonController)Login()  {
 	// 读取公共权限
 	authCommonList, err := auth.RoleAuthList(beego.AppConfig.String("customer_role_name"))
 	if err != nil {
+		panic(err)
 		c.Data["Error"] = err.Error()
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
 		c.TplName = "admin/common/login.html"
@@ -148,8 +155,8 @@ func (c *CommonController)Login()  {
 	}
 	// 读取管理员的菜单
 	c.SetSession("MENU_LEFT", administrator.MenuList(authGetSlice))
-
 	c.Redirect("/", 302)
+	return
 }
 
 // 错误提示页面

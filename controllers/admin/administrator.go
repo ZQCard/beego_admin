@@ -231,7 +231,12 @@ func (c *AdministratorController)RefreshAuth()  {
 func (c *AdministratorController)GetAdministratorInfo(){
 	returnJson := ResponseJson{}
 	// 查找管理员
-	administrator, err := admin.FindAdministratorById(utils.MustInt(c.Input().Get("id")))
+	administrator := admin.AdministratorGORM{
+		ModelGORM:models.ModelGORM{
+			ID:utils.MustInt(c.Input().Get("id")),
+		},
+	}
+	administrator, err := administrator.FindAdministratorGORM()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -243,24 +248,30 @@ func (c *AdministratorController)GetAdministratorInfo(){
 	}
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
+	return
 }
 
 func (c *AdministratorController)PutAdministratorInfo()  {
 	returnJson := ResponseJson{}
-	// 查找管理员
-	administrator, err := admin.FindAdministratorById(utils.MustInt(c.Input().Get("id")))
+	administrator := admin.AdministratorGORM{
+		ModelGORM:models.ModelGORM{
+			ID:utils.MustInt(c.Input().Get("id")),
+		},
+	}
+	administrator, err := administrator.FindAdministratorGORM()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
-	} else {
+
+	}else {
 		// 用户存在
 		if c.Input().Get("password") != "" {
 			administrator.Password = utils.GenerateMD5String(c.Input().Get("password"))
 		}
 		administrator.Nickname = c.Input().Get("nickname")
 		administrator.Email = c.Input().Get("email")
-		ok, err := administrator.UpdateAdministrator()
-		if ok == true {
+		err := administrator.UpdateAdministratorGORM()
+		if err == nil {
 			returnJson.StatusCode = Success
 			returnJson.Message = SaveSuccess
 			returnJson.UrlType = Reload
@@ -273,4 +284,5 @@ func (c *AdministratorController)PutAdministratorInfo()  {
 	}
 	c.Data["json"] = &returnJson
 	c.ServeJSON()
+	return
 }

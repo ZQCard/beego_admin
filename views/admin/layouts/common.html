@@ -236,6 +236,18 @@
         let re=eval('/('+ paramName+'=)([^&]*)/gi');
         return url.replace(re,paramName+'='+replaceWith);
     }
+
+    // 将格林威治时间改为时间戳
+    function GMTToStr(time){
+        let date = new Date(time);
+        var Str = date.getFullYear() + '-' +
+            (date.getMonth() + 1) + '-' +
+            date.getDate() + ' ' +
+            date.getHours() + ':' +
+            date.getMinutes() + ':' +
+            date.getSeconds();
+        return Str;
+    }
 </script>
 </body>
 </html>
