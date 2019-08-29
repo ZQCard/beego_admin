@@ -49,17 +49,17 @@
                         {{/*循环展示数据*/}}
                         {{range .Actions}}
                             <tr>
-                                <td>{{.Id}}</td>
+                                <td>{{.ID}}</td>
                                 <td>{{.Name}}</td>
                                 <td>{{.Method}}</td>
                                 <td>{{.Route}}</td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/action" id="EditForm{{.Id}}" data-title="编辑行为" style="display: none;margin-top:5%">
+                                    <form action="/auth/action" id="EditForm{{.ID}}" data-title="编辑行为" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">行为名称</label>
                                             <div class="layui-input-block">
-                                                <input value="{{.Id}}" type="hidden" name="id" required="" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
+                                                <input value="{{.ID}}" type="hidden" name="id" required="" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
                                                 <input style="width:80%" value="{{.Name}}" type="text" name="name" required="" lay-verify="required" placeholder="请输入行为名称" autocomplete="off" class="layui-input">
                                                 <input type="hidden" name="_method" value="PUT">
                                             </div>
@@ -78,12 +78,12 @@
                                         </div>
                                         <div class="layui-form-item">
                                             <div class="layui-input-block">
-                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.Id}}">立即提交</a>
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.ID}}">立即提交</a>
                                             </div>
                                         </div>
                                     </form>
-                                    <a class="layui-btn layui-btn-xs" data-id="{{.Id}}" onclick="openForm('EditForm{{.Id}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.Id}}" data-tips="{{.Name}}" data-url="/auth/action">删除</a>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/auth/action">删除</a>
                                 </td>
                             </tr>
                         {{end}}

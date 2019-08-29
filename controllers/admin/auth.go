@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"beego_admin/models/admin"
 	auth2 "beego_admin/models/common/auth"
 	"beego_admin/utils"
 	"encoding/json"
@@ -254,7 +255,7 @@ func (c *AuthController) GetActionList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	actions, totalCount := auth2.ActionList(page, pageSize)
+	actions, totalCount := admin.ActionList(page, pageSize)
 	c.Data["Actions"] = actions
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
@@ -267,9 +268,9 @@ func (c *AuthController) GetActionList() {
 // 添加行为
 func (c *AuthController) PostAddAction() {
 	returnJson := ResponseJson{}
-	action := auth2.Action{Name:c.Input().Get("name"), Method:c.Input().Get("method"), Route:c.Input().Get("route")}
-	ok, err := action.CreateAction()
-	if ok == true {
+	action := admin.Action{Name:c.Input().Get("name"), Method:c.Input().Get("method"), Route:c.Input().Get("route")}
+	err := action.ActionCreate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Reload
@@ -284,15 +285,15 @@ func (c *AuthController) PostAddAction() {
 // 更新行为
 func (c *AuthController) PutUpdateAction() {
 	returnJson := ResponseJson{}
-	action := auth2.Action{
-		Id:utils.MustInt(c.Input().Get("id")),
+	action := admin.Action{
+		ID:utils.MustInt(c.Input().Get("id")),
 		Name:c.Input().Get("name"),
 		Method:c.Input().Get("method"),
 		Route:c.Input().Get("route"),
 	}
 
-	ok, err := action.UpdateAction()
-	if ok == true {
+	err := action.ActionUpdate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Reload
@@ -307,11 +308,11 @@ func (c *AuthController) PutUpdateAction() {
 // 删除行为
 func (c *AuthController) DeleteAction() {
 	returnJson := ResponseJson{}
-	action := auth2.Action{
-		Id:utils.MustInt(c.Input().Get("id")),
+	action := admin.Action{
+		ID:utils.MustInt(c.Input().Get("id")),
 	}
-	ok := action.DeleteAction()
-	if ok == true {
+	err := action.ActionDelete()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
 	} else {
