@@ -51,41 +51,41 @@
                     </form>
                     <table class="layui-table">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>管理员用户名</th>
-                                <th>管理员昵称</th>
-                                <th>管理员邮箱</th>
-                                <th>创建时间</th>
-                                <th>更新时间</th>
-                                <th>删除时间</th>
-                                <th>操作</th>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>管理员用户名</th>
+                            <th>管理员昵称</th>
+                            <th>管理员邮箱</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>删除时间</th>
+                            <th>操作</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {{/*循环展示数据*/}}
                         {{range .Administrators}}
                             <tr>
-                                <td>{{.Id}}</td>
+                                <td>{{.ID}}</td>
                                 <td>{{.Username}}</td>
                                 <td>{{.Nickname}}</td>
                                 <td>{{.Email}}</td>
                                 <td>{{date .CreatedAt "Y-m-d"}}</td>
                                 <td>{{date .UpdatedAt "Y-m-d"}}</td>
                                 <td>
-                                    {{if ne .DeletedAt 0}}
-                                        {{.DeletedAt | TimestampToDate}}
+                                    {{if .DeletedAt}}
+                                        {{date .DeletedAt "Y-m-d"}}
                                     {{else}}
                                         未删除
                                     {{end}}
                                 </td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/administrator" id="EditForm{{.Id}}" data-title="编辑管理员" style="display: none;margin-top:5%">
+                                    <form action="/auth/administrator" id="EditForm{{.ID}}" data-title="编辑管理员" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">用户名</label>
                                             <div class="layui-input-block">
-                                                <input value="{{.Id}}" type="hidden" name="id" required="" autocomplete="off" class="layui-input">
+                                                <input value="{{.ID}}" type="hidden" name="id" required="" autocomplete="off" class="layui-input">
                                                 <input type="hidden" name="_method" value="PUT">
                                                 <input style="width:80%" value="{{.Username}}" disabled type="text" name="username" required="" lay-verify="required" placeholder="用户名无法更改" autocomplete="off" class="layui-input">
                                             </div>
@@ -110,14 +110,14 @@
                                         </div>
                                         <div class="layui-form-item">
                                             <div class="layui-input-block">
-                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.Id}}">立即提交</a>
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.ID}}">立即提交</a>
                                             </div>
                                         </div>
                                     </form>
-                                    <a class="layui-btn layui-btn-xs" data-id="{{.Id}}" onclick="openForm('EditForm{{.Id}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.Id}}" data-tips="{{.Username}}" data-url="/auth/administrator">删除</a>
-                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.Id}}" data-tips="{{.Username}}" data-url="/auth/administrator">恢复</a>
-                                    <a class="layui-btn layui-btn-warm layui-btn-xs AdminHasRole" data-id="{{.Id}}">分配角色</a>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/auth/administrator">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/auth/administrator">恢复</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs AdminHasRole" data-id="{{.ID}}">分配角色</a>
                                 </td>
                             </tr>
                         {{end}}
@@ -131,8 +131,6 @@
 </div>
 
 <script>
-    // 全局角色id
-    let adminId = 0;
     //数据源
     $(function () {
         $(".AdminHasRole").click(function () {

@@ -37,13 +37,13 @@ func (c *AdministratorController) GetAdministratorList() {
 // 添加管理员
 func (c *AdministratorController) PostAddAdministrator() {
 	returnJson:= ResponseJson{}
-	administrator := admin.Administrator{}
+	administrator := admin.AdministratorGORM{}
 	administrator.Username = c.Input().Get("username")
 	administrator.Password = c.Input().Get("password")
 	administrator.Nickname = c.Input().Get("nickname")
 	administrator.Email = c.Input().Get("email")
-	ok, err := administrator.AddAdministrator()
-	if ok == true {
+	err := administrator.AdministratorCreate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Reload
@@ -55,42 +55,13 @@ func (c *AdministratorController) PostAddAdministrator() {
 	c.ServeJSON()
 }
 
-// 更新管理员
-func (c *AdministratorController) PutUpdateAdministrator() {
-	returnJson := ResponseJson{}
-	// 查找管理员
-	administrator, err := admin.FindAdministratorById(utils.MustInt(c.Input().Get("id")))
-	if err != nil {
-		returnJson.StatusCode = Fail
-		returnJson.Message = err.Error()
-	} else {
-		// 用户存在
-		if c.Input().Get("password") != "" {
-			administrator.Password = utils.GenerateMD5String(c.Input().Get("password"))
-		}
-		administrator.Nickname = c.Input().Get("nickname")
-		administrator.Email = c.Input().Get("email")
-		ok, err := administrator.UpdateAdministrator()
-		if ok == true {
-			returnJson.StatusCode = Success
-			returnJson.Message = SaveSuccess
-			returnJson.UrlType = Reload
-		} else {
-			returnJson.StatusCode = Fail
-			returnJson.Message = err.Error()
-		}
-	}
-	c.Data["json"] = &returnJson
-	c.ServeJSON()
-}
-
 // 删除管理员
 func (c *AdministratorController) DeleteAdministrator() {
 	returnJson:= ResponseJson{}
-	administrator := admin.Administrator{}
-	administrator.Id = utils.MustInt(c.Input().Get("id"))
-	ok := administrator.DeleteAdministrator()
-	if ok == true {
+	administrator := admin.AdministratorGORM{}
+	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	err := administrator.AdministratorDelete()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
 	} else {
@@ -105,10 +76,10 @@ func (c *AdministratorController) DeleteAdministrator() {
 // 恢复管理员
 func (c *AdministratorController) RecoverAdministrator() {
 	returnJson:= ResponseJson{}
-	administrator := admin.Administrator{}
-	administrator.Id = utils.MustInt(c.Input().Get("id"))
-	ok := administrator.RecoverAdministrator()
-	if ok == true {
+	administrator := admin.AdministratorGORM{}
+	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	err := administrator.AdministratorRecover()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 	} else {
@@ -173,7 +144,6 @@ func (c *AdministratorController)RefreshAuth()  {
 	case int:
 		id = adminId.(int)
 	}
-
 	administrator, err := admin.FindAdministratorById(id)
 	// 读取权限map
 	authList, err := administrator.AuthList()
@@ -236,7 +206,7 @@ func (c *AdministratorController)GetAdministratorInfo(){
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
-	administrator, err := administrator.FindAdministratorGORM()
+	administrator, err := administrator.FindAdministrator()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -258,7 +228,7 @@ func (c *AdministratorController)PutAdministratorInfo()  {
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
-	administrator, err := administrator.FindAdministratorGORM()
+	administrator, err := administrator.FindAdministrator()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -270,7 +240,7 @@ func (c *AdministratorController)PutAdministratorInfo()  {
 		}
 		administrator.Nickname = c.Input().Get("nickname")
 		administrator.Email = c.Input().Get("email")
-		err := administrator.UpdateAdministratorGORM()
+		err := administrator.AdministratorUpdate()
 		if err == nil {
 			returnJson.StatusCode = Success
 			returnJson.Message = SaveSuccess

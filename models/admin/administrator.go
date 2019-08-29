@@ -3,16 +3,13 @@ package admin
 import (
 	"beego_admin/models"
 	"beego_admin/models/common/auth"
-	"beego_admin/utils"
 	"encoding/json"
 	"errors"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 	utils2 "github.com/astaxie/beego/utils"
-	beegoValidation "github.com/astaxie/beego/validation"
 	"github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
-	"time"
 )
 
 // 管理员表
@@ -52,17 +49,54 @@ func (administrator AdministratorGORM)Validate() error {
 	)
 }
 
-// GORM根据条件查找管理员信息
-func (administrator *AdministratorGORM)FindAdministratorGORM() (admin AdministratorGORM, err error) {
+
+// 管理员列表
+func AdministratorList(page, pageSize int) (administrator []AdministratorGORM, totalCount int64) {
+	models.DB.Unscoped().Model(&administrator).Count(&totalCount)
+	err := models.DB.Unscoped().Offset((page - 1) * pageSize).Limit(pageSize).Find(&administrator).Error
+	if err != nil{
+		logs.Error("查询管理员列表报错", err)
+		return nil, 0
+	}
+	return
+}
+
+// 根据条件查找管理员信息
+func (administrator *AdministratorGORM)FindAdministrator() (admin AdministratorGORM, err error) {
 	err = models.DB.Where(administrator).First(&admin).Error
 	if err != nil {
-		return admin, err
+		return admin, errors.New("用户信息错误")
 	}
 	return admin, nil
 }
 
-// GORM更新管理员信息
-func (administrator *AdministratorGORM)UpdateAdministratorGORM() (err error) {
+// 添加管理员信息
+func (administrator *AdministratorGORM)AdministratorCreate() (err error) {
+	// 数据验证
+	err = administrator.Validate()
+	if err != nil {
+		return err
+	}
+	// 判断用户名或者昵称未使用
+	rowAffected := models.DB.Unscoped().Where("username = ?", administrator.Username).Or("nickname = ?", administrator.Nickname).Find(&AdministratorGORM{}).RowsAffected
+	if rowAffected != 0{
+		return errors.New("用户名或昵称已经存在")
+	}
+
+	// 查看密码
+	if administrator.Password == "" {
+		return errors.New("密码不得为空")
+	}
+
+	if err = models.DB.Create(&administrator).Error; err != nil {
+		logs.Error("管理员信息创建失败", err)
+		return errors.New("信息保存失败")
+	}
+	return nil
+}
+
+// 更新管理员信息
+func (administrator *AdministratorGORM)AdministratorUpdate() (err error) {
 	// 数据验证
 	err = administrator.Validate()
 	if err != nil {
@@ -74,11 +108,34 @@ func (administrator *AdministratorGORM)UpdateAdministratorGORM() (err error) {
 	if row1 != 0 || row2 != 0{
 		return errors.New("用户名或昵称已经存在")
 	}
-	
+
 	
 	if err = models.DB.Save(&administrator).Error; err != nil {
 		logs.Error("管理员信息保存失败", err)
 		return errors.New("信息保存失败")
+	}
+	return nil
+}
+
+// 删除管理员
+func (administrator *AdministratorGORM)AdministratorDelete() (err error) {
+	if administrator.ModelGORM.ID == 1{
+		logs.Error("试图删除1号超级管理员")
+		return errors.New("删除失败")
+	}
+	if err := models.DB.Delete(&administrator).Error; err != nil {
+		logs.Error("删除管理员失败：", err)
+		return errors.New("删除失败")
+	}
+	return nil
+}
+
+// 恢复管理员
+func (administrator *AdministratorGORM)AdministratorRecover() (err error) {
+	administrator.DeletedAt = nil
+	if err := models.DB.Unscoped().Model(&administrator).Update("deleted_at", nil).Error; err != nil {
+		logs.Error("恢复管理员失败：", err)
+		return errors.New("恢复管理员失败")
 	}
 	return nil
 }
@@ -88,86 +145,6 @@ func (administrator *AdministratorGORM)UpdateAdministratorGORM() (err error) {
 func init()  {
 	// 注册模型(注册模型必须在引导(new ORM())之前运行)
 	orm.RegisterModel(new(Administrator))
-}
-
-// 数据验证
-func (administrator *Administrator)Valid(v *beegoValidation.Validation){
-
-	if administrator.Username == "" {
-		v.SetError("Username", "用户名不得为空")
-	}
-
-	if administrator.Nickname == "" {
-		v.SetError("Nickname", "昵称不得为空")
-	}
-
-	if len(administrator.Username) < 1 || len(administrator.Username) > 60 {
-		v.SetError("Username", "用户名长度为1-20个字")
-	}
-
-	if len(administrator.Nickname) < 1 || len(administrator.Nickname) > 60 {
-		v.SetError("Username", "用户名长度为1-20个字")
-	}
-
-	if len(administrator.Password) < 6 {
-		v.SetError("Password", "密码不得小于6位")
-	}
-
-	if !utils.VerifyEmailFormat(administrator.Email) {
-		v.SetError("Email", "邮箱格式错误")
-	}
-}
-
-// 管理员列表
-func AdministratorList(page, pageSize int) (administrator []Administrator, totalCount int64) {
-	o := orm.NewOrm()
-	totalCount, err := o.QueryTable("administrator").Count()
-	_,err = o.QueryTable("administrator").Limit(pageSize, (page - 1) * pageSize).All(&administrator)
-	if err != nil {
-		logs.Error("查询管理员报错", err)
-		return nil, 0
-	}
-	return
-}
-
-// 增加管理员
-func (administrator *Administrator)AddAdministrator() (bool, error) {
-	// 数据验证
-	valid := beegoValidation.Validation{}
-	b, err := valid.Valid(administrator)
-	if err != nil {
-		logs.Error("验证管理员数据失败：", err)
-		return false, errors.New("系统错误")
-	}
-
-	if !b {
-		for _, err := range valid.Errors {
-			return false, err
-		}
-	}
-
-	o := orm.NewOrm()
-	administrator.Password = utils.GenerateMD5String(administrator.Password)
-	_, err = o.Insert(administrator)
-	if err != nil {
-		logs.Error("插入管理员数据失败：", err)
-		return false, errors.New("添加管理员失败")
-	}
-	return true, nil
-}
-
-// 根据用户名密码查找管理员信息
-func (administrator *Administrator)FindAdministratorByUsername() (*Administrator, error) {
-	o := orm.NewOrm()
-	err := o.QueryTable("administrator").Filter("username", administrator.Username).Filter("password",  administrator.Password).One(administrator)
-	if err == orm.ErrNoRows {
-		return administrator, errors.New("用户或密码错误")
-	}
-
-	if administrator.DeletedAt != 0 {
-		return administrator, errors.New("该用户已冻结")
-	}
-	return administrator, nil
 }
 
 // 根据用户名密码查找管理员信息
@@ -183,75 +160,6 @@ func FindAdministratorById(id int) ( *Administrator, error) {
 		return administrator, errors.New("该用户已冻结")
 	}
 	return administrator, nil
-}
-
-// 更新管理员
-func (administrator *Administrator)UpdateAdministrator() (bool, error) {
-	o := orm.NewOrm()
-	// 数据验证
-	valid := beegoValidation.Validation{}
-	b, err := valid.Valid(administrator)
-	if err != nil {
-		logs.Error("验证管理员数据失败：", err)
-		return false, errors.New("系统错误")
-	}
-
-	if !b {
-		for _, err := range valid.Errors {
-			return false, err
-		}
-	}
-
-	// 判断用户名或者昵称是否已经存在
-	var ad Administrator
-	err = o.Raw("SELECT id FROM administrator WHERE id != ? AND (username = ? OR nickname = ?)", administrator.Id, administrator.Username, administrator.Nickname).QueryRow(&ad)
-	if err != orm.ErrNoRows{
-		return false, errors.New("用户名或昵称已存在")
-	}
-	if _, err := o.Update(administrator); err != nil {
-		return false, err
-	}
-	return true, nil
-}
-
-// 删除管理员
-func (administrator *Administrator)DeleteAdministrator() bool {
-	// 开启事务
-	o := orm.NewOrm()
-	err := o.Begin()
-	if err != nil {
-		logs.Error("删除管理员报错", err)
-		return false
-	}
-	// 将管理员表deteled_at置为当前时间戳
-	administrator.DeletedAt = utils.Int64ToInt(time.Now().Unix())
-
-	_, err = o.Update(administrator, "DeletedAt")
-	// 删除权限与用户的关联角色
-	_, err2 := o.Raw("DELETE FROM auth_administrator_role WHERE administrator_id = ?", administrator.Id).Exec()
-	if err != nil || err2 != nil{
-		logs.Error("删除管理员报错", err, "   ",err2)
-		o.Rollback()
-		return false
-	}
-	o.Commit()
-	return true
-}
-
-// 恢复管理员
-func (administrator *Administrator)RecoverAdministrator() bool {
-	// 开启事务
-	o := orm.NewOrm()
-
-	// 将管理员表deteled_at置为0
-	administrator.DeletedAt = 0
-
-	_, err := o.Update(administrator, "DeletedAt")
-
-	if err != nil {
-		return false
-	}
-	return true
 }
 
 // 授予管理员角色

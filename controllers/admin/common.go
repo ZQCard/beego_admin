@@ -92,7 +92,7 @@ func (c *CommonController)Login()  {
 		Password:password,
 	}
 
-	administratorGORM, err := administratorGORM.FindAdministratorGORM()
+	administratorGORM, err := administratorGORM.FindAdministrator()
 	// 用户验证失败
 	if err != nil{
 		fmt.Println(err)
