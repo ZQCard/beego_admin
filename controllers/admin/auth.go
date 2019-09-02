@@ -5,7 +5,6 @@ import (
 	auth2 "beego_admin/models/common/auth"
 	"beego_admin/utils"
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 )
 
@@ -22,11 +21,10 @@ func (c *AuthController) GetRoleList() {
 	if page == 0 {
 		page = PageDefault
 	}
-
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	roles, totalCount := auth2.RoleList(page, pageSize)
+	roles, totalCount := admin.RoleList(page, pageSize)
 	c.Data["Roles"] = roles
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
@@ -39,9 +37,9 @@ func (c *AuthController) GetRoleList() {
 // 添加角色
 func (c *AuthController) PostAddRole() {
 	returnJson := ResponseJson{}
-	role := auth2.Role{Name:c.Input().Get("name")}
-	ok, err := role.CreateRole()
-	if ok == true {
+	role := admin.Role{Name:c.Input().Get("name")}
+	err := role.RoleCreate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Reload
@@ -56,9 +54,9 @@ func (c *AuthController) PostAddRole() {
 // 更新角色
 func (c *AuthController) PutUpdateRole() {
 	returnJson := ResponseJson{}
-	role := auth2.Role{Id:utils.MustInt(c.Input().Get("id")), Name:c.Input().Get("name")}
-	ok, err := role.UpdateRole()
-	if ok == true {
+	role := admin.Role{ID:utils.MustInt(c.Input().Get("id")), Name:c.Input().Get("name")}
+	err := role.RoleUpdate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Reload
@@ -73,9 +71,9 @@ func (c *AuthController) PutUpdateRole() {
 // 删除角色
 func (c *AuthController) DeleteRole() {
 	returnJson := ResponseJson{}
-	role := auth2.Role{Id:utils.MustInt(c.Input().Get("id"))}
-	ok := role.DeleteRole()
-	if ok == true {
+	role := admin.Role{ID:utils.MustInt(c.Input().Get("id"))}
+	err := role.RoleDelete()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
 	} else {
@@ -90,7 +88,8 @@ func (c *AuthController) DeleteRole() {
 // 获取角色的权限情况
 func (c *AuthController) GetRolePermissions() {
 	returnJson := ResponseJson{}
-	data, err := auth2.RolePermissionList(utils.MustInt(c.Input().Get("id")))
+	role := admin.Role{ID:utils.MustInt(c.Input().Get("id"))}
+	data, err := role.RolePermissionList()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -110,8 +109,7 @@ func (c *AuthController) PutRolePermissions() {
 	// 数据绑定获取数组
 	permissionIds := make([]int, 0)
 	c.Ctx.Input.Bind(&permissionIds, "permissionIds")
-	role := auth2.Role{Id: roleId}
-	fmt.Println("permissionIds", permissionIds)
+	role := admin.Role{ID: roleId}
 	err := role.AssignPermission(permissionIds)
 	if err != nil {
 		returnJson.StatusCode = Fail

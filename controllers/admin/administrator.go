@@ -94,7 +94,9 @@ func (c *AdministratorController) RecoverAdministrator() {
 // 获取管理员的角色情况
 func (c *AdministratorController) GetAdministratorRoles() {
 	returnJson:= ResponseJson{}
-	data, err := auth.AdministratorRoleList(utils.MustInt(c.Input().Get("id")))
+	administrator := admin.AdministratorGORM{}
+	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	data, err := administrator.AdministratorRoleList()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -115,9 +117,9 @@ func (c *AdministratorController) PutAdministratorRoles() {
 	roleIds := make([]int, 0)
 	c.Ctx.Input.Bind(&roleIds, "roleIds")
 
-	administrator := &admin.Administrator{
-		Model:models.Model{
-			Id:adminId,
+	administrator := &admin.AdministratorGORM{
+		ModelGORM:models.ModelGORM{
+			ID:adminId,
 		},
 	}
 

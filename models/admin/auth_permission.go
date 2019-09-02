@@ -3,10 +3,7 @@ package admin
 import (
 	"beego_admin/models"
 	"errors"
-	"fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego/utils"
 	"github.com/go-ozzo/ozzo-validation"
 	"strconv"
 	"strings"
@@ -87,40 +84,60 @@ func (permission *Permission)PermissionUpdate() (err error) {
 
 // 删除权限
 func (permission *Permission)PermissionDelete() (err error) {
-	if err := models.DB.Delete(&permission).Error; err != nil {
+	tx := models.DB.Begin()
+	if err := tx.Delete(&permission).Error; err != nil {
 		logs.Error("删除权限失败：", err)
 		return errors.New("删除失败")
 	}
+	// 删除权限下的行为
+	tx.Exec("DELETE FROM auth_permission_action WHERE permission_id = ?", permission.ID)
+	tx.Commit()
 	return nil
 }
 
 // 权限拥有的行为列表
 func (permission *Permission)PermissionActionList() (map[string][]Action, error) {
-	// 所有行为
-	actionAll,_ := ActionList(0, 3000)
-	o := orm.NewOrm()
-	// 已拥有行为id
-	type ActionId struct {
-		ActionId int
-	}
-	var actionIds []ActionId
-	_,err := o.Raw("SELECT action_id FROM auth_permission_action WHERE permission_id = ?", permission.ID).QueryRows(&actionIds)
+	// 查询所有行为
+	var actionAll []Action
+	err := models.DB.Find(&actionAll).Error
 	if err != nil {
-		return nil, err
+		logs.Error("查询行为失败：", err)
+		return nil, errors.New("查询错误")
 	}
-	var actionIdArray []interface{}
-	for _, action := range actionIds {
-		actionIdArray = append(actionIdArray, action.ActionId)
+
+	// 查询该权限已经拥有的行为
+	rows, err := models.DB.Raw("SELECT action_id FROM auth_permission_action WHERE permission_id = ?", permission.ID).Rows()
+	defer rows.Close()
+	if err != nil{
+		logs.Error("查询行为失败：", err)
+		return nil, errors.New("查询错误")
+	}
+
+	var actionHasIds []int
+	var temp int
+	for rows.Next() {
+		if err = rows.Scan(&temp); err != nil {
+			logs.Error("查询行为失败：", err)
+			return nil, errors.New("查询错误")
+		}
+		actionHasIds = append(actionHasIds, temp)
 	}
 
 	// 分开处理已有行为和未有行为
 	var actionHas []Action
 	var actionHasNot []Action
+
 	for _, action := range actionAll{
 		// 判断id是否已经拥有
-		if utils.InSliceIface(action.ID, actionIdArray) {
+		var flag = false
+		for _,id := range actionHasIds {
+			if id == action.ID{
+				flag = true
+			}
+		}
+		if flag {
 			actionHas = append(actionHas, action)
-		} else {
+		}else {
 			actionHasNot = append(actionHasNot, action)
 		}
 	}
@@ -130,27 +147,32 @@ func (permission *Permission)PermissionActionList() (map[string][]Action, error)
 	return data, nil
 }
 
+// 授予权限行为
 func (permission *Permission)AssignAction(actionIds []int) error {
 	if models.DB.Where(permission).First(&Permission{}).RecordNotFound(){
 		return errors.New("权限不存在")
 	}
 
-	num := models.DB.Where("id in (?)", actionIds).Find(&Action{}).RowsAffected
-	if num != int64(len(actionIds)){
-		return errors.New("行为不存在")
+	if len(actionIds) > 0{
+		num := models.DB.Where("id in (?)", actionIds).Find(&Action{}).RowsAffected
+		if num != int64(len(actionIds)){
+			return errors.New("行为不存在")
+		}
 	}
+
 
 	// 事务操作 先删除该权限的所有行为  然后赋值
 	tx := models.DB.Begin()
-	delNum := tx.Delete(&permission).RowsAffected
-	sql := "INSERT INTO auth_permission_action(permission_id, action_id) VALUES"
-	for _,id := range actionIds {
-		fmt.Println(permission.ID)
-		fmt.Println(id)
-		sql += "("+ strconv.Itoa(permission.ID) + "," + strconv.Itoa(id) + "),"
+	delNum := tx.Exec("DELETE FROM auth_permission_action WHERE permission_id = ?", permission.ID).RowsAffected
+	var addNum int64 = 0
+	if len(actionIds) > 0 {
+		sql := "INSERT INTO auth_permission_action(permission_id, action_id) VALUES"
+		for _, id := range actionIds {
+			sql += "(" + strconv.Itoa(permission.ID) + "," + strconv.Itoa(id) + "),"
+		}
+		sql = strings.Trim(sql, ",")
+		addNum = tx.Exec(sql).RowsAffected
 	}
-	sql = strings.Trim(sql, ",")
-	addNum := tx.Exec(sql).RowsAffected
 	if delNum >0 || addNum > 0{
 		tx.Commit()
 		return nil

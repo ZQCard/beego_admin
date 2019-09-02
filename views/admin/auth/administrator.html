@@ -153,7 +153,7 @@
             //表格列
             var cols = [
                 {type: 'checkbox', fixed: 'left'},
-                {field: 'Id', title: 'ID', width: 60},
+                {field: 'ID', title: 'ID', width: 60},
                 {field: 'Name', title: '角色名'},
             ];
             //表格配置文件
@@ -170,7 +170,7 @@
                 var data = transfer.get(tb1,'r');
                 var ids = [];
                 for (let i in data){
-                    ids.push(data[i].Id)
+                    ids.push(data[i].ID)
                 }
                 // 发送数据
                 $.post("/auth/administrator/roles", {adminId:adminId, roleIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
