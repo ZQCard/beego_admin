@@ -140,7 +140,7 @@ func (c *AuthController) GetPermissionList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	permissions, totalCount := auth2.PermissionList(page, pageSize)
+	permissions, totalCount := admin.PermissionList(page, pageSize)
 	c.Data["Permissions"] = permissions
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
@@ -153,9 +153,9 @@ func (c *AuthController) GetPermissionList() {
 // 添加权限
 func (c *AuthController) PostAddPermission() {
 	returnJson := ResponseJson{}
-	permission := auth2.Permission{Name:c.Input().Get("name")}
-	ok, err := permission.CreatePermission()
-	if ok == true {
+	permission := admin.Permission{Name:c.Input().Get("name")}
+	err := permission.PermissionCreate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Reload
@@ -170,10 +170,10 @@ func (c *AuthController) PostAddPermission() {
 // 更新权限
 func (c *AuthController) PutUpdatePermission() {
 	returnJson := ResponseJson{}
-	permission := auth2.Permission{Id:utils.MustInt(c.Input().Get("id")), Name:c.Input().Get("name")}
+	permission := admin.Permission{ID:utils.MustInt(c.Input().Get("id")), Name:c.Input().Get("name")}
 
-	ok, err := permission.UpdatePermission()
-	if ok == true {
+	err := permission.PermissionUpdate()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Reload
@@ -188,10 +188,10 @@ func (c *AuthController) PutUpdatePermission() {
 // 删除权限
 func (c *AuthController) DeletePermission() {
 	returnJson := ResponseJson{}
-	permission := auth2.Permission{Id:utils.MustInt(c.Input().Get("id"))}
+	permission := admin.Permission{ID:utils.MustInt(c.Input().Get("id"))}
 
-	ok := permission.DeletePermission()
-	if ok == true {
+	err := permission.PermissionDelete()
+	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
 	} else {
@@ -206,7 +206,8 @@ func (c *AuthController) DeletePermission() {
 // 获取权限的行为情况
 func (c *AuthController) GetPermissionActions() {
 	returnJson := ResponseJson{}
-	data, err := auth2.PermissionActionList(utils.MustInt(c.Input().Get("id")))
+	permission := admin.Permission{ID:utils.MustInt(c.Input().Get("id"))}
+	data, err := permission.PermissionActionList()
 	if err != nil {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -226,7 +227,7 @@ func (c *AuthController) PutPermissionActions() {
 	// 数据绑定获取数组
 	actionIds := make([]int, 0)
 	c.Ctx.Input.Bind(&actionIds, "actionIds")
-	permission := auth2.Permission{Id: permissionId}
+	permission := admin.Permission{ID: permissionId}
 	err := permission.AssignAction(actionIds)
 	if err != nil {
 		returnJson.StatusCode = Fail

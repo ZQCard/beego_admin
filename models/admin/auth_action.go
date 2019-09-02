@@ -8,7 +8,7 @@ import (
 	"regexp"
 )
 
-// 权限结构体
+// 行为结构体
 type Action struct {
 	ID int
 	Name string
@@ -47,7 +47,7 @@ func (action Action)Validate() error {
 
 // 行为列表
 func ActionList(page, pageSize int) (actions []Action, totalCount int64) {
-	models.DB.Unscoped().Model(&actions).Count(&totalCount)
+	models.DB.Model(&actions).Count(&totalCount)
 	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&actions).Error
 	if err != nil{
 		logs.Error("查询行为列表报错", err)

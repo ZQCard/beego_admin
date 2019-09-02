@@ -43,28 +43,28 @@
                         {{/*循环展示数据*/}}
                         {{range .Permissions}}
                             <tr>
-                                <td>{{.Id}}</td>
+                                <td>{{.ID}}</td>
                                 <td>{{.Name}}</td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/permission" id="EditForm{{.Id}}" data-title="编辑权限" style="display: none;margin-top:5%">
+                                    <form action="/auth/permission" id="EditForm{{.ID}}" data-title="编辑权限" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">权限名称</label>
                                             <div class="layui-input-block">
-                                                <input value="{{.Id}}" type="hidden" name="id" required="" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
+                                                <input value="{{.ID}}" type="hidden" name="id" required="" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
                                                 <input style="width:80%" value="{{.Name}}" type="text" name="name" required="" lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input">
                                                 <input type="hidden" name="_method" value="PUT">
                                             </div>
                                         </div>
                                         <div class="layui-form-item">
                                             <div class="layui-input-block">
-                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.Id}}">立即提交</a>
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.ID}}">立即提交</a>
                                             </div>
                                         </div>
                                     </form>
-                                    <a class="layui-btn layui-btn-xs" data-id="{{.Id}}" onclick="openForm('EditForm{{.Id}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.Id}}" data-tips="{{.Name}}" data-url="/auth/permission">删除</a>
-                                    <a class="layui-btn layui-btn-warm layui-btn-xs permissionHasAction" data-id="{{.Id}}">分配行为</a>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/auth/permission">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs permissionHasAction" data-id="{{.ID}}">分配行为</a>
                                 </td>
                             </tr>
                         {{end}}
@@ -92,7 +92,7 @@
                     layer.alert(data.message)
                 }
             });
-            openForm("permissionHasAction", 1300, 600)
+            openForm("permissionHasAction", 1220, 600)
         });
     });
     function showData(data1, data2) {
@@ -101,7 +101,7 @@
             //表格列
             var cols = [
                 {type: 'checkbox', fixed: 'left'},
-                {field: 'Id', title: 'ID', width: 60},
+                {field: 'ID', title: 'ID', width: 60},
                 {field: 'Name', title: '行为名'},
                 {field: 'Method', title: '请求方式'},
                 {field: 'Route', title: '跳转链接'}
@@ -129,7 +129,7 @@
                 var data = transfer.get(tb1,'r');
                 var ids = [];
                 for (let i in data){
-                    ids.push(data[i].Id)
+                    ids.push(data[i].ID)
                 }
                 // 发送数据
                 $.post("/auth/permission/actions", {permissionId:permissionId, actionIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {

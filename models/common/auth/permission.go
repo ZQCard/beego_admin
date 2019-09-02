@@ -148,29 +148,6 @@ func (p *Permission)DeletePermission() bool {
 	return true
 }
 
-// 授予权限行为
-func (p *Permission)AssignAction(actionIds []int) error {
-	o := orm.NewOrm()
-	err := o.Read(p)
-	if err == orm.ErrNoRows {
-		return errors.New("权限不存在")
-	}
-	if err != nil {
-		return err
-	}
-
-	err = IsAction(actionIds)
-	if err != nil {
-		return err
-	}
-
-	err = PermissionActionAssign(p.Id, actionIds)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 
 // 根据id切片判断是否为合法permission
 func IsPermission(ids []int) error {
