@@ -2,11 +2,10 @@ package admin
 
 import (
 	"beego_admin/models"
-	"beego_admin/models/common/auth"
 	"encoding/json"
 	"errors"
 	"github.com/astaxie/beego/logs"
-	utils2 "github.com/astaxie/beego/utils"
+	"github.com/astaxie/beego/utils"
 	"github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"strconv"
@@ -14,7 +13,7 @@ import (
 )
 
 // 管理员表GORM
-type AdministratorGORM struct {
+type Administrator struct {
 	models.ModelGORM
 	Username string
 	Nickname string
@@ -22,11 +21,11 @@ type AdministratorGORM struct {
 	Email string
 }
 
-func (AdministratorGORM)TableName() string {
+func (Administrator)TableName() string {
 	return "administrator"
 }
 
-func (administrator AdministratorGORM)Validate() error {
+func (administrator Administrator)Validate() error {
 	return validation.ValidateStruct(&administrator,
 		// 名称不得为空,且大小为1-20字
 		validation.Field(
@@ -43,7 +42,7 @@ func (administrator AdministratorGORM)Validate() error {
 
 
 // 管理员列表
-func AdministratorList(page, pageSize int) (administrator []AdministratorGORM, totalCount int64) {
+func AdministratorList(page, pageSize int) (administrator []Administrator, totalCount int64) {
 	models.DB.Unscoped().Model(&administrator).Count(&totalCount)
 	err := models.DB.Unscoped().Offset((page - 1) * pageSize).Limit(pageSize).Find(&administrator).Error
 	if err != nil{
@@ -54,7 +53,7 @@ func AdministratorList(page, pageSize int) (administrator []AdministratorGORM, t
 }
 
 // 根据条件查找管理员信息
-func (administrator *AdministratorGORM)FindAdministrator() (admin AdministratorGORM, err error) {
+func (administrator *Administrator)FindAdministrator() (admin Administrator, err error) {
 	err = models.DB.Where(administrator).First(&admin).Error
 	if err != nil {
 		return admin, errors.New("用户信息错误")
@@ -63,15 +62,14 @@ func (administrator *AdministratorGORM)FindAdministrator() (admin AdministratorG
 }
 
 // 添加管理员信息
-func (administrator *AdministratorGORM)AdministratorCreate() (err error) {
+func (administrator *Administrator)AdministratorCreate() (err error) {
 	// 数据验证
 	err = administrator.Validate()
 	if err != nil {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Unscoped().Where("username = ?", administrator.Username).Or("nickname = ?", administrator.Nickname).Find(&AdministratorGORM{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Unscoped().Where("username = ?", administrator.Username).Or("nickname = ?", administrator.Nickname).Find(&Administrator{}).RecordNotFound(){
 		return errors.New("用户名或昵称已经存在")
 	}
 
@@ -88,7 +86,7 @@ func (administrator *AdministratorGORM)AdministratorCreate() (err error) {
 }
 
 // 更新管理员信息
-func (administrator *AdministratorGORM)AdministratorUpdate() (err error) {
+func (administrator *Administrator)AdministratorUpdate() (err error) {
 	// 数据验证
 	err = administrator.Validate()
 	if err != nil {
@@ -110,7 +108,7 @@ func (administrator *AdministratorGORM)AdministratorUpdate() (err error) {
 }
 
 // 删除管理员
-func (administrator *AdministratorGORM)AdministratorDelete() (err error) {
+func (administrator *Administrator)AdministratorDelete() (err error) {
 	if administrator.ModelGORM.ID == 1{
 		logs.Error("试图删除1号超级管理员")
 		return errors.New("删除失败")
@@ -123,7 +121,7 @@ func (administrator *AdministratorGORM)AdministratorDelete() (err error) {
 }
 
 // 恢复管理员
-func (administrator *AdministratorGORM)AdministratorRecover() (err error) {
+func (administrator *Administrator)AdministratorRecover() (err error) {
 	administrator.DeletedAt = nil
 	if err := models.DB.Unscoped().Model(&administrator).Update("deleted_at", nil).Error; err != nil {
 		logs.Error("恢复管理员失败：", err)
@@ -133,7 +131,7 @@ func (administrator *AdministratorGORM)AdministratorRecover() (err error) {
 }
 
 // 管理员拥有的用户列表
-func (administrator *AdministratorGORM)AdministratorRoleList() (map[string][]Role, error) {
+func (administrator *Administrator)AdministratorRoleList() (map[string][]Role, error) {
 	// 查询所有角色
 	var roleAll []Role
 	err := models.DB.Find(&roleAll).Error
@@ -185,8 +183,8 @@ func (administrator *AdministratorGORM)AdministratorRoleList() (map[string][]Rol
 }
 
 // 授予管理员用户
-func (administrator *AdministratorGORM)AssignRole(roleIds []int) error {
-	if models.DB.Where(administrator).First(&AdministratorGORM{}).RecordNotFound(){
+func (administrator *Administrator)AssignRole(roleIds []int) error {
+	if models.DB.Where(administrator).First(&Administrator{}).RecordNotFound(){
 		return errors.New("角色不存在")
 	}
 
@@ -219,7 +217,7 @@ func (administrator *AdministratorGORM)AssignRole(roleIds []int) error {
 }
 
 // 获取管理员角色列表(用户结点)
-func (administrator *AdministratorGORM)AuthList() (authList map[string][]string, err error) {
+func (administrator *Administrator)AuthList() (authList map[string][]string, err error) {
 	sql := `SELECT act.method,act.route
 	FROM auth_administrator_role a
 	INNER JOIN auth_role r ON a.role_id = r.id
@@ -248,7 +246,7 @@ func (administrator *AdministratorGORM)AuthList() (authList map[string][]string,
 		}
 		if routes,ok := authList[methodTemp]; ok {
 			// 如果请求方式中无该路由 则加入
-			if !utils2.InSlice(routeTemp, routes) {
+			if !utils.InSlice(routeTemp, routes) {
 				authList[methodTemp] = append(routes, routeTemp)
 			}
 		} else {
@@ -260,8 +258,8 @@ func (administrator *AdministratorGORM)AuthList() (authList map[string][]string,
 }
 
 // 获取管理员菜单列表
-func (administrator *AdministratorGORM)MenuList(roleRoute []string) string {
-	m := auth.Menu{Pid:0}
+func (administrator *Administrator)MenuList(roleRoute []string) string {
+	m := Menu{Pid:0}
 	treeList := m.MenuList(roleRoute)
 	menus,err := json.Marshal(treeList)
 	if err != nil {

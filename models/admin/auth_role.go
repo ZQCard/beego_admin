@@ -51,8 +51,7 @@ func (role *Role)RoleCreate() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Where("name = ?", role.Name).Find(&Role{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Where("name = ?", role.Name).Find(&Role{}).RecordNotFound(){
 		return errors.New("角色名称已经存在")
 	}
 

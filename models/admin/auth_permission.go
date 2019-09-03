@@ -50,8 +50,7 @@ func (permission *Permission)PermissionCreate() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Where("name = ?", permission.Name).Find(&Permission{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Where("name = ?", permission.Name).Find(&Permission{}).RecordNotFound(){
 		return errors.New("权限名称已经存在")
 	}
 
@@ -70,8 +69,7 @@ func (permission *Permission)PermissionUpdate() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Where("id <> ?", permission.ID).Where("name = ?", permission.Name).Find(&Permission{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Where("id <> ?", permission.ID).Where("name = ?", permission.Name).Find(&Permission{}).RecordNotFound(){
 		return errors.New("权限名称已经存在")
 	}
 

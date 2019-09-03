@@ -86,12 +86,12 @@ func (c *CommonController)Login()  {
 	// 读取post参数
 	username := c.Input().Get("username")
 	password := utils.GenerateMD5String(c.Input().Get("password"))
-	administratorGORM := admin.AdministratorGORM{
+	Administrator := admin.Administrator{
 		Username:username,
 		Password:password,
 	}
 
-	administratorGORM, err := administratorGORM.FindAdministrator()
+	Administrator, err := Administrator.FindAdministrator()
 	// 用户验证失败
 	if err != nil{
 		fmt.Println(err)
@@ -103,11 +103,11 @@ func (c *CommonController)Login()  {
 	}
 	// 保存session
 	// 保存用户信息
-	c.SetSession("adminId", administratorGORM.ModelGORM.ID)
-	c.SetSession("adminName", administratorGORM.Username)
+	c.SetSession("adminId", Administrator.ModelGORM.ID)
+	c.SetSession("adminName", Administrator.Username)
 
 	// 读取权限map
-	authList, err := administratorGORM.AuthList()
+	authList, err := Administrator.AuthList()
 	if err != nil {
 		c.Data["Error"] = err.Error()
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
@@ -149,7 +149,7 @@ func (c *CommonController)Login()  {
 		return
 	}
 	// 读取管理员的菜单
-	c.SetSession("MENU_LEFT", administratorGORM.MenuList(authGetSlice))
+	c.SetSession("MENU_LEFT", Administrator.MenuList(authGetSlice))
 	c.Redirect("/", 302)
 	return
 }

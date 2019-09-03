@@ -64,8 +64,7 @@ func (action *Action)ActionCreate() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Where("name = ?", action.Name).Find(&Action{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Where("name = ?", action.Name).Find(&Action{}).RecordNotFound(){
 		return errors.New("行为名称已经存在")
 	}
 
@@ -84,8 +83,7 @@ func (action *Action)ActionUpdate() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	rowAffected := models.DB.Where("id <> ?", action.ID).Where("name = ?", action.Name).Find(&Action{}).RowsAffected
-	if rowAffected != 0{
+	if !models.DB.Where("id <> ?", action.ID).Where("name = ?", action.Name).Find(&Action{}).RecordNotFound(){
 		return errors.New("行为名称已经存在")
 	}
 
@@ -103,4 +101,13 @@ func (action *Action)ActionDelete() (err error) {
 		return errors.New("删除失败")
 	}
 	return nil
+}
+
+// 根据条件查找管理员信息
+func (action *Action)FindAction() (act Action, err error) {
+	err = models.DB.Where(action).First(&act).Error
+	if err != nil {
+		return act, errors.New("用户信息错误")
+	}
+	return act, nil
 }

@@ -2,9 +2,9 @@ package admin
 
 import (
 	"beego_admin/models/admin"
-	auth2 "beego_admin/models/common/auth"
 	"beego_admin/utils"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego/logs"
 )
 
@@ -328,7 +328,7 @@ func (c *AuthController) DeleteAction() {
 /*************************** 菜单功能开始 ******************************/
 // 菜单列表
 func (c *AuthController) GetMenuList() {
-	menu := auth2.Menu{}
+	menu := admin.Menu{}
 	pid := utils.MustInt(c.Input().Get("id"))
 	menu.Pid = pid
 	treeList := menu.MenuList([]string{})
@@ -345,8 +345,8 @@ func (c *AuthController) GetMenuList() {
 // 删除菜单
 func (c *AuthController) DeleteMenu() {
 	returnJson := ResponseJson{}
-	menu := &auth2.Menu{Id: utils.MustInt(c.Input().Get("id"))}
-	err := menu.DeleteMenu()
+	menu := &admin.Menu{ID: utils.MustInt(c.Input().Get("id"))}
+	err := menu.MenuDelete()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
@@ -361,13 +361,14 @@ func (c *AuthController) DeleteMenu() {
 
 // 添加菜单
 func (c *AuthController) PostAddMenu() {
+	fmt.Println(1)
 	returnJson := ResponseJson{}
-	menu := &auth2.Menu{}
+	menu := &admin.Menu{}
 	menu.Pid = utils.MustInt(c.Input().Get("pid"))
 	menu.Name = c.Input().Get("name")
 	menu.Sort = utils.MustInt(c.Input().Get("sort"))
 	menu.Route = c.Input().Get("route")
-	err := menu.CreateMenu()
+	err := menu.MenuCreate()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
@@ -383,13 +384,13 @@ func (c *AuthController) PostAddMenu() {
 // 更新菜单
 func (c *AuthController) PutUpdateMenu() {
 	returnJson := ResponseJson{}
-	menu := &auth2.Menu{}
+	menu := &admin.Menu{}
 	menu.Pid = utils.MustInt(c.Input().Get("pid"))
 	menu.Name = c.Input().Get("name")
 	menu.Sort = utils.MustInt(c.Input().Get("sort"))
 	menu.Route = c.Input().Get("route")
-	menu.Id = utils.MustInt(c.Input().Get("id"))
-	err := menu.UpdateMenu()
+	menu.ID = utils.MustInt(c.Input().Get("id"))
+	err := menu.MenuUpdate()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
