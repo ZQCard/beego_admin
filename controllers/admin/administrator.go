@@ -3,7 +3,6 @@ package admin
 import (
 	"beego_admin/models"
 	"beego_admin/models/admin"
-	"beego_admin/models/common/auth"
 	"beego_admin/utils"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
@@ -146,27 +145,31 @@ func (c *AdministratorController)RefreshAuth()  {
 	case int:
 		id = adminId.(int)
 	}
-	administrator, err := admin.FindAdministratorById(id)
-	// 读取权限map
+	administrator := admin.AdministratorGORM{
+		ModelGORM:models.ModelGORM{
+			ID:id,
+		},
+	}
+	administrator, _ = administrator.FindAdministrator()
 	authList, err := administrator.AuthList()
 	if err != nil {
 		returnJson.StatusCode = Fail
-		returnJson.Message = "刷新失败"
+		returnJson.Message =err.Error()
 		c.Data["json"] = &returnJson
 		c.ServeJSON()
 		return
 	}
+
 	// session无法读取存储map[string][]string,所以分为请求方式存储
 	for k, v := range authList{
 		c.SetSession("AUTH_" + k, v)
 	}
-
+	role := admin.Role{Name:beego.AppConfig.String("customer_role_name")}
 	// 读取公共权限
-	authCommonList, err := auth.RoleAuthList(beego.AppConfig.String("customer_role_name"))
+	authCommonList, err := role.AuthList()
 	if err != nil {
-		logs.Error("刷新权限,读取用户公共权限失败")
 		returnJson.StatusCode = Fail
-		returnJson.Message = "刷新失败"
+		returnJson.Message = err.Error()
 		c.Data["json"] = &returnJson
 		c.ServeJSON()
 		return
@@ -192,7 +195,7 @@ func (c *AdministratorController)RefreshAuth()  {
 		c.ServeJSON()
 		return
 	}
-	// 读取管理员的菜单
+	//// 读取管理员的菜单
 	c.SetSession("MENU_LEFT", administrator.MenuList(authGetSlice))
 	returnJson.StatusCode = Success
 	returnJson.Message = "刷新成功"

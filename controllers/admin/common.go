@@ -2,7 +2,6 @@ package admin
 
 import (
 	"beego_admin/models/admin"
-	"beego_admin/models/common/auth"
 	"beego_admin/utils"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -106,14 +105,9 @@ func (c *CommonController)Login()  {
 	// 保存用户信息
 	c.SetSession("adminId", administratorGORM.ModelGORM.ID)
 	c.SetSession("adminName", administratorGORM.Username)
-	c.SetSession("nickname", administratorGORM.Nickname)
-	administrator := &admin.Administrator{
-		Username:username,
-		Password:password,
-	}
-	administrator.Id = administratorGORM.ModelGORM.ID
+
 	// 读取权限map
-	authList, err := administrator.AuthList()
+	authList, err := administratorGORM.AuthList()
 	if err != nil {
 		c.Data["Error"] = err.Error()
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
@@ -126,9 +120,10 @@ func (c *CommonController)Login()  {
 	}
 
 	// 读取公共权限
-	authCommonList, err := auth.RoleAuthList(beego.AppConfig.String("customer_role_name"))
+	role := admin.Role{Name:beego.AppConfig.String("customer_role_name")}
+	// 读取公共权限
+	authCommonList, err := role.AuthList()
 	if err != nil {
-		panic(err)
 		c.Data["Error"] = err.Error()
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
 		c.TplName = "admin/common/login.html"
@@ -154,7 +149,7 @@ func (c *CommonController)Login()  {
 		return
 	}
 	// 读取管理员的菜单
-	c.SetSession("MENU_LEFT", administrator.MenuList(authGetSlice))
+	c.SetSession("MENU_LEFT", administratorGORM.MenuList(authGetSlice))
 	c.Redirect("/", 302)
 	return
 }

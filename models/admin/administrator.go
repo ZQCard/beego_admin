@@ -6,22 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/astaxie/beego/logs"
-	"github.com/astaxie/beego/orm"
 	utils2 "github.com/astaxie/beego/utils"
 	"github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"strconv"
 	"strings"
 )
-
-// 管理员表
-type Administrator struct {
-	models.Model
-	Username string
-	Nickname string
-	Password string
-	Email string
-}
 
 // 管理员表GORM
 type AdministratorGORM struct {
@@ -228,29 +218,49 @@ func (administrator *AdministratorGORM)AssignRole(roleIds []int) error {
 	}
 }
 
-func init()  {
-	// 注册模型(注册模型必须在引导(new ORM())之前运行)
-	orm.RegisterModel(new(Administrator))
-}
-
-// 根据用户名密码查找管理员信息
-func FindAdministratorById(id int) ( *Administrator, error) {
-	o := orm.NewOrm()
-	administrator := &Administrator{}
-	err := o.QueryTable("administrator").Filter("id", id).One(administrator)
-	if err == orm.ErrNoRows {
-		return administrator, errors.New("用户不存在")
+// 获取管理员角色列表(用户结点)
+func (administrator *AdministratorGORM)AuthList() (authList map[string][]string, err error) {
+	sql := `SELECT act.method,act.route
+	FROM auth_administrator_role a
+	INNER JOIN auth_role r ON a.role_id = r.id
+	INNER JOIN auth_role_permission rp ON r.id = rp.role_id
+	INNER JOIN auth_permission p ON p.id = rp.permission_id
+	INNER JOIN auth_permission_action pa ON p.id = pa.permission_id
+	INNER JOIN auth_action act ON pa.action_id = act.id
+	WHERE administrator_id = ?`
+	// 查询该用户已经拥有的角色
+	rows, err := models.DB.Raw(sql, administrator.ID).Rows()
+	defer rows.Close()
+	if err != nil{
+		logs.Error("查询当前用户行为列表失败：", err)
+		return nil, errors.New("查询错误")
 	}
+	// 初始化map
+	authList = make(map[string][]string)
 
-	if administrator.DeletedAt != 0 {
-		return administrator, errors.New("该用户已冻结")
+	var methodTemp string
+	var routeTemp string
+	for rows.Next() {
+		err = rows.Scan(&methodTemp, &routeTemp)
+		if err != nil{
+			logs.Error("查询当前用户行为列表解析参数失败：", err)
+			return nil, errors.New("查询错误")
+		}
+		if routes,ok := authList[methodTemp]; ok {
+			// 如果请求方式中无该路由 则加入
+			if !utils2.InSlice(routeTemp, routes) {
+				authList[methodTemp] = append(routes, routeTemp)
+			}
+		} else {
+			// 无该请求方式
+			authList[methodTemp] = []string{routeTemp}
+		}
 	}
-	return administrator, nil
+	return authList, nil
 }
-
 
 // 获取管理员菜单列表
-func (administrator *Administrator)MenuList(roleRoute []string) string {
+func (administrator *AdministratorGORM)MenuList(roleRoute []string) string {
 	m := auth.Menu{Pid:0}
 	treeList := m.MenuList(roleRoute)
 	menus,err := json.Marshal(treeList)
@@ -261,38 +271,3 @@ func (administrator *Administrator)MenuList(roleRoute []string) string {
 	return string(menus)
 }
 
-// 获取管理员角色列表(用户结点)
-func (administrator *Administrator)AuthList() (authList map[string][]string, err error) {
-	var lists []orm.ParamsList
-	o := orm.NewOrm()
-	num, err := o.Raw(`SELECT act.method,act.route
-			FROM auth_administrator_role a
-			INNER JOIN auth_role r ON a.role_id = r.id
-			INNER JOIN auth_role_administrator rp ON r.id = rp.role_id
-			INNER JOIN auth_administrator p ON p.id = rp.administrator_id
-			INNER JOIN auth_administrator_role pa ON p.id = pa.administrator_id
-			INNER JOIN auth_role act ON pa.role_id = act.id
-			WHERE administrator_id = ?`, administrator.Id).ValuesList(&lists)
-	if err != nil {
-		return nil, err
-	}
-	if num == 0{
-		return nil, errors.New("无任何菜单用户")
-	}
-	// 初始化map
-	authList = make(map[string][]string)
-	// 将用户列表放到map中
-	for _,v := range lists {
-		// map中有该请求方式
-		if method,ok := authList[v[0].(string)]; ok {
-			// 如果请求方式中无该角色路由 则加入
-			if !utils2.InSlice(v[1].(string),method) {
-				authList[v[0].(string)] = append(method, v[1].(string))
-			}
-		} else {
-			// 无该请求方式
-			authList[v[0].(string)] = []string{v[1].(string)}
-		}
-	}
-	return authList, err
-}

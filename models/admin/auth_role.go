@@ -4,6 +4,7 @@ import (
 	"beego_admin/models"
 	"errors"
 	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/utils"
 	"github.com/go-ozzo/ozzo-validation"
 	"strconv"
 	"strings"
@@ -176,5 +177,44 @@ func (role *Role)AssignPermission(permissionIds []int) error {
 		tx.Rollback()
 		return errors.New("操作失败")
 	}
+}
+
+func (role *Role)AuthList()(authList map[string][]string, err error) {
+	sql := `SELECT act.method,act.route
+			FROM auth_role r 
+			INNER JOIN auth_role_permission rp ON r.id = rp.role_id
+			INNER JOIN auth_permission p ON p.id = rp.permission_id
+			INNER JOIN auth_permission_action pa ON p.id = pa.permission_id
+			INNER JOIN auth_action act ON pa.action_id = act.id
+			WHERE r.name = ?`
+	// 查询该用户已经拥有的角色
+	rows, err := models.DB.Raw(sql, role.Name).Rows()
+	defer rows.Close()
+	if err != nil{
+		logs.Error("查询公共行为列表失败：", err)
+		return nil, errors.New("查询错误")
+	}
+	// 初始化map
+	authList = make(map[string][]string)
+
+	var methodTemp string
+	var routeTemp string
+	for rows.Next() {
+		err = rows.Scan(&methodTemp, &routeTemp)
+		if err != nil{
+			logs.Error("查询公共行为列表解析参数失败：", err)
+			return nil, errors.New("查询错误")
+		}
+		if routes,ok := authList[methodTemp]; ok {
+			// 如果请求方式中无该路由 则加入
+			if !utils.InSlice(routeTemp, routes) {
+				authList[methodTemp] = append(routes, routeTemp)
+			}
+		} else {
+			// 无该请求方式
+			authList[methodTemp] = []string{routeTemp}
+		}
+	}
+	return authList, nil
 }
 
