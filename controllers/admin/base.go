@@ -23,7 +23,6 @@ func (c *baseController)Prepare()  {
 		c.TplName = "admin/common/login.html"
 		return
 	}
-
 	// 模板菜单
 	c.Data["MenuLeft"] = c.GetSession("MENU_LEFT")
 	// 后台模板基础布局

@@ -12,7 +12,7 @@ import (
 var DB *gorm.DB
 
 // 数据库基础模型
-type ModelGORM struct {
+type Model struct {
 	ID        int `gorm:"primary_key"json:"Id"`
 	CreatedAt time.Time `json:"CreatedAt"`
 	UpdatedAt time.Time `json:"UpdatedAt"`

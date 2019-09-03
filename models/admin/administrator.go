@@ -14,7 +14,7 @@ import (
 
 // 管理员表GORM
 type Administrator struct {
-	models.ModelGORM
+	models.Model
 	Username string
 	Nickname string
 	Password string
@@ -109,7 +109,7 @@ func (administrator *Administrator)AdministratorUpdate() (err error) {
 
 // 删除管理员
 func (administrator *Administrator)AdministratorDelete() (err error) {
-	if administrator.ModelGORM.ID == 1{
+	if administrator.Model.ID == 1{
 		logs.Error("试图删除1号超级管理员")
 		return errors.New("删除失败")
 	}

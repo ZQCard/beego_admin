@@ -103,8 +103,9 @@ func (c *CommonController)Login()  {
 	}
 	// 保存session
 	// 保存用户信息
-	c.SetSession("adminId", Administrator.ModelGORM.ID)
+	c.SetSession("adminId", Administrator.Model.ID)
 	c.SetSession("adminName", Administrator.Username)
+	c.SetSession("nickname", Administrator.Nickname)
 
 	// 读取权限map
 	authList, err := Administrator.AuthList()

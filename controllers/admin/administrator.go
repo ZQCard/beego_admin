@@ -58,7 +58,7 @@ func (c *AdministratorController) PostAddAdministrator() {
 func (c *AdministratorController) DeleteAdministrator() {
 	returnJson:= ResponseJson{}
 	administrator := admin.Administrator{}
-	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	administrator.Model.ID = utils.MustInt(c.Input().Get("id"))
 	err := administrator.AdministratorDelete()
 	if err == nil {
 		returnJson.StatusCode = Success
@@ -76,7 +76,7 @@ func (c *AdministratorController) DeleteAdministrator() {
 func (c *AdministratorController) RecoverAdministrator() {
 	returnJson:= ResponseJson{}
 	administrator := admin.Administrator{}
-	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	administrator.Model.ID = utils.MustInt(c.Input().Get("id"))
 	err := administrator.AdministratorRecover()
 	if err == nil {
 		returnJson.StatusCode = Success
@@ -94,7 +94,7 @@ func (c *AdministratorController) RecoverAdministrator() {
 func (c *AdministratorController) GetAdministratorRoles() {
 	returnJson:= ResponseJson{}
 	administrator := admin.Administrator{}
-	administrator.ModelGORM.ID = utils.MustInt(c.Input().Get("id"))
+	administrator.Model.ID = utils.MustInt(c.Input().Get("id"))
 	data, err := administrator.AdministratorRoleList()
 	if err != nil {
 		returnJson.StatusCode = Fail
@@ -117,7 +117,7 @@ func (c *AdministratorController) PutAdministratorRoles() {
 	c.Ctx.Input.Bind(&roleIds, "roleIds")
 
 	administrator := &admin.Administrator{
-		ModelGORM:models.ModelGORM{
+		Model:models.Model{
 			ID:adminId,
 		},
 	}
@@ -146,7 +146,7 @@ func (c *AdministratorController)RefreshAuth()  {
 		id = adminId.(int)
 	}
 	administrator := admin.Administrator{
-		ModelGORM:models.ModelGORM{
+		Model:models.Model{
 			ID:id,
 		},
 	}
@@ -207,7 +207,7 @@ func (c *AdministratorController)GetAdministratorInfo(){
 	returnJson := ResponseJson{}
 	// 查找管理员
 	administrator := admin.Administrator{
-		ModelGORM:models.ModelGORM{
+		Model:models.Model{
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
@@ -229,7 +229,7 @@ func (c *AdministratorController)GetAdministratorInfo(){
 func (c *AdministratorController)PutAdministratorInfo()  {
 	returnJson := ResponseJson{}
 	administrator := admin.Administrator{
-		ModelGORM:models.ModelGORM{
+		Model:models.Model{
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
