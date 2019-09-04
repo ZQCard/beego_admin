@@ -5,6 +5,7 @@
                 <div class="layui-table-tool">
                     <div class="layui-table-tool-temp">
                         <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm">首页模块设置</button>
                         </div>
                     </div>
                 </div>
@@ -20,14 +21,41 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {{range .Homepages}}
                         <tr>
-                            <td>1</td>
-                            <td>轮播图模块</td>
-                            <td>开启</td>
+                            <td>{{.ID}}</td>
+                            <td>{{.Name}}</td>
+                            <td>
+                                {{if .IsShow}}
+                                    开启
+                                    {{else}}
+                                    关闭
+                                {{end}}
+                            </td>
                             <th>
-                                <a class="layui-btn layui-btn-xs" data-id="" onclick="openForm()">编辑</a>
+                                {{/*编辑模态框*/}}
+                                <form action="/homepage/setting" id="EditForm{{.ID}}" data-title="首页模块设置" style="display: none;margin-top:5%">
+                                    <input type="hidden" name="id" value="{{.ID}}">
+                                    <input type="hidden" name="_method" value="PATCH">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">{{.Name}}</label>
+                                        <div class="layui-input-block">
+                                            <select name="is_show" class="layui-input selectMenu" style="width:80%">
+                                                <option value="1" {{if eq .IsShow 1}}selected{{end}}>开启</option>
+                                                <option value="0" {{if eq .IsShow 0}}selected{{end}}>关闭</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.ID}}">立即提交</a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
                             </th>
                         </tr>
+                        {{end}}
                         </tbody>
                     </table>
                 </div>
