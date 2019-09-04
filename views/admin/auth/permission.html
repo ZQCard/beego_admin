@@ -14,7 +14,7 @@
                     <div class="layui-btn-group" style="margin-left:45%;">
                         {{/*<button class="layui-btn all">获取全部数据</button>*/}}
                         {{/*<button class="layui-btn left">获取左边数据</button>*/}}
-                        <button class="layui-btn right">提交右边数据</button>
+                        <button class="layui-btn" id="right">提交右边数据</button>
                     </div>
                 </div>
                 <div class="layui-card-body">
@@ -79,6 +79,8 @@
 <script>
     // 全局权限id
     let permissionId = 0;
+    let transferFrom;
+    let transferTable;
     //数据源
     $(function () {
         $(".permissionHasAction").click(function () {
@@ -115,6 +117,8 @@
                 data: [data1,data2], //[左表数据,右表数据[非必填]]
                 tabConfig: tabConfig //表格配置项 支持layui数据表格所有配置
             });
+            transferFrom = transfer;
+            transferTable = tb1;
 
             //transfer.get(参数1:初始化返回值,参数2:获取数据[all,left,right,l,r],参数:指定数据字段)
             // $('.all').on('click',function () {
@@ -125,17 +129,18 @@
             //     var data = transfer.get(tb1,'left','id');
             //     layer.msg(JSON.stringify(data))
             // });
-            $('.right').on('click',function () {
-                var data = transfer.get(tb1,'r');
-                var ids = [];
-                for (let i in data){
-                    ids.push(data[i].ID)
-                }
-                // 发送数据
-                $.post("/auth/permission/actions", {permissionId:permissionId, actionIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
-                    processAjaxReturnData(data)
-                });
-            });
+
         })
     }
+    $('#right').on('click',function () {
+        var data = transferFrom.get(transferTable,'r');
+        var ids = [];
+        for (let i in data){
+            ids.push(data[i].ID)
+        }
+        // 发送数据
+        $.post("/auth/permission/actions", {permissionId:permissionId, actionIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
+            processAjaxReturnData(data)
+        });
+    });
 </script>
