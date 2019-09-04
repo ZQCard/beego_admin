@@ -184,8 +184,8 @@ func (administrator *Administrator)AdministratorRoleList() (map[string][]Role, e
 
 // 授予管理员用户
 func (administrator *Administrator)AssignRole(roleIds []int) error {
-	if models.DB.Where(administrator).First(&Administrator{}).RecordNotFound(){
-		return errors.New("角色不存在")
+	if models.DB.Unscoped().Where(administrator).First(&Administrator{}).RecordNotFound(){
+		return errors.New("管理员不存在")
 	}
 
 	if len(roleIds) > 0{
