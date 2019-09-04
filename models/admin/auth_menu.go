@@ -64,7 +64,7 @@ func (menu *Menu)MenuList(route []string) []*TreeList{
 func (m *Menu)getMenu(pid int) []*TreeList {
 	// 查找除所有pid的子菜单
 	var menu []Menu
-	models.DB.Where("pid = ?", pid).Find(&menu)
+	models.DB.Where("pid = ?", pid).Order("sort").Find(&menu)
 	treeList := []*TreeList{}
 	for _, v := range menu{
 		if len(authRoute) != 0{
@@ -105,7 +105,7 @@ func (m *Menu)getMenu(pid int) []*TreeList {
 // 根据id找到所有的action_route
 func findActionByMenuId(id int) []string {
 	var menu []Menu
-	models.DB.Where("pid = ?", id).Find(&menu)
+	models.DB.Where("pid = ?", id).Order("sort").Find(&menu)
 	for _, v := range menu {
 		findActionByMenuId(v.ID)
 		menuRoute = append(menuRoute, v.Route)
