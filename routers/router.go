@@ -42,6 +42,10 @@ func init() {
 	beego.Router("/auth/menu", &admin.AuthController{}, "get:GetMenuList;post:PostAddMenu;put:PutUpdateMenu;delete:DeleteMenu")
 	/************ 权限管理结束 ***********/
 
+	/************ 首页模块功能开始 ***********/
+	beego.Router("/homepage/setting", &admin.HomepageControl{}, "get:ModuleList;patch:ModulePatch")
+	/************ 首页模块功能设置 ***********/
+
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
 	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "get:GetUploadFile;post:PostUploadFile")
