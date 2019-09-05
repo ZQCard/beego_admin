@@ -1,0 +1,97 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增资料分类</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card-body">
+                    <form action="/documentation/category" id="AddForm" data-title="添加资料分类" style="display: none;margin-top:5%">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="name" required="" lay-verify="required" placeholder="请输入资料分类用户名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序值</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="sort" required="" lay-verify="required" placeholder="请输入资料分类昵称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a class="layui-btn" id="AddFormSubmit">立即提交</a>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>排序值</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>删除时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Categories}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.Name}}</td>
+                                <td>{{.Sort}}</td>
+                                <td>{{date .CreatedAt "Y-m-d"}}</td>
+                                <td>{{date .UpdatedAt "Y-m-d"}}</td>
+                                <td>
+                                    {{if .DeletedAt}}
+                                        {{date .DeletedAt "Y-m-d"}}
+                                    {{else}}
+                                        未删除
+                                    {{end}}
+                                </td>
+                                <td>
+                                    {{/*编辑模态框*/}}
+                                    <form action="/documentation/category" id="EditForm{{.ID}}" data-title="编辑资料分类" style="display: none;margin-top:5%">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">名称</label>
+                                            <div class="layui-input-block">
+                                                <input value="{{.ID}}" type="hidden" name="id" required="" autocomplete="off" class="layui-input">
+                                                <input type="hidden" name="_method" value="PUT">
+                                                <input style="width:80%" value="{{.Name}}" type="text" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">排序值</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" type="text" name="sort" value="{{.Sort}}" required="" lay-verify="required" placeholder="请输入整数" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <a class="layui-btn EditFormSubmit" data-form_id="EditForm{{.ID}}">立即提交</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/documentation/category">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/documentation/category">恢复</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>

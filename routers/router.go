@@ -46,6 +46,14 @@ func init() {
 	beego.Router("/homepage/setting", &admin.HomepageControl{}, "get:ModuleList;patch:ModulePatch")
 	/************ 首页模块功能设置 ***********/
 
+	/************ 视频分类功能开始 ***********/
+	beego.Router("/video/category", &admin.VideoCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory")
+	/************ 视频分类功能设置 ***********/
+
+	/************ 视频分类功能开始 ***********/
+	beego.Router("/documentation/category", &admin.DocumentationCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory")
+	/************ 视频分类功能设置 ***********/
+
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
 	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "get:GetUploadFile;post:PostUploadFile")
