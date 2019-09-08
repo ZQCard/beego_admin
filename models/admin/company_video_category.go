@@ -71,11 +71,11 @@ func (category *VideoCategory)Update() (err error) {
 		return err
 	}
 	// 判断用户名或者昵称未使用
-	if !models.DB.Unscoped().Select("name", "sort").Where("id <> ?", category.ID).Where("name = ?", category.Name).Find(&VideoCategory{}).RecordNotFound(){
+	if !models.DB.Unscoped().Select("name").Where("id <> ?", category.ID).Where("name = ?", category.Name).Find(&VideoCategory{}).RecordNotFound(){
 		return errors.New("视频分类名称已经存在")
 	}
 
-	if err = models.DB.Save(&category).Error; err != nil {
+	if err = models.DB.Select("name").Save(&category).Error; err != nil {
 		logs.Error("视频分类创建失败", err)
 		return errors.New("信息保存失败")
 	}

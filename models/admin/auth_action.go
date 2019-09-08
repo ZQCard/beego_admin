@@ -103,7 +103,7 @@ func (action *Action)ActionDelete() (err error) {
 	return nil
 }
 
-// 根据条件查找管理员信息
+// 根据条件查找行为信息
 func (action *Action)FindAction() (act Action, err error) {
 	err = models.DB.Where(action).First(&act).Error
 	if err != nil {

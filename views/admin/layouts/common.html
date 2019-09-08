@@ -17,7 +17,7 @@
         base: '/static/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use('index');
+    }).use(['index', 'form', 'laydate', 'table', 'useradmin']);
 </script>
 <body class="layui-layout-body">
 <div id="LAY_app">
@@ -72,6 +72,8 @@
         let url = $("#"+formId).attr('action');
         let data = $("#"+formId).serialize();
         data += "&_xsrf=" + xsrf_token;
+        console.log(formId);
+        console.log(url);
         // 采用PUT请求
         $.post(url, data, function (data) {
             processAjaxReturnData(data)

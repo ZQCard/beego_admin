@@ -16,7 +16,7 @@ func (c *HomepageControl)ModuleList()  {
 	c.Data["Homepages"] = modules
 	c.Data["Title"] = "首页模块设置"
 	// 模板
-	c.TplName = "admin/homepage/index.html"
+	c.TplName = "admin/company_homepage/index.html"
 }
 
 // 首页模块设置

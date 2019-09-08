@@ -29,7 +29,7 @@ func (c *VideoCategoryControl) GetCategoryList() {
 	c.Data["PageSize"] = pageSize
 	c.Data["Title"] = "视频分类列表"
 	// 模板
-	c.TplName = "admin/video_category/list.html"
+	c.TplName = "admin/company_video_category/list.html"
 }
 
 // 添加视频分类

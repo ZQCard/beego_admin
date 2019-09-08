@@ -16,13 +16,6 @@ type ToolsController struct {
 	baseController
 }
 
-/***************** 文件上传模拟功能开始 ******************/
-func (c *ToolsController)GetUploadFile()  {
-	c.Data["Title"] = "文件上传功能"
-	// 模板
-	c.TplName = "admin/tools/uploadFile.html"
-}
-
 func (c *ToolsController)PostUploadFile()  {
 
 	// 接收文件
@@ -34,7 +27,13 @@ func (c *ToolsController)PostUploadFile()  {
 	defer file.Close()
 	// 根据日期保存文件目录
 	today := time.Now().Format("2006-01-02")
-	directory := "static/uploadFile/" + today + "/"
+	// 读取文件查看是否有目录设置
+	dir := c.Input().Get("type")
+	if dir == ""{
+		 dir = "common"
+	}
+
+	directory := "static/uploadFile/" +dir+"/"+ today + "/"
 	// 建立文件夹
 	err = os.MkdirAll(directory, os.ModePerm)
 	if err != nil {

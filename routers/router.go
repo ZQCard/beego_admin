@@ -8,9 +8,6 @@ import (
 func init() {
 	// 根目录
 	beego.Router("/", &admin.IndexController{})
-	// 测试
-	beego.Router("/test", &admin.CommonController{}, "*:Test")
-	beego.Router("/error", &admin.CommonController{}, "get:Error")
 
 	// 登录页面
 	beego.Router("/login", &admin.CommonController{}, "get:LoginPage;post:Login")
@@ -46,9 +43,15 @@ func init() {
 	beego.Router("/homepage/setting", &admin.HomepageControl{}, "get:ModuleList;patch:ModulePatch")
 	/************ 首页模块功能设置 ***********/
 
-	/************ 视频分类功能开始 ***********/
+	/************ 视频功能开始 ***********/
+	// 视频分类
 	beego.Router("/video/category", &admin.VideoCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory")
-	/************ 视频分类功能设置 ***********/
+
+	// 视频管理
+	beego.Router("/video", &admin.VideoControl{}, "get:GetVideoList;post:PostAddVideo;put:PutUpdateVideo;delete:DeleteVideo;patch:RecoveryVideo")
+	beego.Router("/video/info", &admin.VideoControl{}, "get:GetVideoInfo")
+
+	/************ 视频功能设置 ***********/
 
 	/************ 视频分类功能开始 ***********/
 	beego.Router("/documentation/category", &admin.DocumentationCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory")
@@ -56,7 +59,7 @@ func init() {
 
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
-	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "get:GetUploadFile;post:PostUploadFile")
+	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "post:PostUploadFile")
 	// 邮件发送
 	beego.Router("/tools/sendEmail", &admin.ToolsController{}, "get:GetSendEmail;post:PostSendEmail")
 	// excel导入导出

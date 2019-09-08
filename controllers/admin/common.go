@@ -154,22 +154,3 @@ func (c *CommonController)Login()  {
 	c.Redirect("/", 302)
 	return
 }
-
-// 错误提示页面
-func (c *CommonController)Error()  {
-	errMsg := c.GetSession("error")
-	c.SetSession("error", nil)
-	if errMsg == nil {
-		errMsg = "好像出错了呢^ - ^"
-	}
-	c.Data["Error"] = errMsg
-	c.TplName = "admin/common/error.html"
-	return
-}
-
-// 测试接口
-func (c *CommonController)Test()  {
-	actionIds := make([]string, 0, 2)
-	c.Ctx.Input.Bind(&actionIds, "actionIds")  //ul ==[str array]
-	fmt.Println(actionIds)
-}
