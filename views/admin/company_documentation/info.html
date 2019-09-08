@@ -1,0 +1,80 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">{{.Title}}</div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="/documentation" {{if eq 0 .Documentation.ID}}id="AddForm"{{else}}id="EditForm{{.Documentation.ID}}"{{end}}>
+                {{if ne 0 .Documentation.ID}}
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id" value="{{.Documentation.ID}}">
+
+                {{end}}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资料名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" autocomplete="off" value="{{.Documentation.Name}}" placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资料上传</label>
+                    <button type="button" class="layui-btn" id="upload_documentation">上传资料</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                    <input type="hidden" name="url" value="{{.Documentation.Url}}">
+                    <div class="layui-upload-list" {{if .Documentation.ID|not}}style="display: none"{{end}}>
+                        <img width="20%" height="50%" class="layui-upload-documentation" src="{{.Documentation.Url}}" id="upload_documentation_url">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">资料分类</label>
+                    <div class="layui-input-block">
+                        <select name="company_documentation_category_id">
+                            <option value="0">请选择</option>
+                            {{range .Categories}}
+                                <option value="{{.ID}}" {{if eq .ID $.Documentation.CompanyDocumentationCategoryId}}selected{{end}}>{{.Name}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">资料描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="description" placeholder="请输入内容" class="layui-textarea">{{.Documentation.Description}}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;">
+                            <a class="layui-btn EditFormSubmit" {{if eq 0 .Documentation.ID}}id="AddFormSubmit"{{else}}id="EditForm{{.Documentation.ID}}" data-form_id="EditForm{{.Documentation.ID}}"{{end}}>立即提交</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload_documentation' //绑定元素
+            ,url: '/tools/uploadFile' //上传接口
+            ,data:{
+                "type":"documentation",
+                _xsrf:xsrf_token
+            }
+            ,done: function(res){
+                $("#upload_documentation_url").attr("src", res.url);
+                $("#upload_documentation_url").parent().show();
+                $("input[name='url']").val(res.url);
+                console.log(res.url)
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>

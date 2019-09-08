@@ -7,12 +7,12 @@ import (
 	"fmt"
 )
 
-type VideoControl struct {
+type DocumentationControl struct {
 	baseController
 }
 
-// 视频列表
-func (c *VideoControl) GetVideoList() {
+// 资料列表
+func (c *DocumentationControl) GetDocumentationList() {
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
 	if page == 0 {
@@ -21,64 +21,62 @@ func (c *VideoControl) GetVideoList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	video := admin.Video{}
-	videos, totalCount := video.List(page, pageSize)
-	c.Data["Videos"] = videos
+	documentation := admin.Documentation{}
+	documentations, totalCount := documentation.List(page, pageSize)
+	c.Data["Documentations"] = documentations
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
 	c.Data["PageSize"] = pageSize
-	c.Data["Title"] = "视频列表"
+	c.Data["Title"] = "资料列表"
 	// 模板
-	c.TplName = "admin/company_video/list.html"
+	c.TplName = "admin/company_documentation/list.html"
 }
 
-// 视频详情(添加/编辑页面)
-func (c *VideoControl) GetVideoInfo() {
+// 资料详情(添加/编辑页面)
+func (c *DocumentationControl) GetDocumentationInfo() {
 
 	id := utils.MustInt(c.Input().Get("id"))
 
-	video := admin.Video{
+	documentation := admin.Documentation{
 		Model:models.Model{
 			ID:id,
 		},
 	}
-	title := "视频详情查看"
+	title := "资料详情查看"
 	if id != 0{
-		title = "视频详情编辑"
-		v, err := video.Find()
+		title = "资料详情编辑"
+		v, err := documentation.Find()
 		if err != nil {
 			c.Data["Error"] = err.Error()
 			c.TplName = "admin/common/error.html"
 			return
 		}
-		video = v
+		documentation = v
 	}
 
-	category := admin.VideoCategory{}
+	category := admin.DocumentationCategory{}
 	c.Data["Categories"],_ = category.List(1, 300)
-	c.Data["Video"] = video
+	c.Data["Documentation"] = documentation
 	c.Data["Title"] = title
 	// 模板
-	c.TplName = "admin/company_video/info.html"
+	c.TplName = "admin/company_documentation/info.html"
 }
 
-// 添加视频
-func (c *VideoControl) PostAddVideo() {
+// 添加资料
+func (c *DocumentationControl) PostAddDocumentation() {
 	returnJson := ResponseJson{}
-	video := admin.Video{}
-	video.Title = c.Input().Get("title")
-	video.CompanyVideoCategoryId = utils.MustInt(c.Input().Get("company_video_category_id"))
-	video.IsOnSale = utils.MustInt(c.Input().Get("is_on_sale"))
-	video.IsShowHomePage = utils.MustInt(c.Input().Get("is_show_home_page"))
-	video.Description = c.Input().Get("description")
-	video.Url = c.Input().Get("url")
-	fmt.Println(video)
-	err := video.Create()
+	documentation := admin.Documentation{}
+	documentation.Name = c.Input().Get("name")
+	documentation.CompanyDocumentationCategoryId = utils.MustInt(c.Input().Get("company_documentation_category_id"))
+	documentation.Description = c.Input().Get("description")
+	documentation.Url = c.Input().Get("url")
+	fmt.Println(documentation)
+	err := documentation.Create()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/video"
+		returnJson.Url = "/documentation"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -87,26 +85,24 @@ func (c *VideoControl) PostAddVideo() {
 	c.ServeJSON()
 }
 
-// 更新视频
-func (c *VideoControl) PutUpdateVideo() {
+// 更新资料
+func (c *DocumentationControl) PutUpdateDocumentation() {
 	returnJson := ResponseJson{}
-	video := admin.Video{
+	documentation := admin.Documentation{
 		Model:models.Model{
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
-	video.Title = c.Input().Get("title")
-	video.CompanyVideoCategoryId = utils.MustInt(c.Input().Get("company_video_category_id"))
-	video.IsOnSale = utils.MustInt(c.Input().Get("is_on_sale"))
-	video.IsShowHomePage = utils.MustInt(c.Input().Get("is_show_home_page"))
-	video.Description = c.Input().Get("description")
-	video.Url = c.Input().Get("url")
-	err := video.Update()
+	documentation.Name = c.Input().Get("name")
+	documentation.CompanyDocumentationCategoryId = utils.MustInt(c.Input().Get("company_documentation_category_id"))
+	documentation.Description = c.Input().Get("description")
+	documentation.Url = c.Input().Get("url")
+	err := documentation.Update()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/video"
+		returnJson.Url = "/documentation"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -115,15 +111,15 @@ func (c *VideoControl) PutUpdateVideo() {
 	c.ServeJSON()
 }
 
-// 删除视频
-func (c *VideoControl) DeleteVideo() {
+// 删除资料
+func (c *DocumentationControl) DeleteDocumentation() {
 	returnJson := ResponseJson{}
-	video := admin.Video{
+	documentation := admin.Documentation{
 		Model:models.Model{
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
-	err := video.Delete()
+	err := documentation.Delete()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = DeleteSuccess
@@ -136,15 +132,15 @@ func (c *VideoControl) DeleteVideo() {
 	c.ServeJSON()
 }
 
-// 恢复视频
-func (c *VideoControl) RecoveryVideo() {
+// 恢复资料
+func (c *DocumentationControl) RecoveryDocumentation() {
 	returnJson := ResponseJson{}
-	video := admin.Video{
+	documentation := admin.Documentation{
 		Model:models.Model{
 			ID:utils.MustInt(c.Input().Get("id")),
 		},
 	}
-	err := video.Recover()
+	err := documentation.Recover()
 	if err == nil {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
