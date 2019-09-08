@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-09-08 21:34:28
+Date: 2019-09-08 22:42:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `auth_action` (
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `route` varchar(50) NOT NULL COMMENT '请求路由',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
 
 -- ----------------------------
 -- Records of auth_action
@@ -110,6 +110,12 @@ INSERT INTO `auth_action` VALUES ('62', '视频创建', 'POST', '/video');
 INSERT INTO `auth_action` VALUES ('63', '视频编辑', 'PUT', '/video');
 INSERT INTO `auth_action` VALUES ('64', '视频删除', 'DELETE', '/video');
 INSERT INTO `auth_action` VALUES ('65', '视频恢复', 'PATCH', '/video');
+INSERT INTO `auth_action` VALUES ('66', '资料列表', 'GET', '/documentation');
+INSERT INTO `auth_action` VALUES ('67', '资料详情页面', 'GET', '/documentation/info');
+INSERT INTO `auth_action` VALUES ('68', '资料创建', 'POST', '/documentation');
+INSERT INTO `auth_action` VALUES ('69', '资料编辑', 'PUT', '/documentation');
+INSERT INTO `auth_action` VALUES ('70', '编辑删除', 'DELETE', '/documentation');
+INSERT INTO `auth_action` VALUES ('71', '资料恢复', 'PATCH', '/documentation');
 
 -- ----------------------------
 -- Table structure for `auth_administrator_role`
@@ -166,7 +172,7 @@ INSERT INTO `auth_menu` VALUES ('35', '34', '视频分类管理', '1', '/video/c
 INSERT INTO `auth_menu` VALUES ('36', '34', '视频详情管理', '2', '/video');
 INSERT INTO `auth_menu` VALUES ('37', '31', '资料管理', '3', '');
 INSERT INTO `auth_menu` VALUES ('38', '37', '资料分类管理', '1', '/documentation/category');
-INSERT INTO `auth_menu` VALUES ('39', '37', '资料详情管理', '2', '');
+INSERT INTO `auth_menu` VALUES ('39', '37', '资料详情管理', '2', '/documentation');
 
 -- ----------------------------
 -- Table structure for `auth_permission`
@@ -198,7 +204,7 @@ CREATE TABLE `auth_permission_action` (
   `permission_id` int(11) NOT NULL,
   `action_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=472 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=483 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
 
 -- ----------------------------
 -- Records of auth_permission_action
@@ -296,11 +302,6 @@ INSERT INTO `auth_permission_action` VALUES ('447', '35', '37');
 INSERT INTO `auth_permission_action` VALUES ('448', '35', '38');
 INSERT INTO `auth_permission_action` VALUES ('449', '35', '39');
 INSERT INTO `auth_permission_action` VALUES ('450', '35', '45');
-INSERT INTO `auth_permission_action` VALUES ('456', '39', '55');
-INSERT INTO `auth_permission_action` VALUES ('457', '39', '56');
-INSERT INTO `auth_permission_action` VALUES ('458', '39', '57');
-INSERT INTO `auth_permission_action` VALUES ('459', '39', '58');
-INSERT INTO `auth_permission_action` VALUES ('460', '39', '59');
 INSERT INTO `auth_permission_action` VALUES ('461', '38', '60');
 INSERT INTO `auth_permission_action` VALUES ('462', '38', '61');
 INSERT INTO `auth_permission_action` VALUES ('463', '38', '62');
@@ -312,6 +313,17 @@ INSERT INTO `auth_permission_action` VALUES ('468', '38', '51');
 INSERT INTO `auth_permission_action` VALUES ('469', '38', '52');
 INSERT INTO `auth_permission_action` VALUES ('470', '38', '53');
 INSERT INTO `auth_permission_action` VALUES ('471', '38', '54');
+INSERT INTO `auth_permission_action` VALUES ('472', '39', '66');
+INSERT INTO `auth_permission_action` VALUES ('473', '39', '67');
+INSERT INTO `auth_permission_action` VALUES ('474', '39', '68');
+INSERT INTO `auth_permission_action` VALUES ('475', '39', '69');
+INSERT INTO `auth_permission_action` VALUES ('476', '39', '70');
+INSERT INTO `auth_permission_action` VALUES ('477', '39', '71');
+INSERT INTO `auth_permission_action` VALUES ('478', '39', '55');
+INSERT INTO `auth_permission_action` VALUES ('479', '39', '56');
+INSERT INTO `auth_permission_action` VALUES ('480', '39', '57');
+INSERT INTO `auth_permission_action` VALUES ('481', '39', '58');
+INSERT INTO `auth_permission_action` VALUES ('482', '39', '59');
 
 -- ----------------------------
 -- Table structure for `auth_role`
@@ -339,22 +351,23 @@ CREATE TABLE `auth_role_permission` (
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
 
 -- ----------------------------
 -- Records of auth_role_permission
 -- ----------------------------
 INSERT INTO `auth_role_permission` VALUES ('46', '87', '23');
 INSERT INTO `auth_role_permission` VALUES ('47', '87', '24');
-INSERT INTO `auth_role_permission` VALUES ('108', '1', '38');
-INSERT INTO `auth_role_permission` VALUES ('109', '1', '22');
-INSERT INTO `auth_role_permission` VALUES ('110', '1', '23');
-INSERT INTO `auth_role_permission` VALUES ('111', '1', '24');
-INSERT INTO `auth_role_permission` VALUES ('112', '1', '35');
-INSERT INTO `auth_role_permission` VALUES ('113', '1', '37');
 INSERT INTO `auth_role_permission` VALUES ('114', '94', '39');
 INSERT INTO `auth_role_permission` VALUES ('115', '94', '37');
 INSERT INTO `auth_role_permission` VALUES ('116', '94', '38');
+INSERT INTO `auth_role_permission` VALUES ('117', '1', '39');
+INSERT INTO `auth_role_permission` VALUES ('118', '1', '22');
+INSERT INTO `auth_role_permission` VALUES ('119', '1', '23');
+INSERT INTO `auth_role_permission` VALUES ('120', '1', '24');
+INSERT INTO `auth_role_permission` VALUES ('121', '1', '35');
+INSERT INTO `auth_role_permission` VALUES ('122', '1', '37');
+INSERT INTO `auth_role_permission` VALUES ('123', '1', '38');
 
 -- ----------------------------
 -- Table structure for `company_banner`
@@ -377,6 +390,26 @@ CREATE TABLE `company_banner` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `company_documentation`
+-- ----------------------------
+DROP TABLE IF EXISTS `company_documentation`;
+CREATE TABLE `company_documentation` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_documentation_category_id` int(11) NOT NULL COMMENT '分类id',
+  `name` varchar(255) NOT NULL COMMENT '资料名称',
+  `url` varchar(255) NOT NULL COMMENT '资料url地址',
+  `description` text COMMENT '描述',
+  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='资料表';
+
+-- ----------------------------
+-- Records of company_documentation
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `company_documentation_category`
 -- ----------------------------
 DROP TABLE IF EXISTS `company_documentation_category`;
@@ -396,26 +429,6 @@ CREATE TABLE `company_documentation_category` (
 INSERT INTO `company_documentation_category` VALUES ('1', '外语资料', '1', '2019-09-05 22:31:08', '2019-09-05 22:18:45', null);
 INSERT INTO `company_documentation_category` VALUES ('2', '高中资料', '2', '2019-09-05 22:18:59', '2019-09-05 22:19:02', null);
 INSERT INTO `company_documentation_category` VALUES ('3', '初中资料', '3', '2019-09-05 22:19:27', '2019-09-05 22:19:32', null);
-
--- ----------------------------
--- Table structure for `company_documention`
--- ----------------------------
-DROP TABLE IF EXISTS `company_documention`;
-CREATE TABLE `company_documention` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `company_documentation_category_id` int(11) NOT NULL COMMENT '分类id',
-  `name` varchar(255) NOT NULL COMMENT '资料名称',
-  `url` varchar(255) NOT NULL COMMENT '资料url地址',
-  `description` text COMMENT '描述',
-  `updated_at` datetime NOT NULL,
-  `created_at` datetime NOT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资料表';
-
--- ----------------------------
--- Records of company_documention
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `company_homepage`
