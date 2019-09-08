@@ -58,7 +58,11 @@ func init() {
 	// 资料管理
 	beego.Router("/documentation", &admin.DocumentationControl{}, "get:GetDocumentationList;post:PostAddDocumentation;put:PutUpdateDocumentation;delete:DeleteDocumentation;patch:RecoveryDocumentation")
 	beego.Router("/documentation/info", &admin.DocumentationControl{}, "get:GetDocumentationInfo")
-	/************ 资料分类功能设置 ***********/
+	/************ 资料分类功能结束 ***********/
+
+	/************ 轮播图功能开始 ***********/
+	beego.Router("/banner", &admin.BannerControl{}, "get:GetBannerList;post:PostAddBanner;put:PutUpdateBanner;delete:DeleteBanner;patch:RecoveryBanner")
+	/************ 轮播图功结束 ***********/
 
 	/************ 工具箱功能开始 ***********/
 	// 文件上传

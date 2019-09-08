@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-09-08 22:42:45
+Date: 2019-09-09 01:39:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `auth_action` (
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `route` varchar(50) NOT NULL COMMENT '请求路由',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
 
 -- ----------------------------
 -- Records of auth_action
@@ -114,8 +114,13 @@ INSERT INTO `auth_action` VALUES ('66', '资料列表', 'GET', '/documentation')
 INSERT INTO `auth_action` VALUES ('67', '资料详情页面', 'GET', '/documentation/info');
 INSERT INTO `auth_action` VALUES ('68', '资料创建', 'POST', '/documentation');
 INSERT INTO `auth_action` VALUES ('69', '资料编辑', 'PUT', '/documentation');
-INSERT INTO `auth_action` VALUES ('70', '编辑删除', 'DELETE', '/documentation');
+INSERT INTO `auth_action` VALUES ('70', '资料删除', 'DELETE', '/documentation');
 INSERT INTO `auth_action` VALUES ('71', '资料恢复', 'PATCH', '/documentation');
+INSERT INTO `auth_action` VALUES ('72', '轮播图列表', 'GET', '/banner');
+INSERT INTO `auth_action` VALUES ('73', '轮播图创建', 'POST', '/banner');
+INSERT INTO `auth_action` VALUES ('74', '轮播图编辑', 'PUT', '/banner');
+INSERT INTO `auth_action` VALUES ('75', '轮播图删除', 'DELETE', '/banner');
+INSERT INTO `auth_action` VALUES ('76', '轮播图恢复', 'PATCH', '/banner');
 
 -- ----------------------------
 -- Table structure for `auth_administrator_role`
@@ -149,7 +154,7 @@ CREATE TABLE `auth_menu` (
   `route` varchar(60) DEFAULT '' COMMENT '跳转链接',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
 
 -- ----------------------------
 -- Records of auth_menu
@@ -173,6 +178,8 @@ INSERT INTO `auth_menu` VALUES ('36', '34', '视频详情管理', '2', '/video')
 INSERT INTO `auth_menu` VALUES ('37', '31', '资料管理', '3', '');
 INSERT INTO `auth_menu` VALUES ('38', '37', '资料分类管理', '1', '/documentation/category');
 INSERT INTO `auth_menu` VALUES ('39', '37', '资料详情管理', '2', '/documentation');
+INSERT INTO `auth_menu` VALUES ('40', '31', '轮播图管理', '4', '');
+INSERT INTO `auth_menu` VALUES ('41', '40', '轮播图', '1', '/banner');
 
 -- ----------------------------
 -- Table structure for `auth_permission`
@@ -182,7 +189,7 @@ CREATE TABLE `auth_permission` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` char(20) NOT NULL COMMENT '权限名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
 
 -- ----------------------------
 -- Records of auth_permission
@@ -194,6 +201,7 @@ INSERT INTO `auth_permission` VALUES ('35', '开发权限');
 INSERT INTO `auth_permission` VALUES ('37', '首页控制权限');
 INSERT INTO `auth_permission` VALUES ('38', '视频管理权限');
 INSERT INTO `auth_permission` VALUES ('39', '资料管理权限');
+INSERT INTO `auth_permission` VALUES ('40', '轮播图管理');
 
 -- ----------------------------
 -- Table structure for `auth_permission_action`
@@ -204,7 +212,7 @@ CREATE TABLE `auth_permission_action` (
   `permission_id` int(11) NOT NULL,
   `action_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=483 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=488 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
 
 -- ----------------------------
 -- Records of auth_permission_action
@@ -324,6 +332,11 @@ INSERT INTO `auth_permission_action` VALUES ('479', '39', '56');
 INSERT INTO `auth_permission_action` VALUES ('480', '39', '57');
 INSERT INTO `auth_permission_action` VALUES ('481', '39', '58');
 INSERT INTO `auth_permission_action` VALUES ('482', '39', '59');
+INSERT INTO `auth_permission_action` VALUES ('483', '40', '72');
+INSERT INTO `auth_permission_action` VALUES ('484', '40', '73');
+INSERT INTO `auth_permission_action` VALUES ('485', '40', '74');
+INSERT INTO `auth_permission_action` VALUES ('486', '40', '75');
+INSERT INTO `auth_permission_action` VALUES ('487', '40', '76');
 
 -- ----------------------------
 -- Table structure for `auth_role`
@@ -351,16 +364,13 @@ CREATE TABLE `auth_role_permission` (
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
 
 -- ----------------------------
 -- Records of auth_role_permission
 -- ----------------------------
 INSERT INTO `auth_role_permission` VALUES ('46', '87', '23');
 INSERT INTO `auth_role_permission` VALUES ('47', '87', '24');
-INSERT INTO `auth_role_permission` VALUES ('114', '94', '39');
-INSERT INTO `auth_role_permission` VALUES ('115', '94', '37');
-INSERT INTO `auth_role_permission` VALUES ('116', '94', '38');
 INSERT INTO `auth_role_permission` VALUES ('117', '1', '39');
 INSERT INTO `auth_role_permission` VALUES ('118', '1', '22');
 INSERT INTO `auth_role_permission` VALUES ('119', '1', '23');
@@ -368,6 +378,10 @@ INSERT INTO `auth_role_permission` VALUES ('120', '1', '24');
 INSERT INTO `auth_role_permission` VALUES ('121', '1', '35');
 INSERT INTO `auth_role_permission` VALUES ('122', '1', '37');
 INSERT INTO `auth_role_permission` VALUES ('123', '1', '38');
+INSERT INTO `auth_role_permission` VALUES ('124', '94', '40');
+INSERT INTO `auth_role_permission` VALUES ('125', '94', '37');
+INSERT INTO `auth_role_permission` VALUES ('126', '94', '38');
+INSERT INTO `auth_role_permission` VALUES ('127', '94', '39');
 
 -- ----------------------------
 -- Table structure for `company_banner`
@@ -383,7 +397,7 @@ CREATE TABLE `company_banner` (
   `created_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='首页轮播图标';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='首页轮播图标';
 
 -- ----------------------------
 -- Records of company_banner

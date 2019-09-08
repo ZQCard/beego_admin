@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">是否上架{{.Video.IsOnSale}}</label>
+                    <label class="layui-form-label">是否上架</label>
                     <div class="layui-input-block">
                         <input type="radio" name="is_on_sale" value="1" title="上架" {{if eq 1 .Video.IsOnSale}}checked{{end}}>
                         <input type="radio" name="is_on_sale" value="0" title="下架" {{if eq 0 .Video.IsOnSale}}checked{{end}}>
@@ -85,7 +85,6 @@
                 $("#upload_video_url").attr("src", res.url);
                 $("#upload_video_url").parent().show();
                 $("input[name='url']").val(res.url);
-                console.log(res.url)
             }
             ,error: function(){
                 //请求异常回调
