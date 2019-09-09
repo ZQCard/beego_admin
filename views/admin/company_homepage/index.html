@@ -34,7 +34,7 @@
                             </td>
                             <th>
                                 {{/*编辑模态框*/}}
-                                <form action="/homepage/setting" id="EditForm{{.ID}}" data-title="首页模块设置" style="display: none;margin-top:5%">
+                                <form action="/admin/homepage/setting" id="EditForm{{.ID}}" data-title="首页模块设置" style="display: none;margin-top:5%">
                                     <input type="hidden" name="id" value="{{.ID}}">
                                     <input type="hidden" name="_method" value="PATCH">
                                     <div class="layui-form-item">

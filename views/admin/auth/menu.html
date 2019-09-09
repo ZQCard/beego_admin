@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="layui-card-body">
-                    <form action="/auth/menu" id="AddForm" data-title="添加菜单" style="display: none;margin-top:5%">
+                    <form action="/admin/auth/menu" id="AddForm" data-title="添加菜单" style="display: none;margin-top:5%">
                         <div class="layui-form-item">
                             <label class="layui-form-label">父级菜单</label>
                             <div class="layui-input-block">
@@ -44,7 +44,7 @@
                         </div>
                     </form>
 
-                    <form action="/auth/menu" id="editForm" data-title="编辑菜单" style="display: none;margin-top:5%">
+                    <form action="/admin/auth/menu" id="editForm" data-title="编辑菜单" style="display: none;margin-top:5%">
                         <input type="hidden" name="id" id="editId" value="" required="" lay-verify="required" autocomplete="off" class="layui-input">
                         <input type="hidden" name="_method" value="PUT" required="" lay-verify="required" autocomplete="off" class="layui-input">
                         <input type="hidden" name="pid" id="pid" value="" required="" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
@@ -101,7 +101,7 @@
     }
 
     function delelete(row) {
-        DeleteRecordById("/auth/menu", row.id, row.name)
+        DeleteRecordById("/admin/auth/menu", row.id, row.name)
     }
     var layout = [
         { name: '菜单名称', treeNodes: true, headerClass: 'value_col', colClass: 'value_col', style: '' },

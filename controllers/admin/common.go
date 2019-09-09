@@ -82,7 +82,7 @@ func (c *CommonController)Login()  {
 		c.TplName = "admin/common/login.html"
 		return
 	}
-
+	fmt.Println(111)
 	// 读取post参数
 	username := c.Input().Get("username")
 	password := utils.GenerateMD5String(c.Input().Get("password"))
@@ -151,6 +151,6 @@ func (c *CommonController)Login()  {
 	}
 	// 读取管理员的菜单
 	c.SetSession("MENU_LEFT", Administrator.MenuList(authGetSlice))
-	c.Redirect("/", 302)
+	c.Redirect("/admin/", 302)
 	return
 }

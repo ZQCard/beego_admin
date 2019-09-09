@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="layui-card-body">
-                    <form action="/video/category" id="AddForm" data-title="添加视频分类" style="display: none;margin-top:5%">
+                    <form action="/admin/video/category" id="AddForm" data-title="添加视频分类" style="display: none;margin-top:5%">
                         <div class="layui-form-item">
                             <label class="layui-form-label">名称</label>
                             <div class="layui-input-block">
@@ -60,7 +60,7 @@
                                 </td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/video/category" id="EditForm{{.ID}}" data-title="编辑视频分类" style="display: none;margin-top:5%">
+                                    <form action="/admin/video/category" id="EditForm{{.ID}}" data-title="编辑视频分类" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">名称</label>
                                             <div class="layui-input-block">
@@ -82,8 +82,8 @@
                                         </div>
                                     </form>
                                     <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/video/category">删除</a>
-                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/video/category">恢复</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/admin/video/category">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/admin/video/category">恢复</a>
                                 </td>
                             </tr>
                         {{end}}

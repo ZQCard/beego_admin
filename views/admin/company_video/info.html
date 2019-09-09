@@ -2,7 +2,7 @@
     <div class="layui-card">
         <div class="layui-card-header">{{.Title}}</div>
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" action="/video" {{if eq 0 .Video.ID}}id="AddForm"{{else}}id="EditForm{{.Video.ID}}"{{end}}>
+            <form class="layui-form" action="/admin/video" {{if eq 0 .Video.ID}}id="AddForm"{{else}}id="EditForm{{.Video.ID}}"{{end}}>
                 {{if ne 0 .Video.ID}}
                     <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="id" value="{{.Video.ID}}">
@@ -76,7 +76,7 @@
         //执行实例
         var uploadInst = upload.render({
             elem: '#upload_video' //绑定元素
-            ,url: '/tools/uploadFile' //上传接口
+            ,url: '/admin/tools/uploadFile' //上传接口
             ,data:{
                 "type":"video",
                 _xsrf:xsrf_token

@@ -78,7 +78,7 @@ func (c *VideoControl) PostAddVideo() {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/video"
+		returnJson.Url = "/admin/video"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -106,7 +106,7 @@ func (c *VideoControl) PutUpdateVideo() {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/video"
+		returnJson.Url = "/admin/video"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()

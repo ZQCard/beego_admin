@@ -49,5 +49,5 @@ func (c *IndexController)Get(){
 // 退出登录
 func (c *IndexController)Logout()  {
 	c.DestroySession()
-	c.Redirect("/login", 302)
+	c.Redirect("/admin/login", 302)
 }

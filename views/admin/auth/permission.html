@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="layui-card-body">
-                    <form action="/auth/permission" id="AddForm" data-title="添加权限" style="display: none;margin-top:5%">
+                    <form action="/admin/auth/permission" id="AddForm" data-title="添加权限" style="display: none;margin-top:5%">
                         <div class="layui-form-item">
                             <label class="layui-form-label">权限名称</label>
                             <div class="layui-input-block">
@@ -47,7 +47,7 @@
                                 <td>{{.Name}}</td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/permission" id="EditForm{{.ID}}" data-title="编辑权限" style="display: none;margin-top:5%">
+                                    <form action="/admin/auth/permission" id="EditForm{{.ID}}" data-title="编辑权限" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">权限名称</label>
                                             <div class="layui-input-block">
@@ -63,7 +63,7 @@
                                         </div>
                                     </form>
                                     <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/auth/permission">删除</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/admin/auth/permission">删除</a>
                                     <a class="layui-btn layui-btn-warm layui-btn-xs permissionHasAction" data-id="{{.ID}}">分配行为</a>
                                 </td>
                             </tr>
@@ -87,7 +87,7 @@
             let id = $(this).data("id");
             permissionId = id;
             // 请求数据源
-            $.get("/auth/permission/actions",{id:id, _method:"GET", _xsrf:xsrf_token},function (resp) {
+            $.get("/admin/auth/permission/actions",{id:id, _method:"GET", _xsrf:xsrf_token},function (resp) {
                 if (resp.statusCode === 1) {
                     showData(resp.data.not, resp.data.has);
                 } else {
@@ -139,7 +139,7 @@
             ids.push(data[i].ID)
         }
         // 发送数据
-        $.post("/auth/permission/actions", {permissionId:permissionId, actionIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
+        $.post("/admin/auth/permission/actions", {permissionId:permissionId, actionIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
             processAjaxReturnData(data)
         });
     });

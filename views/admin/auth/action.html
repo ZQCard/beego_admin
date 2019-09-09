@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="layui-card-body">
-                    <form action="/auth/action" id="AddForm" data-title="添加行为" style="display: none;margin-top:5%">
+                    <form action="/admin/auth/action" id="AddForm" data-title="添加行为" style="display: none;margin-top:5%">
                         <div class="layui-form-item">
                             <label class="layui-form-label">行为名称</label>
                             <div class="layui-input-block">
@@ -55,7 +55,7 @@
                                 <td>{{.Route}}</td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/action" id="EditForm{{.ID}}" data-title="编辑行为" style="display: none;margin-top:5%">
+                                    <form action="/admin/auth/action" id="EditForm{{.ID}}" data-title="编辑行为" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">行为名称</label>
                                             <div class="layui-input-block">
@@ -83,7 +83,7 @@
                                         </div>
                                     </form>
                                     <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/auth/action">删除</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Name}}" data-url="/admin/auth/action">删除</a>
                                 </td>
                             </tr>
                         {{end}}

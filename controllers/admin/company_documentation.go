@@ -76,7 +76,7 @@ func (c *DocumentationControl) PostAddDocumentation() {
 		returnJson.StatusCode = Success
 		returnJson.Message = AddSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/documentation"
+		returnJson.Url = "/admin/documentation"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()
@@ -102,7 +102,7 @@ func (c *DocumentationControl) PutUpdateDocumentation() {
 		returnJson.StatusCode = Success
 		returnJson.Message = SaveSuccess
 		returnJson.UrlType = Jump
-		returnJson.Url = "/documentation"
+		returnJson.Url = "/admin/documentation"
 	} else {
 		returnJson.StatusCode = Fail
 		returnJson.Message = err.Error()

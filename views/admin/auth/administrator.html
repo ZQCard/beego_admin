@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="layui-card-body">
-                    <form action="/auth/administrator" id="AddForm" data-title="添加管理员" style="display: none;margin-top:5%">
+                    <form action="/admin/auth/administrator" id="AddForm" data-title="添加管理员" style="display: none;margin-top:5%">
                         <div class="layui-form-item">
                             <label class="layui-form-label">管理员名称</label>
                             <div class="layui-input-block">
@@ -81,7 +81,7 @@
                                 </td>
                                 <td>
                                     {{/*编辑模态框*/}}
-                                    <form action="/auth/administrator" id="EditForm{{.ID}}" data-title="编辑管理员" style="display: none;margin-top:5%">
+                                    <form action="/admin/auth/administrator" id="EditForm{{.ID}}" data-title="编辑管理员" style="display: none;margin-top:5%">
                                         <div class="layui-form-item">
                                             <label class="layui-form-label">用户名</label>
                                             <div class="layui-input-block">
@@ -115,8 +115,8 @@
                                         </div>
                                     </form>
                                     <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('EditForm{{.ID}}')">编辑</a>
-                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/auth/administrator">删除</a>
-                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/auth/administrator">恢复</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/admin/auth/administrator">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/admin/auth/administrator">恢复</a>
                                     <a class="layui-btn layui-btn-warm layui-btn-xs AdminHasRole" data-id="{{.ID}}">分配角色</a>
                                 </td>
                             </tr>
@@ -139,7 +139,7 @@
             let id = $(this).data("id");
             adminId = id;
             // 请求数据源
-            $.get("/auth/administrator/roles",{id:id, _method:"GET", _xsrf:xsrf_token},function (resp) {
+            $.get("/admin/auth/administrator/roles",{id:id, _method:"GET", _xsrf:xsrf_token},function (resp) {
                 if (resp.statusCode === 1) {
                     showData(resp.data.not, resp.data.has);
                 } else {
@@ -178,7 +178,7 @@
             ids.push(data[i].ID)
         }
         // 发送数据
-        $.post("/auth/administrator/roles", {adminId:adminId, roleIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
+        $.post("/admin/auth/administrator/roles", {adminId:adminId, roleIds:ids, _method:"PUT", _xsrf:xsrf_token}, function (data) {
             processAjaxReturnData(data)
         });
     });

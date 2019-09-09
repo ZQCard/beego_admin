@@ -40,10 +40,10 @@
                 <cite>{{ .Nickname}}</cite>
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="javascript:;" id="viewAdministrator" data-url="/auth/administrator/view">基本资料</a></dd>
-                <dd><a href="javascript:;" id="refreshAuth" data-url="/auth/administrator/refreshAuth">刷新权限</a></dd>
+                <dd><a href="javascript:;" id="viewAdministrator" data-url="/admin//administrator/info">基本资料</a></dd>
+                <dd><a href="javascript:;" id="refreshAuth" data-url="/admin/auth/administrator/refreshAuth">刷新权限</a></dd>
                 <hr>
-                <dd style="text-align: center;"><a href="/logout">退出</a></dd>
+                <dd style="text-align: center;"><a href="/admin/logout">退出</a></dd>
             </dl>
         </li>
 
@@ -55,7 +55,7 @@
 </div>
 
 <div class="layui-layer-content">
-    <form action="/administrator/info" id="viewEditAdminInfo" data-title="查看/修改信息" style="margin-top: 5%;display: none" class="layui-layer-wrap">
+    <form action="/admin/administrator/info" id="viewEditAdminInfo" data-title="查看/修改信息" style="margin-top: 5%;display: none" class="layui-layer-wrap">
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
@@ -125,7 +125,7 @@
     // 修改资料
     $("#viewAdministrator").click(function () {
         // 获取管理员信息
-        $.get("/administrator/info", {id:adminId, _method:"GET", _xsrf:xsrf_token}, function (data) {
+        $.get($(this).data("url"), {id:adminId, _method:"GET", _xsrf:xsrf_token}, function (data) {
             data = data.data;
             $("#adminId").val(data.Id);
             $("#adminUsername").val(data.Username);
