@@ -1,0 +1,70 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm">留言列表</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户ID</th>
+                            <th>电话</th>
+                            <th>内容</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Messages}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.UserId}}</td>
+                                <td>{{.Mobile}}</td>
+                                <td>{{.Content}}</td>
+                                <td>{{date .CreatedAt "Y-m-d"}}</td>
+                                <td>{{date .UpdatedAt "Y-m-d"}}</td>
+                                <td>
+                                    {{/*编辑模态框*/}}
+                                    <form action="/banner" class="layui-form" id="ViewForm{{.ID}}" data-title="编辑轮播图" style="display: none;margin-top:5%">
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">用户ID</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" value="{{.UserId}}" type="text" disabled required="" lay-verify="required" autocomplete="off" class="layui-input">
+
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">电话号码</label>
+                                            <div class="layui-input-block">
+                                                <input style="width:80%" value="{{.Mobile}}" type="text" disabled required="" lay-verify="required" autocomplete="off" class="layui-input">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">留言内容</label>
+                                            <div class="layui-input-block">
+                                                    {{.Content}}
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <a class="layui-btn layui-btn-xs" data-id="{{.ID}}" onclick="openForm('ViewForm{{.ID}}')">查看</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>

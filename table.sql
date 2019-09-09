@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-09-09 01:39:03
+Date: 2019-09-09 21:17:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,7 +49,7 @@ CREATE TABLE `auth_action` (
   `method` varchar(50) NOT NULL COMMENT '请求方法',
   `route` varchar(50) NOT NULL COMMENT '请求路由',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作表';
 
 -- ----------------------------
 -- Records of auth_action
@@ -121,6 +121,10 @@ INSERT INTO `auth_action` VALUES ('73', '轮播图创建', 'POST', '/banner');
 INSERT INTO `auth_action` VALUES ('74', '轮播图编辑', 'PUT', '/banner');
 INSERT INTO `auth_action` VALUES ('75', '轮播图删除', 'DELETE', '/banner');
 INSERT INTO `auth_action` VALUES ('76', '轮播图恢复', 'PATCH', '/banner');
+INSERT INTO `auth_action` VALUES ('77', '留言板查看', 'GET', '/message');
+INSERT INTO `auth_action` VALUES ('78', '用户查看', 'GET', '/user');
+INSERT INTO `auth_action` VALUES ('79', '用户删除', 'DELETE', '/user');
+INSERT INTO `auth_action` VALUES ('80', '用户恢复', 'PATCH', '/user');
 
 -- ----------------------------
 -- Table structure for `auth_administrator_role`
@@ -154,7 +158,7 @@ CREATE TABLE `auth_menu` (
   `route` varchar(60) DEFAULT '' COMMENT '跳转链接',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_菜单表';
 
 -- ----------------------------
 -- Records of auth_menu
@@ -180,6 +184,10 @@ INSERT INTO `auth_menu` VALUES ('38', '37', '资料分类管理', '1', '/documen
 INSERT INTO `auth_menu` VALUES ('39', '37', '资料详情管理', '2', '/documentation');
 INSERT INTO `auth_menu` VALUES ('40', '31', '轮播图管理', '4', '');
 INSERT INTO `auth_menu` VALUES ('41', '40', '轮播图', '1', '/banner');
+INSERT INTO `auth_menu` VALUES ('43', '31', '留言板管理', '5', '');
+INSERT INTO `auth_menu` VALUES ('44', '43', '留言查看', '1', '/message');
+INSERT INTO `auth_menu` VALUES ('46', '31', '用户管理', '6', '');
+INSERT INTO `auth_menu` VALUES ('47', '46', '用户查看', '1', '/user');
 
 -- ----------------------------
 -- Table structure for `auth_permission`
@@ -189,7 +197,7 @@ CREATE TABLE `auth_permission` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` char(20) NOT NULL COMMENT '权限名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_权限表';
 
 -- ----------------------------
 -- Records of auth_permission
@@ -202,6 +210,8 @@ INSERT INTO `auth_permission` VALUES ('37', '首页控制权限');
 INSERT INTO `auth_permission` VALUES ('38', '视频管理权限');
 INSERT INTO `auth_permission` VALUES ('39', '资料管理权限');
 INSERT INTO `auth_permission` VALUES ('40', '轮播图管理');
+INSERT INTO `auth_permission` VALUES ('41', '留言板管理');
+INSERT INTO `auth_permission` VALUES ('42', '用户管理');
 
 -- ----------------------------
 -- Table structure for `auth_permission_action`
@@ -212,7 +222,7 @@ CREATE TABLE `auth_permission_action` (
   `permission_id` int(11) NOT NULL,
   `action_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=488 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_操作权限关联表';
 
 -- ----------------------------
 -- Records of auth_permission_action
@@ -337,6 +347,10 @@ INSERT INTO `auth_permission_action` VALUES ('484', '40', '73');
 INSERT INTO `auth_permission_action` VALUES ('485', '40', '74');
 INSERT INTO `auth_permission_action` VALUES ('486', '40', '75');
 INSERT INTO `auth_permission_action` VALUES ('487', '40', '76');
+INSERT INTO `auth_permission_action` VALUES ('488', '41', '77');
+INSERT INTO `auth_permission_action` VALUES ('490', '42', '79');
+INSERT INTO `auth_permission_action` VALUES ('491', '42', '80');
+INSERT INTO `auth_permission_action` VALUES ('492', '42', '78');
 
 -- ----------------------------
 -- Table structure for `auth_role`
@@ -364,7 +378,7 @@ CREATE TABLE `auth_role_permission` (
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8mb4 COMMENT='权限管理_角色权限关联表';
 
 -- ----------------------------
 -- Records of auth_role_permission
@@ -378,10 +392,12 @@ INSERT INTO `auth_role_permission` VALUES ('120', '1', '24');
 INSERT INTO `auth_role_permission` VALUES ('121', '1', '35');
 INSERT INTO `auth_role_permission` VALUES ('122', '1', '37');
 INSERT INTO `auth_role_permission` VALUES ('123', '1', '38');
-INSERT INTO `auth_role_permission` VALUES ('124', '94', '40');
-INSERT INTO `auth_role_permission` VALUES ('125', '94', '37');
-INSERT INTO `auth_role_permission` VALUES ('126', '94', '38');
-INSERT INTO `auth_role_permission` VALUES ('127', '94', '39');
+INSERT INTO `auth_role_permission` VALUES ('133', '94', '42');
+INSERT INTO `auth_role_permission` VALUES ('134', '94', '37');
+INSERT INTO `auth_role_permission` VALUES ('135', '94', '38');
+INSERT INTO `auth_role_permission` VALUES ('136', '94', '39');
+INSERT INTO `auth_role_permission` VALUES ('137', '94', '40');
+INSERT INTO `auth_role_permission` VALUES ('138', '94', '41');
 
 -- ----------------------------
 -- Table structure for `company_banner`
@@ -464,6 +480,26 @@ INSERT INTO `company_homepage` VALUES ('3', '优秀视频', '1');
 INSERT INTO `company_homepage` VALUES ('4', '亮点介绍', '1');
 
 -- ----------------------------
+-- Table structure for `company_message`
+-- ----------------------------
+DROP TABLE IF EXISTS `company_message`;
+CREATE TABLE `company_message` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `mobile` varchar(20) NOT NULL DEFAULT '',
+  `content` text,
+  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of company_message
+-- ----------------------------
+INSERT INTO `company_message` VALUES ('1', '1', '1', '1', '2019-09-09 20:18:50', '2019-09-09 20:18:53', null);
+
+-- ----------------------------
 -- Table structure for `company_navigator`
 -- ----------------------------
 DROP TABLE IF EXISTS `company_navigator`;
@@ -489,16 +525,23 @@ CREATE TABLE `company_navigator` (
 DROP TABLE IF EXISTS `company_user`;
 CREATE TABLE `company_user` (
   `id` int(11) NOT NULL,
-  `open_id` varchar(255) DEFAULT '',
-  `username` varchar(60) NOT NULL COMMENT '用户名',
-  `password` varchar(60) NOT NULL,
+  `union_id` varchar(255) NOT NULL DEFAULT '',
+  `weixin_open_id` varchar(255) NOT NULL DEFAULT '',
+  `username` varchar(60) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(60) NOT NULL DEFAULT '',
+  `nickname` varchar(255) NOT NULL DEFAULT '',
+  `sex` tinyint(4) NOT NULL DEFAULT '1' COMMENT '性别 1男 0女',
+  `province` varchar(255) NOT NULL DEFAULT '' COMMENT '省份',
+  `city` varchar(255) NOT NULL DEFAULT '' COMMENT '城市',
+  `headimgurl` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
   `mobile` varchar(60) NOT NULL DEFAULT '' COMMENT '电话号码',
   `email` varchar(60) NOT NULL DEFAULT '' COMMENT '邮箱地址',
   `login_times` int(11) NOT NULL DEFAULT '0' COMMENT '登录次数',
   `updated_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `weixin_open_id_index` (`weixin_open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='企业站用户表';
 
 -- ----------------------------

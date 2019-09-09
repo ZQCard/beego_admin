@@ -64,6 +64,14 @@ func init() {
 	beego.Router("/banner", &admin.BannerControl{}, "get:GetBannerList;post:PostAddBanner;put:PutUpdateBanner;delete:DeleteBanner;patch:RecoveryBanner")
 	/************ 轮播图功结束 ***********/
 
+	/************ 留言板功能开始 ***********/
+	beego.Router("/message", &admin.MessageControl{}, "get:GetMessageList")
+	/************ 留言板功能开始 ***********/
+
+	/************ 用户功能开始 ***********/
+	beego.Router("/user", &admin.UserControl{}, "get:GetUserList;delete:DeleteUser;patch:RecoveryUser")
+	/************ 用户功能开始 ***********/
+
 	/************ 工具箱功能开始 ***********/
 	// 文件上传
 	beego.Router("/tools/uploadFile", &admin.ToolsController{}, "post:PostUploadFile")

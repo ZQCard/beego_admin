@@ -157,8 +157,8 @@ func (menu *Menu)MenuUpdate() (err error) {
 		}
 	}
 
-	// 判断用户名或者昵称未使用
-	if !models.DB.Where("id <> ?", menu.ID).Where("name = ?", menu.Name).Find(&Action{}).RecordNotFound(){
+	// 判断名称未使用
+	if !models.DB.Where("id <> ?", menu.ID).Where("name = ?", menu.Name).Find(&Menu{}).RecordNotFound(){
 		return errors.New("菜单名称已经存在")
 	}
 

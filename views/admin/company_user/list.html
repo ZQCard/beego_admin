@@ -1,0 +1,81 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm">用户列表</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>微信ID</th>
+                            <th>用户名</th>
+                            <th>昵称</th>
+                            <th>性别</th>
+                            <th>省份</th>
+                            <th>城市</th>
+                            <th>头像</th>
+                            <th>电话</th>
+                            <th>邮箱</th>
+                            <th>登录次数</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>删除时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Users}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.WeixinOpenId}}</td>
+                                <td>{{.Username}}</td>
+                                <td>{{.Nickname}}</td>
+                                <td>
+                                    {{if .Sex}}
+                                        男
+                                    {{else}}
+                                        女
+                                    {{end}}
+                                </td>
+                                <td>{{.Province}}</td>
+                                <td>{{.City}}</td>
+                                <td>
+                                    {{if .Headimgurl}}
+                                        <img src="{{.Headimgurl}}">
+                                    {{end}}
+                                </td>
+                                <td>{{.Mobile}}</td>
+                                <td>{{.Email}}</td>
+                                <td>{{.LoginTimes}}</td>
+                                <td>{{date .CreatedAt "Y-m-d"}}</td>
+                                <td>{{date .UpdatedAt "Y-m-d"}}</td>
+                                <td>
+                                    {{if .DeletedAt}}
+                                        {{date .DeletedAt "Y-m-d"}}
+                                    {{else}}
+                                        未删除
+                                    {{end}}
+                                </td>
+                                <td>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/user">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Username}}" data-url="/user">恢复</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>

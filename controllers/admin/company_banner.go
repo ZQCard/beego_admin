@@ -11,7 +11,7 @@ type BannerControl struct {
 }
 
 
-// 视频分类列表
+// 轮播图列表
 func (c *BannerControl) GetBannerList() {
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
@@ -27,12 +27,12 @@ func (c *BannerControl) GetBannerList() {
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
 	c.Data["PageSize"] = pageSize
-	c.Data["Title"] = "视频分类列表"
+	c.Data["Title"] = "轮播图列表"
 	// 模板
 	c.TplName = "admin/company_banner/list.html"
 }
 
-// 添加视频分类
+// 添加轮播图
 func (c *BannerControl) PostAddBanner() {
 	returnJson := ResponseJson{}
 	banner := admin.Banner{
@@ -54,7 +54,7 @@ func (c *BannerControl) PostAddBanner() {
 	c.ServeJSON()
 }
 
-// 更新视频分类
+// 更新轮播图
 func (c *BannerControl) PutUpdateBanner() {
 	returnJson := ResponseJson{}
 	banner := admin.Banner{
@@ -79,7 +79,7 @@ func (c *BannerControl) PutUpdateBanner() {
 	c.ServeJSON()
 }
 
-// 删除视频分类
+// 删除轮播图
 func (c *BannerControl) DeleteBanner() {
 	returnJson := ResponseJson{}
 	banner := admin.Banner{
@@ -100,7 +100,7 @@ func (c *BannerControl) DeleteBanner() {
 	c.ServeJSON()
 }
 
-// 恢复视频分类
+// 恢复轮播图
 func (c *BannerControl) RecoveryBanner() {
 	returnJson := ResponseJson{}
 	banner := admin.Banner{
