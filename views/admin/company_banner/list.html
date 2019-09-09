@@ -150,16 +150,7 @@
         $("#upload_pic_edit_url").attr("src", url);
 
         layui.form.render();
-        // 关闭其他弹窗
-        layer.closeAll();
-        layer.open({
-            type: 1,
-            shade:0,
-            shadeClose:true,
-            title: $("#EditForm").data('title'),
-            area: ['450px', '500px'],
-            content: $("#EditForm")
-        });
+        openForm("EditForm");
     }
     layui.use('upload', function(){
         var upload = layui.upload;

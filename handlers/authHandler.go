@@ -10,8 +10,8 @@ func Auth() func(ctx *context.Context) {
 	var PermissionSupport = func(ctx *context.Context) {
 		// 未登录状态
 		if nil == ctx.Input.Session("adminId") {
-			if ctx.Input.URL() != "/login" {
-				ctx.Redirect(302, "/login")
+			if ctx.Input.URL() != "/admin/login" {
+				ctx.Redirect(302, "/admin/login")
 			}
 		} else { // 已登录
 			// 读取游客权限
@@ -42,7 +42,7 @@ func Auth() func(ctx *context.Context) {
 					ctx.Output.JSON(responseJson, false, false)
 				} else {
 					ctx.Output.Session("error", "权限不足")
-					ctx.Redirect(302, "/error")
+					ctx.Redirect(302, "/admin/error")
 				}
 			}
 
