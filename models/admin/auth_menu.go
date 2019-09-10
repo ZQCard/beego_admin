@@ -61,12 +61,12 @@ func (menu *Menu)MenuList(route []string) []*TreeList{
 /**
 	递归获取树形菜单
  */
-func (m *Menu)getMenu(pid int) []*TreeList {
+func (menu *Menu)getMenu(pid int) []*TreeList {
 	// 查找除所有pid的子菜单
-	var menu []Menu
-	models.DB.Where("pid = ?", pid).Order("sort").Find(&menu)
+	var menus []Menu
+	models.DB.Where("pid = ?", pid).Order("sort").Find(&menus)
 	treeList := []*TreeList{}
-	for _, v := range menu{
+	for _, v := range menus{
 		if len(authRoute) != 0{
 			// 根据当前菜单Pid判断是否与有路由在权限路由有交集，如果没有continue
 			// 如果route为空,有下级  不为空,无下级

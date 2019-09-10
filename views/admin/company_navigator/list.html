@@ -1,0 +1,135 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-table-tool">
+                    <div class="layui-table-tool-temp">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增导航栏</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <form action="/admin/navigator" id="AddForm" data-title="添加导航栏" style="display: none;margin-top:5%">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">父级导航栏</label>
+                            <div class="layui-input-block">
+                                <select name="pid" class="layui-input selectMenu" style="width:80%">
+                                    <option value="0">顶级导航栏</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">导航栏名称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="name" required="" lay-verify="required" placeholder="请输入导航栏名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序值</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="sort" required="" lay-verify="required" placeholder="请输入排序值" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">跳转地址</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="action_id" required="" lay-verify="required" placeholder="请填写路由链接" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a class="layui-btn" id="AddFormSubmit">立即提交</a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form action="/admin/navigator" id="editForm" data-title="编辑导航栏" style="display: none;margin-top:5%">
+                        <input type="hidden" name="id" id="editId" value="" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="hidden" name="_method" value="PUT" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                        <input type="hidden" name="pid" id="pid" value="" required="" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">导航栏名称</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="name" id="menuName" value="" required="" lay-verify="required" placeholder="请输入导航栏名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序值</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="sort" id="menuSort"  required="" lay-verify="required" placeholder="请输入排序值" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">跳转地址</label>
+                            <div class="layui-input-block">
+                                <input style="width:80%" type="text" name="url" id="menuRoute" required="" lay-verify="required" placeholder="请填写路由链接" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <a class="layui-btn EditFormSubmit" data-form_id="editForm">立即提交</a>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <div id="demo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let navigatorJson = $.parseJSON("{{.Navigator}}");
+    // 增加导航栏
+    function add(row) {
+        $(".selectMenu").children('option:selected').val(row.id);
+        $(".selectMenu").children('option:selected').text(row.name);
+        openForm("AddForm")
+    }
+
+    // 编辑导航栏
+    function edit(row) {
+        $("#editId").val(row.id);
+        $("#pid").val(row.pid);
+        $("#menuName").val(row.name);
+        $("#menuSort").val(row.sort);
+        $("#menuRoute").val(row.url);
+        openForm("editForm")
+    }
+
+    function delelete(row) {
+        DeleteRecordById("/admin/navigator", row.id, row.name)
+    }
+    var layout = [
+        { name: '导航栏名称', treeNodes: true, headerClass: 'value_col', colClass: 'value_col', style: '' },
+        {
+            name: '操作',
+            headerClass: 'value_col',
+            colClass: 'value_col',
+            style: 'width: 20%',
+            render: function(row) {
+                let str = "<a class='layui-btn layui-btn-success layui-btn-sm' onclick='add(" + row + ")'><i class='layui-icon'>+</i> 增加子导航栏</a>";
+                str += "<a class='layui-btn layui-btn-warm layui-btn-sm' onclick='edit(" + row + ")'><i class='layui-icon'>&#xe640;</i> 编辑</a>";
+                str += "<a class='layui-btn layui-btn-danger layui-btn-sm' onclick='delelete(" + row + ")'><i class='layui-icon'>&#xe640;</i> 删除</a>";
+                return str; //列渲染
+            }
+        },
+    ];
+
+
+    layui.use(['form', 'treetable', 'layer'], function() {
+        var layer = layui.layer, form = layui.form, $ = layui.jquery;
+
+        var tree1 = layui.treetable({
+            elem: '#demo', //传入元素选择器
+            checkbox: true,
+            nodes: navigatorJson,
+            layout: layout
+        });
+        form.render();
+    });
+</script>

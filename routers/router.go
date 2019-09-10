@@ -35,9 +35,11 @@ func init() {
 			// 菜单操作
 			beego.NSRouter("/auth/menu", &admin.AuthController{}, "get:GetMenuList;post:PostAddMenu;put:PutUpdateMenu;delete:DeleteMenu"),
 			/************ 权限管理结束 ***********/
+
 			/************ 首页模块功能开始 ***********/
 			beego.NSRouter("/homepage/setting", &admin.HomepageControl{}, "get:ModuleList;patch:ModulePatch"),
 			/************ 首页模块功能设置 ***********/
+
 			/************ 视频功能开始 ***********/
 			// 视频分类
 			beego.NSRouter("/video/category", &admin.VideoCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory"),
@@ -66,6 +68,11 @@ func init() {
 			/************ 用户功能开始 ***********/
 			beego.NSRouter("/user", &admin.UserControl{}, "get:GetUserList;delete:DeleteUser;patch:RecoveryUser"),
 			/************ 用户功能开始 ***********/
+
+			// 菜单操作
+			beego.NSRouter("/navigator", &admin.NavigatorControl{}, "get:GetNavigatorList;post:PostAddNavigator;put:PutUpdateNavigator;delete:DeleteNavigator"),
+
+			/************ 权限管理结束 ***********/
 
 			/************ 工具箱功能开始 ***********/
 			// 文件上传
