@@ -12,8 +12,7 @@ import (
 
 func init()  {
 	// 支持表单伪造PUT,DELETE,PATCH,OPTIONS请求
-	beego.InsertFilter("*", beego.BeforeRouter, handlers.RestfulHandler())
-	beego.InsertFilter("*", beego.BeforeExec, handlers.Auth())
+	beego.InsertFilter("*", beego.BeforeStatic, handlers.RestfulHandler())
 }
 
 func main() {

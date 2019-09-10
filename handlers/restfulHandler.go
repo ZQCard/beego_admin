@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/context"
 )
 
@@ -17,7 +18,7 @@ func RestfulHandler() func(ctx *context.Context) {
 			// 正常请求
 			requestMethod = ctx.Input.Method()
 		}
-
+		fmt.Println("请求方式", requestMethod)
 		// 判断当前请求是否在允许请求内
 		flag := false
 		for _, method := range supportMethod{

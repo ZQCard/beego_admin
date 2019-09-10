@@ -2,12 +2,15 @@ package routers
 
 import (
 	"beego_admin/controllers/admin"
+	"beego_admin/handlers"
 	"github.com/astaxie/beego"
 )
 
 func init() {
 	ns :=
 		beego.NewNamespace("/admin",
+			// 后台权限过滤器
+			beego.NSBefore(handlers.Auth()),
 			// 根目录
 			beego.NSRouter("/", &admin.IndexController{}),
 			// 后台首页

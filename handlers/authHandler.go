@@ -32,6 +32,7 @@ func Auth() func(ctx *context.Context) {
 					authSlice = append(authSlice, v)
 				}
 			}
+
 			if !utils.InSlice(ctx.Input.URL(), authSlice) {
 				// ajax请求返回json
 				if ctx.Input.IsAjax() {
