@@ -48,5 +48,7 @@ func init()  {
 	// 禁止使用复数表明
 	DB.SingularTable(true)
 	// 查看原生sql
-	DB.LogMode(true)
+	if beego.AppConfig.String("runmode") == "dev" {
+		DB.LogMode(true)
+	}
 }
