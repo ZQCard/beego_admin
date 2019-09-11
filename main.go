@@ -5,6 +5,7 @@ import (
 	"beego_admin/handlers"
 	_ "beego_admin/routers"
 	"beego_admin/utils"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"time"
