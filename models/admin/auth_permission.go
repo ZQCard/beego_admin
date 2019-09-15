@@ -3,6 +3,7 @@ package admin
 import (
 	"beego_admin/models"
 	"errors"
+	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/go-ozzo/ozzo-validation"
 	"strconv"
@@ -94,7 +95,7 @@ func (permission *Permission)PermissionDelete() (err error) {
 }
 
 // 权限拥有的行为列表
-func (permission *Permission)PermissionActionList() (map[string][]Action, error) {
+func (permission *Permission)PermissionActionList() (map[string]interface{}, error) {
 	// 查询所有行为
 	var actionAll []Action
 	err := models.DB.Find(&actionAll).Error
@@ -120,28 +121,29 @@ func (permission *Permission)PermissionActionList() (map[string][]Action, error)
 		}
 		actionHasIds = append(actionHasIds, temp)
 	}
-
-	// 分开处理已有行为和未有行为
-	var actionHas []Action
-	var actionHasNot []Action
-
-	for _, action := range actionAll{
-		// 判断id是否已经拥有
-		var flag = false
-		for _,id := range actionHasIds {
-			if id == action.ID{
-				flag = true
-			}
-		}
-		if flag {
-			actionHas = append(actionHas, action)
-		}else {
-			actionHasNot = append(actionHasNot, action)
-		}
-	}
-	data := make(map[string][]Action)
-	data["has"] = actionHas
-	data["not"] = actionHasNot
+	//
+	//// 分开处理已有行为和未有行为
+	//var actionHas []Action
+	//var actionHasNot []Action
+	//
+	//for _, action := range actionAll{
+	//	// 判断id是否已经拥有
+	//	var flag = false
+	//	for _,id := range actionHasIds {
+	//		if id == action.ID{
+	//			flag = true
+	//		}
+	//	}
+	//	if flag {
+	//		actionHas = append(actionHas, action)
+	//	}else {
+	//		actionHasNot = append(actionHasNot, action)
+	//	}
+	//}
+	data := make(map[string]interface{})
+	data["has"] = actionHasIds
+	data["all"] = actionAll
+	fmt.Println(data)
 	return data, nil
 }
 

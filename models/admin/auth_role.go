@@ -95,7 +95,7 @@ func (role *Role)RoleDelete() (err error) {
 }
 
 // 角色拥有的权限列表
-func (role *Role)RolePermissionList() (map[string][]Permission, error) {
+func (role *Role)RolePermissionList() (map[string]interface{}, error) {
 	// 查询所有权限
 	var permissionAll []Permission
 	err := models.DB.Find(&permissionAll).Error
@@ -120,28 +120,28 @@ func (role *Role)RolePermissionList() (map[string][]Permission, error) {
 		}
 		permissionHasIds = append(permissionHasIds, temp)
 	}
-
-	// 分开处理已有权限和未有权限
-	var permissionHas []Permission
-	var permissionHasNot []Permission
-
-	for _, permission := range permissionAll{
-		// 判断id是否已经拥有
-		var flag = false
-		for _,id := range permissionHasIds {
-			if id == permission.ID{
-				flag = true
-			}
-		}
-		if flag {
-			permissionHas = append(permissionHas, permission)
-		}else {
-			permissionHasNot = append(permissionHasNot, permission)
-		}
-	}
-	data := make(map[string][]Permission)
-	data["has"] = permissionHas
-	data["not"] = permissionHasNot
+	//
+	//// 分开处理已有权限和未有权限
+	//var permissionHas []Permission
+	//var permissionHasNot []Permission
+	//
+	//for _, permission := range permissionAll{
+	//	// 判断id是否已经拥有
+	//	var flag = false
+	//	for _,id := range permissionHasIds {
+	//		if id == permission.ID{
+	//			flag = true
+	//		}
+	//	}
+	//	if flag {
+	//		permissionHas = append(permissionHas, permission)
+	//	}else {
+	//		permissionHasNot = append(permissionHasNot, permission)
+	//	}
+	//}
+	data := make(map[string]interface{})
+	data["all"] = permissionAll
+	data["has"] = permissionHasIds
 	return data, nil
 }
 
