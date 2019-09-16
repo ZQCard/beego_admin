@@ -82,7 +82,6 @@ func (c *CommonController)Login()  {
 		c.TplName = "admin/common/login.html"
 		return
 	}
-	fmt.Println(111)
 	// 读取post参数
 	username := c.Input().Get("username")
 	password := utils.GenerateMD5String(c.Input().Get("password"))
