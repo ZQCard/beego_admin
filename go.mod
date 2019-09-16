@@ -15,10 +15,15 @@ require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.0.1
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
 	github.com/astaxie/beego v1.11.1
+	github.com/denisenkom/go-mssqldb v0.0.0-20190910235433-dd40567e5238 // indirect
+	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
+	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	golang.org/x/text v0.3.0
+	github.com/jinzhu/now v1.0.1 // indirect
+	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
