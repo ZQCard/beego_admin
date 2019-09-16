@@ -72,8 +72,6 @@
         let url = $("#"+formId).attr('action');
         let data = $("#"+formId).serialize();
         data += "&_xsrf=" + xsrf_token;
-        console.log(formId);
-        console.log(url);
         // 采用PUT请求
         $.post(url, data, function (data) {
             processAjaxReturnData(data)
