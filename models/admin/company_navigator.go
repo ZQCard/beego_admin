@@ -120,3 +120,14 @@ func (navigator *Navigator)Delete() (err error) {
 	}
 	return nil
 }
+
+// 根据pid查找同等级的导航栏 pid=0 以及导航栏 pid=2二级导航栏
+func (navigator *Navigator)FindNavigatorByLevel(pid int) []Navigator {
+	var navigators []Navigator
+	if pid == 0{
+		models.DB.Where("pid = 0").Order("sort").Find(&navigators)
+	}else {
+		models.DB.Where("pid <> 0").Order("sort").Find(&navigators)
+	}
+	return navigators
+}

@@ -2,11 +2,28 @@ package routers
 
 import (
 	"beego_admin/controllers/admin"
+	"beego_admin/controllers/company"
 	"beego_admin/handlers"
 	"github.com/astaxie/beego"
 )
 
 func init() {
+	// 企业站前台路由
+	beego.Router("/", &company.IndexController{},"get:HomePage")
+	// 关于我们
+	beego.Router("/contact", &company.StaticController{},"get:Contact")
+	// 登录页面
+	beego.Router("/login", &company.StaticController{},"get:Login")
+	// 课程页面
+	beego.Router("/course", &company.StaticController{},"get:Course")
+	// 资料下载
+	beego.Router("/resource", &company.StaticController{},"get:Resource")
+	beego.Router("/introduce", &company.StaticController{},"get:Introduce")
+
+
+
+
+	// 管理后台路由
 	ns :=
 		beego.NewNamespace("/admin",
 			// 后台权限过滤器
