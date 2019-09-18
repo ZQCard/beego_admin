@@ -70,7 +70,6 @@ func (c *DocumentationControl) PostAddDocumentation() {
 	documentation.CompanyDocumentationCategoryId = utils.MustInt(c.Input().Get("company_documentation_category_id"))
 	documentation.Description = c.Input().Get("description")
 	documentation.Url = c.Input().Get("url")
-	fmt.Println(documentation)
 	err := documentation.Create()
 	if err == nil {
 		returnJson.StatusCode = Success

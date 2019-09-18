@@ -361,7 +361,6 @@ func (c *AuthController) DeleteMenu() {
 
 // 添加菜单
 func (c *AuthController) PostAddMenu() {
-	fmt.Println(1)
 	returnJson := ResponseJson{}
 	menu := &admin.Menu{}
 	menu.Pid = utils.MustInt(c.Input().Get("pid"))

@@ -143,7 +143,6 @@ func (permission *Permission)PermissionActionList() (map[string]interface{}, err
 	data := make(map[string]interface{})
 	data["has"] = actionHasIds
 	data["all"] = actionAll
-	fmt.Println(data)
 	return data, nil
 }
 

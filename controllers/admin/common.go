@@ -3,7 +3,6 @@ package admin
 import (
 	"beego_admin/models/admin"
 	"beego_admin/utils"
-	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/cache"
 	captcha2 "github.com/astaxie/beego/utils/captcha"
@@ -93,7 +92,6 @@ func (c *CommonController)Login()  {
 	Administrator, err := Administrator.FindAdministrator()
 	// 用户验证失败
 	if err != nil{
-		fmt.Println(err)
 		c.Data["Error"] = err.Error()
 		// csrf
 		c.Data["CsrfData"] = template.HTML(c.XSRFFormHTML())
