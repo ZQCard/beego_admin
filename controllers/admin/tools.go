@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"beego_admin/models/demo"
 	"beego_admin/utils"
 	"fmt"
 	"github.com/astaxie/beego"
