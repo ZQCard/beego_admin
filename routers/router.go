@@ -10,6 +10,8 @@ import (
 func init() {
 	// 企业站前台路由
 	beego.Router("/", &company.IndexController{},"get:HomePage")
+	// 能力提升
+	beego.Router("/promote", &company.StaticController{},"get:Promote")
 	// 关于我们
 	beego.Router("/contact", &company.StaticController{},"get:Contact")
 	// 登录页面
@@ -18,7 +20,12 @@ func init() {
 	beego.Router("/course", &company.StaticController{},"get:Course")
 	// 资料下载
 	beego.Router("/resource", &company.StaticController{},"get:Resource")
+	// 简介
 	beego.Router("/introduce", &company.StaticController{},"get:Introduce")
+	// 特殊班级介绍
+	beego.Router("/special", &company.StaticController{},"get:Special")
+
+
 
 
 

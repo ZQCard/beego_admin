@@ -355,7 +355,7 @@
                     <ul class="top-menu">
                         {{/*一级导航*/}}
                         {{range .NavigatorParent}}
-                            <li class="nav" target="{{.ID}}"><a href="#">{{.Name}}</a></li>
+                            <li class="nav" target="{{.ID}}"><a href="{{.Url}}">{{.Name}}</a></li>
                         {{end}}
                     </ul>
                 </div>
@@ -363,10 +363,14 @@
         </div>
     </div>
 </div>
-{{range .NavigatorChild}}
-<div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{.Pid}}" style="width: 1142px; left: 711px;" idx="0">
-    <a href="{{.Url}}">{{.Name}}</a>
-</div>
+{{range $key, $parent := $.NavigatorParent}}
+    <div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{$parent.ID}}" style="width: 1142px; left: 711px;" idx="0">
+        {{range $k, $child := $.NavigatorChild}}
+            {{if eq $child.Pid $parent.ID}}
+                <a href="{{$child.Url}}">{{$child.Name}}</a>
+            {{end}}
+        {{end}}
+    </div>
 {{end}}
 
 <script type="text/javascript">
