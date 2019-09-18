@@ -23,6 +23,7 @@ require (
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.0.1 // indirect
+	github.com/robfig/cron v1.2.0 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	golang.org/x/image v0.0.0-20190910094157-69e4b8554b2a // indirect
 	google.golang.org/appengine v1.6.2 // indirect
