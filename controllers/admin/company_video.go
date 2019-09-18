@@ -72,7 +72,6 @@ func (c *VideoControl) PostAddVideo() {
 	video.IsShowHomePage = utils.MustInt(c.Input().Get("is_show_home_page"))
 	video.Description = c.Input().Get("description")
 	video.Url = c.Input().Get("url")
-	fmt.Println(video)
 	err := video.Create()
 	if err == nil {
 		returnJson.StatusCode = Success

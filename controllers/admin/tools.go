@@ -53,7 +53,6 @@ func (c *ToolsController)PostUploadFile()  {
 	}
 
 	returnJson.StatusCode = Success
-	fmt.Println(beego.AppConfig.String("base_url"))
 	returnJson.Url = beego.AppConfig.String("base_url") + filePath
 	c.Data["json"] = &returnJson
 	c.ServeJSON()

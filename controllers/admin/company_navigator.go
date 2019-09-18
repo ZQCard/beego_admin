@@ -52,7 +52,6 @@ func (c *NavigatorControl) DeleteNavigator() {
 
 // 添加导航栏
 func (c *NavigatorControl) PostAddNavigator() {
-	fmt.Println(1)
 	returnJson := ResponseJson{}
 	navigator := &admin.Navigator{}
 	navigator.Pid = utils.MustInt(c.Input().Get("pid"))

@@ -28,7 +28,6 @@ func (User)TableName() string {
 
 // 留言板列表
 func (user *User)List(page, pageSize int) (users []User, totalCount int64) {
-	fmt.Println(users)
 	models.DB.Unscoped().Model(&users).Count(&totalCount)
 	err := models.DB.Unscoped().Offset((page - 1) * pageSize).Limit(pageSize).Find(&users).Error
 	if err != nil{

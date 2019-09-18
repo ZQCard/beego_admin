@@ -140,7 +140,6 @@ func SetExcelContent(filename string, title *[]interface{}, content *[][]interfa
 	f.SetSheetRow("Sheet1", "A1", title)
 	// 依次传入数据 行+2
 	for k, v := range *content{
-		fmt.Println(reflect.TypeOf(v))
 		rowNum := k + 2
 		err := f.SetSheetRow("Sheet1", "A" + strconv.Itoa(rowNum), &v)
 		if err != nil {

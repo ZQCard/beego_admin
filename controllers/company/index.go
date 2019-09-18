@@ -17,7 +17,6 @@ func (c *IndexController)HomePage()  {
 	// 读取轮播图
 	banner := admin.Banner{}
 	c.Data["Banners"] = banner.CompanyList()
-	fmt.Println(c.Data["Banners"])
 
 	// 读取特色课程以及分类
 	// 读取
