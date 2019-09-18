@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"beego_admin/controllers/admin"
+	"fmt"
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/utils"
 )
@@ -10,6 +11,7 @@ func Auth() func(ctx *context.Context) {
 	var PermissionSupport = func(ctx *context.Context) {
 		// 未登录状态
 		if nil == ctx.Input.Session("adminId") {
+			fmt.Println(1)
 			if ctx.Input.URL() != "/admin/login" {
 				ctx.Redirect(302, "/admin/login")
 			}
@@ -42,8 +44,10 @@ func Auth() func(ctx *context.Context) {
 					//data,_ := json.Marshal(responseJson)
 					ctx.Output.JSON(responseJson, false, false)
 				} else {
-					ctx.Output.Session("error", "权限不足")
-					ctx.Redirect(302, "/admin/error")
+					fmt.Println(ctx.Input.URL())
+					fmt.Println(authSlice)
+					//ctx.Output.Session("error", "权限不足")
+					//ctx.Redirect(302, "/admin/error")
 				}
 			}
 
