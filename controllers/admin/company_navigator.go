@@ -5,7 +5,6 @@ import (
 	"beego_admin/models/admin"
 	"beego_admin/utils"
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 )
 

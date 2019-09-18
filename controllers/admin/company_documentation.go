@@ -4,7 +4,6 @@ import (
 	"beego_admin/models"
 	"beego_admin/models/admin"
 	"beego_admin/utils"
-	"fmt"
 )
 
 type DocumentationControl struct {

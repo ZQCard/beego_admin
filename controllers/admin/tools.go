@@ -2,7 +2,6 @@ package admin
 
 import (
 	"beego_admin/utils"
-	"fmt"
 	"github.com/astaxie/beego"
 	"log"
 	"os"

@@ -3,7 +3,6 @@ package admin
 import (
 	"beego_admin/models"
 	"errors"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 )
 

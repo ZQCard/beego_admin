@@ -3,7 +3,6 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"

@@ -2,7 +2,6 @@ package company
 
 import (
 	"beego_admin/models/admin"
-	"fmt"
 )
 
 type IndexController struct {
