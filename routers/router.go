@@ -98,17 +98,19 @@ func init() {
 			beego.NSRouter("/tools/sendEmail", &admin.ToolsController{}, "get:GetSendEmail;post:PostSendEmail"),
 			// excel导入导出
 			// 页面
-			beego.NSRouter("/tools/excel", &admin.ToolsController{}, "get:GetExcel"),
+			// beego.NSRouter("/tools/excel", &admin.ToolsController{}, "get:GetExcel"),
 			// 导入
-			beego.NSRouter("/tools/excelImport", &admin.ToolsController{}, "post:PostExcelImport"),
+			// beego.NSRouter("/tools/excelImport", &admin.ToolsController{}, "post:PostExcelImport"),
 			// 导出
-			beego.NSRouter("/tools/excelExport", &admin.ToolsController{}, "get:GetExcelExport"),
+			// beego.NSRouter("/tools/excelExport", &admin.ToolsController{}, "get:GetExcelExport"),
 
 			/************ 工具箱功能结束 ***********/
 			// 退出
 			beego.NSRouter("/logout", &admin.IndexController{}, "*:Logout"),
 			// 登录页面
 			beego.NSRouter("/login", &admin.CommonController{}, "get:LoginPage;post:Login"))
+			// 错误提示页面
+			beego.Router("/error", &admin.CommonController{}, "get:Error")
 	//注册 namespace
 	beego.AddNamespace(ns)
 }
