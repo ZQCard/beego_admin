@@ -143,7 +143,6 @@ func SetExcelContent(filename string, title *[]interface{}, content *[][]interfa
 		fmt.Println(reflect.TypeOf(v))
 		rowNum := k + 2
 		err := f.SetSheetRow("Sheet1", "A" + strconv.Itoa(rowNum), &v)
-		fmt.Println("A" + strconv.Itoa(rowNum))
 		if err != nil {
 			logs.Error("写入excel数据失败", err)
 			return "", err
