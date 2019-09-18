@@ -22,8 +22,8 @@ func (c *BannerControl) GetBannerList() {
 		pageSize = PageSizeDefault
 	}
 	banner := admin.Banner{}
-	categories, totalCount := banner.List(page, pageSize)
-	c.Data["Categories"] = categories
+	banners, totalCount := banner.List(page, pageSize)
+	c.Data["Banners"] = banners
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
 	c.Data["PageSize"] = pageSize

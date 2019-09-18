@@ -1,0 +1,320 @@
+<!--轮播图-->
+<div id="banner" style="width:100%;margin-top:0;padding:0">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {{range $key, $val := .Banners}}
+                <li data-target="#carousel-example-generic" data-slide-to="{{$key}}"></li>
+            {{end}}
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            {{range .Banners}}
+                <div class="item">
+                    <a href="{{.Url}}">
+                        <img src="{{.Url}}" alt="{{.Name}}">
+                    </a>
+                </div>
+            {{end}}
+        </div>
+
+        <a class="left carousel-control" href="http://www.chinagreentown.com/#carousel-example-generic" role="button"
+           data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="http://www.chinagreentown.com/#carousel-example-generic" role="button"
+           data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<!--轮播图 End-->
+
+<!--内容模块-->
+<div class="container-fluid">
+    <!--特色班级-->
+    <div class="row">
+        <div class="container">
+            <div class="row" style="padding-top: 35px;margin-bottom: 35px;">
+
+                <div class="layui-tab layui-tab-brief col-xs-12  " lay-filter="greentown-news" id="greentown-news">
+                    <div class="menu-cols col-xs-12" style="padding: 0;margin-bottom: 20px;height:auto;">
+                        <div class="title fg"
+                             style="width:6em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">
+                            特色班级
+                        </div>
+                        <div class="title " style="width:6em; text-align:center;margin:auto; color: #666;">
+                            <span>CLASS</span>
+                        </div>
+                    </div>
+                    <ul class="layui-tab-title col-xs-12" id="tabTitle">
+                        <li lay-id="media-class">外语班</li>
+                        <li lay-id="project-class">奥数班</li>
+                        <li lay-id="group-class" class="layui-this">文学班</li>
+                    </ul>
+                    <div class="layui-tab-content col-xs-12 " style="padding:0;">
+                        <div class="layui-tab-item row">
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2636" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/adbfbc0a5ae1c97684371fd6fad84d53?w=720&amp;h=405)">
+                                    <img src="/static/company/images/adbfbc0a5ae1c97684371fd6fad84d53"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">解密2019上半年绿城财报：经营性指标持续向好</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2634" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/d55760cc50cb2c91fdbff8e9eb10f663?w=720&amp;h=405)">
+                                    <img src="/static/company/images/d55760cc50cb2c91fdbff8e9eb10f663"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">特写｜绿城中国张亚东：2019两个2000亿</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2632" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/22e250ecb8e7fdcbf7ca121dc6f317fb?w=720&amp;h=405)">
+                                    <img src="/static/company/images/22e250ecb8e7fdcbf7ca121dc6f317fb"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">绿城的2019：不只注重品质，还看重效率</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item row">
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2561" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/6a6de8e6162181ed424ba4db47db53a5?w=720&amp;h=405)">
+                                    <img src="/static/company/images/6a6de8e6162181ed424ba4db47db53a5"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">留香园交付，各界点赞，吟香画卷与你共赏</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2640" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/94afe75b3e32e8d2fd9754990dca5d21?w=720&amp;h=405)">
+                                    <img src="/static/company/images/94afe75b3e32e8d2fd9754990dca5d21"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">杨柳郡好街获浙江首届商业双创大赛优胜奖</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2546" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/02b934322db6451b21ce8f47ea7d7dbe?w=720&amp;h=405)">
+                                    <img src="/static/company/images/02b934322db6451b21ce8f47ea7d7dbe"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">工地开放日，共鉴匠心</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item row layui-show">
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2631" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/7907d53b1d294ac6d0454e5c97e38ec6?w=720&amp;h=405)">
+                                    <img src="/static/company/images/7907d53b1d294ac6d0454e5c97e38ec6"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">绿城中国2019年中期业绩公布</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2630" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/f4c6f2a65cbbec5bdfa04475795450af?w=720&amp;h=405)">
+                                    <img src="/static/company/images/f4c6f2a65cbbec5bdfa04475795450af"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">绿城与华为签订战略合作协议</div>
+                                </a>
+                            </div>
+                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
+                                <a href="http://www.chinagreentown.com/article/2628" class="news-box"
+                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/39cf168aa5929e61408db2b489ca4082?w=720&amp;h=405)">
+                                    <img src="/static/company/images/39cf168aa5929e61408db2b489ca4082"
+                                         style="width: 100%;height: auto">
+                                    <div class="title ">绿城中国董事会主席张亚东当选新一届中国足协执委</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--XX宣传片-->
+    <div class="row" style="background: #eee">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 menu-cols" style="padding-top:35px ;margin-bottom: 20px;height:auto;">
+
+                    <div class="title"
+                         style="width:8em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">
+                        师资宣传片
+                    </div>
+                    <div class="title " style="width:10em; text-align:center;margin:auto; color: #666;">
+                        <span>VIDEO</span>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="padding-bottom:60px;">
+                    <video autoplay="autoplay" controls="controls" muted="" loop="loop"
+                           src="http://officialwebsit3.oss-cn-hangzhou.aliyuncs.com/guodilvc/pZjbCKTJHQ.mp4"
+                           class="video-box" style="height: auto; display: block;"></video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--XX书架-->
+    <!--    <div class="row" style="border-bottom:1px solid #eee">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row " style="padding-top: 35px;padding-bottom: 35px;">-->
+    <!--                <div class="col-xs-12 menu-cols" style="padding:0 ;margin-bottom: 20px;height:auto;">-->
+    <!--                    <div class="title"-->
+    <!--                         style="width:8em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">-->
+    <!--                        XX书架-->
+    <!--                    </div>-->
+    <!--                    <div class="title " style="width:10em; text-align:center;margin:auto; color: #666;">-->
+    <!--                        <span>BOOKSHELF</span>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <div class="col-sm-12" style="overflow:hidden; ">-->
+    <!--                    <div id="books" style="width: 2508px; height: 143.242px;">-->
+    <!--                        <a class="item" href="http://www.chinagreentown.com/ebook/pdf/culture/" id="item1"-->
+    <!--                           style="width: 142.5px;">-->
+    <!--                            <img src="/static/company/images/cd275caf1c4b0012e14cd6582a05f93e" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                        <a class="item" href="http://www.chinagreentown.com/ebook/pdf/products/" id="item2"-->
+    <!--                           style="width: 142.5px;">-->
+    <!--                            <img src="/static/company/images/51646709161177799c489ea131f16ef0" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                        <a class="item" href="http://www.chinagreentown.com/ebook/pdf/brochures/" id="item3"-->
+    <!--                           style="width: 142.5px;">-->
+    <!--                            <img src="/static/company/images/f04269f2d3b6b619fe86ccfaeb8c055f" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                        <a class="item" href="http://www.chinagreentown.com/ebook/pdf/report2018/" id="item4"-->
+    <!--                           style="width: 142.5px;">-->
+    <!--                            <img src="/static/company/images/9158bb371500d6968a82794cb9871d71" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                        <a class="item" href="http://www.chinagreentown.com/newspaper/73/" id="item5"-->
+    <!--                           style="width: 142.5px;">-->
+    <!--                            <img src="/static/company/images/559564fbc5ae36dd7045f9e7dc48e16c" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                        <a class="item curr" href="http://www.chinagreentown.com/magazine/81/" id="item6"-->
+    <!--                           style="width: 427.5px;">-->
+    <!--                            <img src="/static/company/images/08cdaecd19ceae74bd321557945d7e9b" style="width: 427.5px;">-->
+    <!--                        </a>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <div class="row">
+        <div class="service-content">
+
+            <div class="content-introduction">
+                <div class="layui-fluid">
+                    <div class="layui-row">
+                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+                            <div class="text">
+                                <h2>选择我们</h2>
+                                <div class="line"></div>
+                                <p>拥有双面的不仅是人生，还有 layui。一面极简，一面丰盈。极简是视觉所见的外在，是开发所念的简易。丰盈是倾情雕琢的内在，是信手拈来的承诺。一切本应如此，简而全，双重体验。拥有双面的不仅是人生，还有 layui。一面极简，一面丰盈。极简是视觉所见的外在，是开发所念的简易。丰盈是倾情雕琢的内在，是信手拈来的承诺。一切本应如此，简而全，双重体验。</p>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+                            <div class="img-text-box layui-clear">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
+                                        <div class="item">
+                                            <img src="/static/company/images/fw_icon1.png" alt="">
+                                            <h5>亮点A</h5>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
+                                        <div class="item">
+                                            <img src="/static/company/images/fw_icon1.png" alt="">
+                                            <h5>亮点B</h5>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
+                                        <div class="item">
+                                            <img src="/static/company/images/fw_icon1.png" alt="">
+                                            <h5>亮点C</h5>
+                                        </div>
+                                    </div>
+                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
+                                        <div class="item">
+                                            <img src="/static/company/images/fw_icon1.png" alt="">
+                                            <h5>亮点D</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-process-box">
+                <div class="service-process">
+                    <div class="layui-fluid">
+                        <h3 class="title">亮点介绍</h3>
+                        <div class="process-centent">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                                    <div class="item">
+                                        <h4>01</h4>
+                                        <h5>亮点A</h5>
+                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                                    <div class="item">
+                                        <h4>02</h4>
+                                        <h5>亮点B</h5>
+                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                                    <div class="item">
+                                        <h4>03</h4>
+                                        <h5>亮点C</h5>
+                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+                                    <div class="item">
+                                        <h4>04</h4>
+                                        <h5>亮点D</h5>
+                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-contact">
+                <div class="service-contact-box">
+                    <div class="layui-fluid">
+                        <div class="layui-row">
+                            <div class="layui-col-xs12 layui-col-sm6 layui-col-md7">
+                                <div class="map-img"></div>
+                            </div>
+                            <div class="layui-col-xs12 layui-col-sm5  layui-col-md4 fr">
+                                <div class="cantact-info">
+                                    <h3>报名咨询</h3>
+                                    <div class="item">
+                                        <p><i class="layui-icon layui-icon-dialogue"></i>统一电话: <span>400-0000-0000</span></p>
+                                        <p><i class="layui-icon layui-icon-dialogue"></i>李主任: <span>15658800001</span></p>
+                                        <p><i class="layui-icon layui-icon-dialogue"></i>王主任: <span>15658800002</span></p>
+                                    </div>
+                                </div>
+
+                            </div >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

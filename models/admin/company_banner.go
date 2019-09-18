@@ -54,6 +54,16 @@ func (banner *Banner)List(page, pageSize int) (banners []Banner, totalCount int6
 	return
 }
 
+// 前台轮播图列表
+func (banner *Banner)CompanyList() (banners []Banner) {
+	err := models.DB.Order("sort").Find(&banners).Error
+	if err != nil{
+		logs.Error("查询轮播图列表报错", err)
+		return nil
+	}
+	return
+}
+
 // 添加轮播图信息
 func (banner *Banner)Create() (err error) {
 	// 数据验证

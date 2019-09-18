@@ -14,10 +14,7 @@ type IndexController struct {
 
 // 后台首页
 func (c *IndexController)Get(){
-	// 模板
-	c.TplName = "admin/index/index.html"
 	// 获取系统信息
-
 	// 项目名称
 	c.Data["AppName"] = beego.AppConfig.String("appname")
 	// 框架版本

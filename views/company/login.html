@@ -1,0 +1,49 @@
+<style type="text/css">
+    /*login*/
+    .w1200 {width: 1200px; margin: 0 auto;}
+    legend {border: none;margin: 0;}
+    .login-content .login-bg{width: 100%; background: url(/static/company/images/load_bg.jpg) no-repeat; background-size: cover;}
+    .login-content .login-bg .login-cont{ height: 772px; position: relative;}
+    .login-content .login-bg .login-cont .form-box{width: 360px; height: 390px; border:1px solid #d9dadc; background: #fff; position: absolute; top: 196px; right: 90px; padding:0 30px;}
+    .login-content .login-bg .reg-cont .form-box{height: 430px;}
+    .login-content .login-bg .login-cont .form-box legend{font-size: 20px; color: #323232; text-align: center; padding:50px 0;}
+    .login-content .login-bg .login-cont .layui-inline,.login-content .login-bg .login-cont .layui-input-inline{width: 100%; position: relative;}
+    .login-content .login-bg .login-cont .layui-input-inline .iphone-icon,.login-content .login-bg .login-cont .layui-input-inline .password-icon{position: absolute; top: 8px; left: 10px; color: #d3d3d3; font-size: 16px;}
+    .login-content .login-bg .login-cont .iphone, .login-content .login-bg .login-cont .veri-code{margin-bottom: 20px;}
+    .login-content .login-bg .login-cont .iphone .layui-input,.login-content .login-bg .login-cont .password .layui-input{padding-left: 40px;}
+    .login-content .login-bg .login-cont .veri-code .layui-btn{width: 102px; background: #eeeeee; text-align: center; color: #333; height: 36px; line-height: 36px; display: inline-block; border:none; cursor: pointer; position: absolute; top: 1px; right: 1px; font-size: 12px; padding:0 14px;}
+    .login-content .login-bg .login-cont .login-btn .layui-input-block{margin-left: 0; padding-top: 25px;}
+    /*.login-content .login-bg .login-cont .login-btn .layui-input-block button{width: 100%; background: #cfb2f6; font-size: 18px;}*/
+    .login-content .login-bg .login-cont .login-btn .layui-input-block button{width: 100%; background: #1890ff; font-size: 18px;}
+    /*end-login*/
+</style>
+<div class="content login-content">
+    <div class="login-bg">
+        <div class="login-cont w1200">
+            <div class="form-box">
+                <form class="layui-form" action="">
+                    <legend>账号登录</legend>
+                    <div class="layui-form-item">
+                        <div class="layui-inline iphone">
+                            <div class="layui-input-inline">
+                                <i class="layui-icon layui-icon-cellphone iphone-icon"></i>
+                                <input type="tel" name="phone" id="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline password">
+                            <div class="layui-input-inline">
+                                <i class="layui-icon layui-icon-password password-icon"></i>
+                                <input type="password" name="password" id="password" lay-verify="required|password" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item login-btn">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1" onclick="return false">登录</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

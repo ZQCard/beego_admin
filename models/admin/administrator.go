@@ -131,7 +131,7 @@ func (administrator *Administrator)AdministratorRecover() (err error) {
 }
 
 // 管理员拥有的用户列表
-func (administrator *Administrator)AdministratorRoleList() (map[string][]Role, error) {
+func (administrator *Administrator)AdministratorRoleList() (map[string]interface{}, error) {
 	// 查询所有角色
 	var roleAll []Role
 	err := models.DB.Find(&roleAll).Error
@@ -147,7 +147,6 @@ func (administrator *Administrator)AdministratorRoleList() (map[string][]Role, e
 		logs.Error("查询角色失败：", err)
 		return nil, errors.New("查询错误")
 	}
-
 	var roleHasIds []int
 	var temp int
 	for rows.Next() {
@@ -157,28 +156,9 @@ func (administrator *Administrator)AdministratorRoleList() (map[string][]Role, e
 		}
 		roleHasIds = append(roleHasIds, temp)
 	}
-
-	// 分开处理已有角色和未有角色
-	var roleHas []Role
-	var roleHasNot []Role
-
-	for _, role := range roleAll{
-		// 判断id是否已经拥有
-		var flag = false
-		for _,id := range roleHasIds {
-			if id == role.ID{
-				flag = true
-			}
-		}
-		if flag {
-			roleHas = append(roleHas, role)
-		}else {
-			roleHasNot = append(roleHasNot, role)
-		}
-	}
-	data := make(map[string][]Role)
-	data["has"] = roleHas
-	data["not"] = roleHasNot
+	data := make(map[string]interface{})
+	data["all"] = roleAll
+	data["has"] = roleHasIds
 	return data, nil
 }
 
