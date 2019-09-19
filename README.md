@@ -19,7 +19,7 @@ beego开发的通用后台功能
 
 3.建立个人配置文件
 
-<code>$ touch ./beego_admin/conf/my.conf</code>
+<code>$ touch ./beego_admin/conf/my.ini</code>
 
 4.执行程序
 
