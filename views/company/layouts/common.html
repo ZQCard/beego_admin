@@ -321,7 +321,7 @@
 <!--mobile-->
 <div class="container-fluid hidden-md hidden-lg" style="background:#006650;color:white">
     <div>
-        <a href="http://www.chinagreentown.com/">
+        <a href="http://fmg.niu12.com/">
             <img src="/static/company/images/logo.png" style="margin:10px auto; height:30px; width:auto">
         </a>
     </div>
@@ -329,17 +329,17 @@
         <i id="top-control" class="fa fa-reorder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="true"></i>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-            <li><a href="http://www.chinagreentown.com/about">走进绿城</a></li>
-            <li><a href="http://www.chinagreentown.com/news/groupnews">新闻中心</a></li>
-            <li><a href="http://www.chinagreentown.com/about/video/company">视频中心</a></li>
-            <li><a href="http://www.chinagreentown.com/joinus">绿城招聘</a></li>
+            <li><a href="about">走进绿城</a></li>
+            <li><a href="news/groupnews">新闻中心</a></li>
+            <li><a href="about/video/company">视频中心</a></li>
+            <li><a href="joinus">绿城招聘</a></li>
 
             <li><a href="http://www.greentownchina.com/sc/global/home.php">投资者关系</a></li>
             <li><a href="http://home.gtdreamlife.com/pc/homePage.html" target="_blank">置业绿城</a></li>
             <li><a href="http://zc.gtcloud.cn/" target="_blank">阳光招采</a></li>
-            <li><a href="http://www.chinagreentown.com/party">绿城党建</a></li>
+            <li><a href="party">绿城党建</a></li>
 
-            <li><a href="http://www.chinagreentown.com/contact">联系我们</a></li>
+            <li><a href="contact">联系我们</a></li>
         </ul>
     </div>
 </div>
@@ -349,7 +349,7 @@
         <div class=" container hidden-sm hidden-xs" style="height:80px;line-height:80px;">
             <div class="row">
                 <div class="col-md-2" style="height:45px;">
-                    <a href="http://www.chinagreentown.com/"><img src="/static/company/images/logo.png" style="width:100%;height:auto"></a>
+                    <a href="http://fmg.niu12.com"><img src="/static/company/images/logo.png" style="width:100%;height:auto"></a>
                 </div>
                 <div class="col-md-10 " style="height:45px;">
                     <ul class="top-menu">
@@ -363,8 +363,9 @@
         </div>
     </div>
 </div>
+{{/* 父级菜单取pid*/}}
 {{range $key, $parent := $.NavigatorParent}}
-    <div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{$parent.ID}}" style="width: 1142px; left: 711px;" idx="0">
+    <div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{$parent.ID}}" style="width: 1142px; left: 711px;" idx="{{$parent.Pid}}">
         {{range $k, $child := $.NavigatorChild}}
             {{if eq $child.Pid $parent.ID}}
                 <a href="{{$child.Url}}">{{$child.Name}}</a>

@@ -12,6 +12,10 @@ func init() {
 	beego.Router("/", &company.IndexController{},"get:HomePage")
 	// 能力提升
 	beego.Router("/promote", &company.StaticController{},"get:Promote")
+	// 外语类
+	beego.Router("/english", &company.StaticController{},"get:English")
+	// 金融经济
+	beego.Router("/finance", &company.StaticController{},"get:Finance")
 	// 关于我们
 	beego.Router("/contact", &company.StaticController{},"get:Contact")
 	// 登录页面
@@ -22,8 +26,6 @@ func init() {
 	beego.Router("/resource", &company.StaticController{},"get:Resource")
 	// 简介
 	beego.Router("/introduce", &company.StaticController{},"get:Introduce")
-	// 特殊班级介绍
-	beego.Router("/special", &company.StaticController{},"get:Special")
 
 
 
