@@ -44,6 +44,17 @@ func (category *VideoCategory)List(page, pageSize int) (categories []VideoCatego
 	return
 }
 
+// 视频分类列表
+func (category *VideoCategory)ListFront(page, pageSize int) (categories []VideoCategory, totalCount int64) {
+	models.DB.Model(&categories).Count(&totalCount)
+	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&categories).Error
+	if err != nil{
+		logs.Error("查询视频分类列表报错", err)
+		return nil, 0
+	}
+	return
+}
+
 // 添加视频分类信息
 func (category *VideoCategory)Create() (err error) {
 	// 数据验证

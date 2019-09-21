@@ -68,6 +68,17 @@ func (video *Video)List(page, pageSize int) (results []VideoInfo, totalCount int
 	return
 }
 
+// 视频列表(根据分类)
+func (video *Video)ListFront(page, pageSize int) (results []Video, totalCount int64) {
+	models.DB.Model(&video).Where("company_video_category_id = ?", video.CompanyVideoCategoryId).Where("is_on_sale = 1").Count(&totalCount)
+	err := models.DB.Where("company_video_category_id = ?", video.CompanyVideoCategoryId).Where("is_on_sale = 1").Offset((page - 1) * pageSize).Limit(pageSize).Find(&results).Error
+	if err != nil{
+		logs.Error("查询课程列表报错", err)
+		return nil, 0
+	}
+	return
+}
+
 // 添加视频信息
 func (video *Video)Create() (err error) {
 	// 数据验证

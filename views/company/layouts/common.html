@@ -568,5 +568,61 @@
     })
 </script>
 
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
+    //替换指定传入参数的值,paramName为参数,replaceWith为新值
+    function replaceParamVal(url, paramName,replaceWith) {
+        let re=eval('/('+ paramName+'=)([^&]*)/gi');
+        return url.replace(re,paramName+'='+replaceWith);
+    }
+
+
+    layui.use('laypage', function(){
+        var count = $("#pageShow").data('count');
+        var page_size = $("#pageShow").data('page_size');
+        var page = $("#pageShow").data('page');
+        var laypage = layui.laypage;
+        //自定义首页、尾页、上一页、下一页文本
+        laypage.render({
+            elem: 'pageShow'
+            ,count: count
+            ,limit:page_size
+            ,curr:page
+            ,first: '首页'
+            ,last: '尾页'
+            ,prev: '<em>上一页</em>'
+            ,next: '<em>下一页</em>'
+            ,jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                // console.log(obj.limit); //得到每页显示的条数
+
+                //首次不执行
+                if(!first){
+                    // 分页跳转
+                    // 获取当前url并且改变分页参数
+                    let url = window.location.href.toString();
+                    if ((GetQueryString('page') == null) && (GetQueryString('pageSize') == null)) {
+                        if (url.indexOf("?")) {
+                            url += "&page=1&pageSize=10"
+                        }else {
+                            url += "?page=1&pageSize=10"
+                        }
+                    }
+                    url = replaceParamVal(url, "page", obj.curr);
+                    url = replaceParamVal(url, "pageSize", obj.limit);
+                    window.location.href = url;
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

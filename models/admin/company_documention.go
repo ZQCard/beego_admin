@@ -68,6 +68,17 @@ func (documentation *Documentation)List(page, pageSize int) (results []Documenta
 	return
 }
 
+// 资料列表(根据分类)
+func (documentation *Documentation)ListFront(page, pageSize int) (results []Documentation, totalCount int64) {
+	models.DB.Model(&documentation).Where("company_documentation_category_id = ?", documentation.CompanyDocumentationCategoryId).Count(&totalCount)
+	err := models.DB.Where("company_documentation_category_id = ?", documentation.CompanyDocumentationCategoryId).Offset((page - 1) * pageSize).Limit(pageSize).Find(&results).Error
+	if err != nil{
+		logs.Error("查询资料列表报错", err)
+		return nil, 0
+	}
+	return
+}
+
 // 添加资料信息
 func (documentation *Documentation)Create() (err error) {
 	// 数据验证

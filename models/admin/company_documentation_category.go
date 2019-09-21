@@ -44,6 +44,17 @@ func (category *DocumentationCategory)List(page, pageSize int) (categories []Doc
 	return
 }
 
+// 资料分类列表
+func (category *DocumentationCategory)ListFront(page, pageSize int) (categories []DocumentationCategory, totalCount int64) {
+	models.DB.Model(&categories).Count(&totalCount)
+	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&categories).Error
+	if err != nil{
+		logs.Error("查询资料分类列表报错", err)
+		return nil, 0
+	}
+	return
+}
+
 // 添加资料分类信息
 func (category *DocumentationCategory)Create() (err error) {
 	// 数据验证
