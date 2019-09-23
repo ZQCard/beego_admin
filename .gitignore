@@ -5,3 +5,4 @@
 /beego_admin.exe~
 static/uploadFile/
 /nohup.out
+./crontab/nohup.out
