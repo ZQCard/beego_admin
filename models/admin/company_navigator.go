@@ -122,12 +122,36 @@ func (navigator *Navigator)Delete() (err error) {
 }
 
 // 根据pid查找同等级的导航栏 pid=0 以及导航栏 pid=2二级导航栏
-func (navigator *Navigator)FindNavigatorByLevel(pid int) []Navigator {
+type NavigatorHasChild struct {
+	Navigator
+	HasChild int
+}
+func (navigator *Navigator)FindNavigatorByLevel(pid int) []NavigatorHasChild {
 	var navigators []Navigator
+
+	var navigatorAll []NavigatorHasChild
 	if pid == 0{
 		models.DB.Where("pid = 0").Order("sort").Find(&navigators)
+		for _,v := range navigators{
+			var temp []Navigator
+			models.DB.Where("pid = ?", v.ID).First(&temp)
+			hasChild := 0
+			if len(temp) != 0{
+				hasChild = 1
+			}
+			navigatorAll = append(navigatorAll, NavigatorHasChild{
+				Navigator:v,
+				HasChild:hasChild,
+			})
+		}
 	}else {
 		models.DB.Where("pid <> 0").Order("sort").Find(&navigators)
+		for _,v := range navigators{
+			navigatorAll = append(navigatorAll, NavigatorHasChild{
+				Navigator:v,
+				HasChild:0,
+			})
+		}
 	}
-	return navigators
+	return navigatorAll
 }

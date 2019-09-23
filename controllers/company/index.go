@@ -11,7 +11,15 @@ type IndexController struct {
 func (c *IndexController)HomePage()  {
 	// 读取首页设置
 	homePageSetting := admin.Homepage{}
-	c.Data["HomePageSetting"] = homePageSetting.ModuleList()
+	homePageSettingList := homePageSetting.ModuleList()
+	homeBanner := homePageSettingList[0].IsShow
+	homeClass := homePageSettingList[1].IsShow
+	homeVideo := homePageSettingList[2].IsShow
+	homeHighLine := homePageSettingList[3].IsShow
+	c.Data["HomeBanner"] = homeBanner
+	c.Data["HomeClass"] = homeClass
+	c.Data["HomeVideo"] = homeVideo
+	c.Data["HighLine"] = homeHighLine
 
 	// 读取轮播图
 	banner := admin.Banner{}
