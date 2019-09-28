@@ -345,13 +345,14 @@
                 </div>
                 <div class="col-md-10 " style="height:45px;">
                     <ul class="top-menu">
-                        <li class="nav" target="about"><a href="http://www.chinagreentown.com/about">走进绿城</a></li>
+                        {{/*一级导航*/}}
+                        {{range .NavigatorParent}}
+                        <li class="nav" target="{{.ID}}"><a href="{{.Url}}">{{.Name}}</a></li>
+                        {{end}}
+                        {{/*<li class="nav" target="about"><a href="http://www.chinagreentown.com/about">走进绿城</a></li>*/}}
                     </ul>
                 </div>
-                {{/*一级导航*/}}
-                {{/*{{range .NavigatorParent}}*/}}
-                    {{/*<li class="nav" target="{{.ID}}"><a href="{{.Url}}">{{.Name}}</a></li>*/}}
-                {{/*{{end}}*/}}
+
                 </div>
             </div>
         </div>
@@ -361,17 +362,17 @@
     <a href="http://www.chinagreentown.com/about">创始人致辞</a>
 </div>
 {{/* 父级菜单取pid*/}}
-{{/*{{range $key, $parent := $.NavigatorParent}}*/}}
-    {{/*{{if eq $parent.HasChild 1}}*/}}
-    {{/*<div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{$parent.ID}}" style="width: 1142px; left: 711px;">*/}}
-        {{/*{{range $k, $child := $.NavigatorChild}}*/}}
-            {{/*{{if eq $child.Pid $parent.ID}}*/}}
-                {{/*<a href="{{$child.Url}}">{{$child.Name}}</a>*/}}
-            {{/*{{end}}*/}}
-        {{/*{{end}}*/}}
-    {{/*</div>*/}}
-    {{/*{{end}}*/}}
-{{/*{{end}}*/}}
+{{range $key, $parent := $.NavigatorParent}}
+    {{if eq $parent.HasChild 1}}
+    <div class="sub-menu hidden-sm hidden-xs" id="sub-menu-{{$parent.ID}}" style="width: 1142px; left: 711px;">
+        {{range $k, $child := $.NavigatorChild}}
+            {{if eq $child.Pid $parent.ID}}
+                <a href="{{$child.Url}}">{{$child.Name}}</a>
+            {{end}}
+        {{end}}
+    </div>
+    {{end}}
+{{end}}
 
 <script type="text/javascript">
     (function () {
