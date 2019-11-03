@@ -35,8 +35,7 @@ CREATE TABLE `administrators` (
 /*Data for the table `administrators` */
 
 insert  into `administrators`(`id`,`username`,`password`,`nickname`,`email`,`updated_at`,`created_at`,`deleted_at`) values 
-(1,'taige_admin','36168aa9dc70eb53dee09cde123bc5e2','超级管理员','445864742@qq.com','2019-11-02 17:07:27','2019-05-05 16:24:18',NULL),
-(33,'taige','e10adc3949ba59abbe56e057f20f883e','管理员','4458647421@qq.com','2019-11-02 17:07:59','2019-10-24 22:08:47',NULL);
+(1,'admin','e10adc3949ba59abbe56e057f20f883e','超级管理员','445864742@qq.com','2019-11-02 17:07:27','2019-05-05 16:24:18',NULL),
 
 /*Table structure for table `auth_action` */
 
