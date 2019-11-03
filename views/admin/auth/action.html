@@ -1,14 +1,47 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
+
             <div class="layui-card">
-                <div class="layui-table-tool">
-                    <div class="layui-table-tool-temp">
-                        <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增行为</button>
-                        </div>
-                    </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增行为</button>
                 </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">行为名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_Name" value="{{.Search_Name}}" placeholder="搜索行为名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">请求方式：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_METHOD" value="{{.Search_METHOD}}" placeholder="搜索请求方式" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">路由：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_Route" value="{{.Search_Route}}" placeholder="搜索路由" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg2">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="layui-card">
                 <div class="layui-card-body">
                     <form action="/admin/auth/action" id="AddForm" data-title="添加行为" style="display: none;margin-top:5%">
                         <div class="layui-form-item">

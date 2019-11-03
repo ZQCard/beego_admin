@@ -45,8 +45,6 @@ func init()  {
 	DB.DB().SetMaxIdleConns(10)
 	DB.DB().SetMaxOpenConns(100)
 
-	// 禁止使用复数表明
-	DB.SingularTable(true)
 	// 查看原生sql
 	if beego.AppConfig.String("runmode") == "dev" {
 		DB.LogMode(true)

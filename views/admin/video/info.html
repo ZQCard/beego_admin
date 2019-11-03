@@ -1,0 +1,160 @@
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">{{.Title}}</div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="/admin/video" {{if eq 0 .Video.ID}}id="AddForm"{{else}}id="EditForm{{.Video.ID}}"{{end}}>
+                {{if ne 0 .Video.ID}}
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="id" value="{{.Video.ID}}">
+
+                {{end}}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">视频标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" lay-verify="title" autocomplete="off" value="{{.Video.Title}}" placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">视频上传</label>
+                            {{/*根据aliyun_oss_callBack判断是否使用阿里云oss*/}}
+                    {{if .AliyunOSSCallback}}
+                        {{/*阿里云OSS必须要配的表单*/}}
+                    <input type="hidden" name="myradio" value="local_name" checked=true/>
+                    <div id="container">
+                        <pre id="console"></pre>
+                        <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+                        <a id="selectfiles" href="javascript:void(0);" class='layui-btn'>选择文件</a>
+                        <a id="postfiles" href="javascript:void(0);" class='layui-btn'>开始上传</a>
+                    </div>
+                    {{else}}
+                    <button type="button" class="layui-btn" id="upload_video">上传视频</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+                    {{end}}
+                    <input type="hidden" name="url" id="uploadOSSURL" value="{{.Video.Url}}">
+                    <div class="layui-upload-list" {{if .Video.ID|not}}style="display: none"{{end}}>
+                        <video controls class="layui-upload-video" src="{{.Video.Url}}" id="uploadOSSURLShow">
+                        </video>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">封面图上传</label>
+                    <button type="button" class="layui-btn" id="upload_pic">上传封面图</button>
+                    <input class="layui-upload-file" type="file" name="file">
+                    <input type="hidden" name="poster" value="{{.Video.Poster}}" id="upload_pic_url_value">
+                    <div class="layui-upload-list" {{if .Video.Poster}} {{else}}style="display: none"{{end}}>
+                        <img width="20%" height="50%" src="{{.Video.Poster}}" id="upload_pic_url">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">视频描述</label>
+                    <div class="layui-input-block" id="editorDemo">
+
+                    </div>
+                    <textarea id="description" name="description" style="display: none"></textarea>
+                </div>
+            </form>
+            <div class="layui-form-item layui-layout-admin">
+                <div class="layui-input-block">
+                    <div class="layui-footer" style="left: 0;">
+                        <a class="layui-btn {{if .Video.ID}}EditFormSubmit{{end}}" {{if eq 0 .Video.ID}}id="AddFormSubmit"{{else}}id="EditForm{{.Video.ID}}" data-form_id="EditForm{{.Video.ID}}"{{end}}>立即提交</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var aliyunOSSCallback = {{.AliyunOSSCallback}}
+    var OssAddress = {{.OssAddress}}
+
+</script>
+
+{{/*阿里云OSS JS文件*/}}
+<script type="text/javascript" src="/static/aliyunOSS/lib/plupload-2.1.2/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/static/aliyunOSS/upload.js"></script>
+{{/*富文本编辑器文件*/}}
+<script type="text/javascript" src="/static/wangEditor/wangEditor.min.js"></script>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#editorDemo');
+    // 将编辑器的文本内容同步到表单中
+    editor.customConfig.onchange = function (html) {
+        console.log(html);
+        // 监控变化，同步更新到 textarea
+        $("#description").val(html)
+    };
+    editor.create();
+    editor.txt.html("{{.Video.Description}}");
+    // 初始化 textarea 的值
+    $("#description").val(editor.txt.html())
+</script>
+<script>
+    var url = "/common/uploadFile";
+    // 视频上传
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload_video' //绑定元素
+            ,url: url //上传接口
+            ,accept:"file"
+            ,data:{
+                "type":"video",
+                _xsrf:xsrf_token
+            }
+            ,done: function(res){
+                $("#uploadOSSURLShow").attr("src", res.url);
+                $("#uploadOSSURLShow").parent().show();
+                $("input[name='url']").val(res.url);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+    // 封面图上传
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#upload_pic' //绑定元素
+            ,url: '/common/uploadFile' //上传接口
+            ,data:{
+                "type":"poster",
+                _xsrf:xsrf_token,
+                id:$(this).data('id')
+            }
+            ,done: function(res){
+                $("#upload_pic_url").attr("src", res.url);
+                $("#upload_pic_url").parent().show();
+                $("#upload_pic_url_value").val(res.url);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '.upload_pic_edit' //绑定元素
+            ,url: '/common/uploadFile' //上传接口
+            ,data:{
+                "type":"poster",
+                _xsrf:xsrf_token,
+            }
+            ,done: function(res){
+                $("#upload_pic_edit_url").attr("src", res.url);
+                $("#upload_pic_edit_url_value").val(res.url);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+
+</script>
+
+

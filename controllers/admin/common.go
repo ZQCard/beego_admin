@@ -151,15 +151,3 @@ func (c *CommonController)Login()  {
 	c.Redirect("/admin/", 302)
 	return
 }
-
-// 错误提示页面
-func (c *CommonController)Error()  {
-	errMsg := c.GetSession("error")
-	c.SetSession("error", nil)
-	if errMsg == nil {
-		errMsg = "好像出错了呢^ - ^"
-	}
-	c.Data["Error"] = errMsg
-	c.TplName = "admin/common/error.html"
-	return
-}

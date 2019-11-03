@@ -2,6 +2,7 @@ package utils
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
 	"encoding/hex"
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
 	"github.com/astaxie/beego"
@@ -173,4 +174,11 @@ func ConvertToFormatDay(excelDaysString string)string{
 	baseOriginSecond := 1136185445
 	resultTime := time.Unix(int64(baseOriginSecond + realDiffSecond), 0).Format("2006-01-02")
 	return resultTime
+}
+
+// sha1加密字符串
+func Sha1String(data string) string {
+	sha1 := sha1.New()
+	sha1.Write([]byte(data))
+	return hex.EncodeToString(sha1.Sum([]byte(nil)))
 }

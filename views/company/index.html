@@ -1,324 +1,134 @@
-<!--轮播图-->
-{{if .HomeBanner}}
-<div id="banner" style="width:100%;margin-top:0;padding:0">
-    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            {{range $key, $val := .Banners}}
-                <li data-target="#carousel-example-generic" data-slide-to="{{$key}}"></li>
-            {{end}}
-        </ol>
-
-        <div class="carousel-inner" role="listbox">
-            {{range .Banners}}
-                <div class="item">
-                    <a href="{{.Url}}">
-                        <img src="{{.Url}}" alt="{{.Name}}">
-                    </a>
-                </div>
-            {{end}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="author" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:article:author" content="">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/company/style.css">
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+</head>
+<style>
+    .wrap {
+        width: 100%;
+        position: relative;
+        padding-bottom: 62%; /*需要用padding来维持16:9比例,也就是9除以16*/
+        height: 0;
+    }
+    video {
+        width: 100%;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+        object-fit: fill;
+    }
+</style>
+<body id="" class="zh_CN detail video pages_skin_primary pages_share_page video_share_page appmsg_skin_default appmsg_style_default">
+<div id="js_article" class="page_content page_pages ">
+    <div class="rich_media_area_primary rich_media_area_primary_full">
+        <div class="rich_media_area_primary_inner">
+            <div id="js_mpvedio" class="mpvideo_wrp">
+                <video id="mainVideo"
+                       autoplay="autoplay"
+                       loop="loop"
+                       preload="auto"
+                       poster="{{.Video.Poster}}"
+                       controls="controls"
+                       src="{{.Video.Url}}"
+                       webkit-playsinline
+                       playsinline
+                       x5-playsinline
+                       x5-video-player-fullscreen="true"
+                >
+                </video>
+            </div>
         </div>
-
-        <a class="left carousel-control" href="http://www.chinagreentown.com/#carousel-example-generic" role="button"
-           data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="http://www.chinagreentown.com/#carousel-example-generic" role="button"
-           data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+    </div>
+    <div class="rich_media_area_primary">
+        <div class="rich_media_area_primary_inner">
+            <div class="share_mod_context share_global_info">
+                <div id="h5_profile_btn" class="flex_context account_info">
+                    <div class="flex_hd">
+                        <span id="profile_share1" data-biz="" class="js_go_profile radius_avatar account_avatar" data-scene="130">
+                            <img class="account_avatar" src="https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico" alt="测试">
+                        </span>
+                    </div>
+                    <div class="flex_bd">
+                        <div data-biz="" id="profile_share2" class="js_go_profile account_nickname" data-scene="130">
+                            <strong class=" account_nickname_inner">
+                                工作室名称
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                <div id="js_content">
+                    <h1 class="common_share_title">
+                        <span id="video_title">{{.Video.Title}}</span>
+                    </h1>
+                    <h2 class="common_share_title">
+                        <span id="video_title">{{str2html .Video.Description}}</span>
+                    </h2>
+                </div>
+                <div class="rich_media_tool" id="js_toobar3">
+                    <div class="weui-flex">
+                        <div class="weui-flex__item">
+                            <div class="media_tool_meta tips_global_primary meta_primary" id="publish_time">{{date .Video.CreatedAt "Y-m-d"}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{{end}}
-<!--轮播图 End-->
 
-<!--内容模块-->
-<div class="container-fluid">
-    {{/*宗旨*/}}
-    <div class="row">
-        <div class="container">
-            <div class="row" style="padding-top: 35px;margin-bottom: 35px;">
-                <div class="layui-tab layui-tab-brief col-xs-12  " lay-filter="greentown-news" id="greentown-news">
-                    <div class="menu-cols col-xs-12" style="padding: 0;margin-bottom: 20px;height:auto;">
-                        <div class="title fg"
-                             style="width:6em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">
-                            宗旨
-                        </div>
-                        <div class="title " style="width:6em; text-align:center;margin:auto; color: #666;">
-                            <span>slogan</span>
-                        </div>
-                    </div>
-                    <div class="col-xs-12" style="padding-bottom:60px; text-align: center">
-                        <h1 style="margin: 1%;">精英人才培训基地</h1>
-                        <h1 style="margin: 1%;">高&nbsp;薪&nbsp;职&nbsp;位&nbsp;直通车</h1>
-                        <h1 style="margin: 1%;">500&nbsp;强企业人才库</h1>
-                        <h1 style="margin: 1%;">猎&nbsp;头公司鳌头典范</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{if .HomeClass}}
-    <!--特色班级-->
-    <div class="row">
-        <div class="container">
-            <div class="row" style="padding-top: 35px;margin-bottom: 35px;">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    var video = document.getElementById("mainVideo");
+    $("#playVideo").click(function () {
+        video.play();
+    });
+</script>
 
-                <div class="layui-tab layui-tab-brief col-xs-12  " lay-filter="greentown-news" id="greentown-news">
-                    <div class="menu-cols col-xs-12" style="padding: 0;margin-bottom: 20px;height:auto;">
-                        <div class="title fg"
-                             style="width:6em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">
-                            特色班级
-                        </div>
-                        <div class="title " style="width:6em; text-align:center;margin:auto; color: #666;">
-                            <span>CLASS</span>
-                        </div>
-                    </div>
-                    <ul class="layui-tab-title col-xs-12" id="tabTitle">
-                        <li lay-id="media-class">高考精英班</li>
-                        <li lay-id="project-class">中考人才班</li>
-                        <li lay-id="group-class" class="layui-this">特色训练班</li>
-                    </ul>
-                    <div class="layui-tab-content col-xs-12 " style="padding:0;">
-                        <div class="layui-tab-item row">
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=ggfdb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/adbfbc0a5ae1c97684371fd6fad84d53?w=720&amp;h=405)">
-                                    <img src="/static/company/images/adbfbc0a5ae1c97684371fd6fad84d53"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">高考复读班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=mxbzb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/d55760cc50cb2c91fdbff8e9eb10f663?w=720&amp;h=405)">
-                                    <img src="/static/company/images/d55760cc50cb2c91fdbff8e9eb10f663"
-                                         style="width: 100%;height: auto">
-                                    <div class="title">名校保障班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=pbdbb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/22e250ecb8e7fdcbf7ca121dc6f317fb?w=720&amp;h=405)">
-                                    <img src="/static/company/images/22e250ecb8e7fdcbf7ca121dc6f317fb"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">普本达标班</div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="layui-tab-item row">
-                            <div class=" col-xs-12 col-sm-6 " style="margin-top:30px;">
-                                <a href="/special?type=zdbzb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/6a6de8e6162181ed424ba4db47db53a5?w=720&amp;h=405)">
-                                    <img src="/static/company/images/6a6de8e6162181ed424ba4db47db53a5"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">重点保障班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-6 " style="margin-top:30px;">
-                                <a href="/special?type=pgdbb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/94afe75b3e32e8d2fd9754990dca5d21?w=720&amp;h=405)">
-                                    <img src="/static/company/images/94afe75b3e32e8d2fd9754990dca5d21"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">普高达标班</div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="layui-tab-item row layui-show">
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=xxyyxqb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/7907d53b1d294ac6d0454e5c97e38ec6?w=720&amp;h=405)">
-                                    <img src="/static/company/images/7907d53b1d294ac6d0454e5c97e38ec6"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">小学英语兴趣班(外教)</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=sxswtxb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/f4c6f2a65cbbec5bdfa04475795450af?w=720&amp;h=405)">
-                                    <img src="/static/company/images/f4c6f2a65cbbec5bdfa04475795450af"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">数学思维特训班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=xxsxasb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/39cf168aa5929e61408db2b489ca4082?w=720&amp;h=405)">
-                                    <img src="/static/company/images/39cf168aa5929e61408db2b489ca4082"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">小学数学奥数班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=xxswztb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/39cf168aa5929e61408db2b489ca4082?w=720&amp;h=405)">
-                                    <img src="/static/company/images/39cf168aa5929e61408db2b489ca4082"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">小学散文专题班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=mdb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/39cf168aa5929e61408db2b489ca4082?w=720&amp;h=405)">
-                                    <img src="/static/company/images/39cf168aa5929e61408db2b489ca4082"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">明达班</div>
-                                </a>
-                            </div>
-                            <div class=" col-xs-12 col-sm-4 " style="margin-top:30px;">
-                                <a href="/special?type=xznlztb" class="news-box"
-                                   style="width:100%;background-image:url(http://zimg.chinagreentown.com/39cf168aa5929e61408db2b489ca4082?w=720&amp;h=405)">
-                                    <img src="/static/company/images/39cf168aa5929e61408db2b489ca4082"
-                                         style="width: 100%;height: auto">
-                                    <div class="title ">写作能力专题班</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<script>
+    wx.config({
+        debug:  false,
+        appId: '{{.WeChatAppId}}',
+        timestamp: '{{.WeChatTimestamp}}',
+        nonceStr: '{{.WeChatNoncestr}}',
+        signature: '{{.WeChatSignature}}',
+        jsApiList: [
+            'checkJsApi',//检测接口权限
+            'updateTimelineShareData',//1.4.0的分享接口，注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+            'updateAppMessageShareData',//1.4.0的分享接口,注意：使用新版本的分享功能，一定要在该列表加上对应的老版本功能接口，否则新接口不起作用
+            'onMenuShareAppMessage',//老版本分享接口。
+            'onMenuShareTimeline'//老版本分享接口。
+        ] // 必填，需要使用的JS接口列表
+    });
 
-            </div>
-        </div>
-    </div>
-    {{end}}
-    <!--菲墨宣传片-->
-    {{if .HomeVideo}}
-    <div class="row" style="background: #eee">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 menu-cols" style="padding-top:35px ;margin-bottom: 20px;height:auto;">
 
-                    <div class="title"
-                         style="width:8em; padding:0 5px; text-align:center;margin:auto; border-bottom: 4px solid #006650;color: #006650">
-                        师资宣传片
-                    </div>
-                    <div class="title " style="width:10em; text-align:center;margin:auto; color: #666;">
-                        <span>VIDEO</span>
-                    </div>
-                </div>
-                <div class="col-xs-12" style="padding-bottom:60px;">
-                    <video autoplay="autoplay" controls="controls" muted="" loop="loop"
-                           src="http://officialwebsit3.oss-cn-hangzhou.aliyuncs.com/guodilvc/pZjbCKTJHQ.mp4"
-                           class="video-box" style="height: auto; display: block;"></video>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{end}}
-    {{if .HighLine}}
-    {{/*亮点展示*/}}
-    <div class="row">
-        <div class="service-content">
-
-            <div class="content-introduction">
-                <div class="layui-fluid">
-                    <div class="layui-row">
-                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
-                            <div class="text">
-                                <h2>选择我们</h2>
-                                <div class="line"></div>
-                                <p>拥有双面的不仅是人生，还有 layui。一面极简，一面丰盈。极简是视觉所见的外在，是开发所念的简易。丰盈是倾情雕琢的内在，是信手拈来的承诺。一切本应如此，简而全，双重体验。拥有双面的不仅是人生，还有 layui。一面极简，一面丰盈。极简是视觉所见的外在，是开发所念的简易。丰盈是倾情雕琢的内在，是信手拈来的承诺。一切本应如此，简而全，双重体验。</p>
-                            </div>
-                        </div>
-                        <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
-                            <div class="img-text-box layui-clear">
-                                <div class="layui-row">
-                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
-                                        <div class="item">
-                                            <img src="/static/company/images/fw_icon1.png" alt="">
-                                            <h5>亮点A</h5>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
-                                        <div class="item">
-                                            <img src="/static/company/images/fw_icon1.png" alt="">
-                                            <h5>亮点B</h5>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
-                                        <div class="item">
-                                            <img src="/static/company/images/fw_icon1.png" alt="">
-                                            <h5>亮点C</h5>
-                                        </div>
-                                    </div>
-                                    <div class="layui-col-xs6 layui-col-sm3 layui-col-md6">
-                                        <div class="item">
-                                            <img src="/static/company/images/fw_icon1.png" alt="">
-                                            <h5>亮点D</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="service-process-box">
-                <div class="service-process">
-                    <div class="layui-fluid">
-                        <h3 class="title">亮点介绍</h3>
-                        <div class="process-centent">
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
-                                    <div class="item">
-                                        <h4>01</h4>
-                                        <h5>亮点A</h5>
-                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
-                                    </div>
-                                </div>
-                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
-                                    <div class="item">
-                                        <h4>02</h4>
-                                        <h5>亮点B</h5>
-                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
-                                    </div>
-                                </div>
-                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
-                                    <div class="item">
-                                        <h4>03</h4>
-                                        <h5>亮点C</h5>
-                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
-                                    </div>
-                                </div>
-                                <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
-                                    <div class="item">
-                                        <h4>04</h4>
-                                        <h5>亮点D</h5>
-                                        <p>和客户沟通需求，更好的了解客户的产品需求，对之后产品成型有更大的帮助。</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="service-contact">
-                <div class="service-contact-box">
-                    <div class="layui-fluid">
-                        <div class="layui-row">
-                            <div class="layui-col-xs12 layui-col-sm6 layui-col-md7">
-                                <div class="map-img"></div>
-                            </div>
-                            <div class="layui-col-xs12 layui-col-sm5  layui-col-md4 fr">
-                                <div class="cantact-info">
-                                    <h3>报名咨询</h3>
-                                    <div class="item">
-                                        <p><i class="layui-icon layui-icon-dialogue"></i>统一电话: <span>400-0000-0000</span></p>
-                                        <p><i class="layui-icon layui-icon-dialogue"></i>李主任: <span>15658800001</span></p>
-                                        <p><i class="layui-icon layui-icon-dialogue"></i>王主任: <span>15658800002</span></p>
-                                    </div>
-                                </div>
-
-                            </div >
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{/*亮点展示*/}}
-    {{end}}
-</div>
+    //分享功能
+    wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+        var shareData = {
+            title: {{.Title}},
+            desc: {{.Video.Title}},
+            link: {{.WeChatShareUrl}},
+            imgUrl: {{.Video.Poster}}
+        };
+        //自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+        wx.updateAppMessageShareData(shareData);
+        //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+        wx.updateTimelineShareData(shareData);
+    });
+    wx.error(function(res){
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        alert(res.errMsg);
+    });
+</script>
+</body>
+</html>

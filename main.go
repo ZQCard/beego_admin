@@ -1,7 +1,7 @@
 package main
 
 import (
-	"beego_admin/controllers/admin"
+	"beego_admin/controllers/common"
 	"beego_admin/handlers"
 	_ "beego_admin/routers"
 	"beego_admin/utils"
@@ -15,6 +15,7 @@ func init()  {
 	beego.InsertFilter("*", beego.BeforeStatic, handlers.RestfulHandler())
 }
 
+
 func main() {
 	// 输入日志文件设定
 	logFileName := "./storage/logs/"+time.Now().Format("2006-01-02")+".log"
@@ -25,7 +26,7 @@ func main() {
 	// 异步输出
 	logs.Async()
 	// 自定义错误处理
-	beego.ErrorController(&admin.ErrorController{})
+	beego.ErrorController(&common.ErrorController{})
 	// 自定义模板函数
 	beego.AddFuncMap("TimestampToDate", utils.TimestampToDate)
 	beego.Run()

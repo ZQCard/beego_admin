@@ -2,35 +2,37 @@ package routers
 
 import (
 	"beego_admin/controllers/admin"
+	"beego_admin/controllers/common"
 	"beego_admin/controllers/company"
 	"beego_admin/handlers"
 	"github.com/astaxie/beego"
 )
 
 func init() {
-	// 企业站前台路由
-	beego.Router("/", &company.IndexController{},"get:HomePage")
-	// 能力提升
-	beego.Router("/promote", &company.StaticController{},"get:Promote")
-	// 外语类
-	beego.Router("/english", &company.StaticController{},"get:English")
-	// 金融经济
-	beego.Router("/finance", &company.StaticController{},"get:Finance")
-	// 关于我们
-	beego.Router("/contact", &company.StaticController{},"get:Contact")
-	// 登录页面
-	beego.Router("/login", &company.StaticController{},"get:Login")
-	// 课程页面
-	beego.Router("/course", &company.StaticController{},"get:Course")
-	// 资料下载
-	beego.Router("/resource", &company.StaticController{},"get:Resource")
-	// 简介
-	beego.Router("/introduce", &company.StaticController{},"get:Introduce")
+	// 前台路由
+	beego.Router("/", &company.IndexController{}, "get:Index")
+	// 前台错误提示页面
+	beego.Router("/error", &common.ErrorController{}, "get:ErrorTip")
 
+	// 微信接口路由
+	WeChatNameSpace :=
+		beego.NewNamespace("/wechat",
+			// 微信网页授权,获取用户信息
+			beego.NSRouter("/login", &common.WeChatController{}, "get:GetUserLogin"),
+		)
+	//注册 namespace
+	beego.AddNamespace(WeChatNameSpace)
 
-
-
-
+	// 公共路由
+	commonNameSpace :=
+		beego.NewNamespace("/common",
+			// 阿里云OSS WEB直传 公共接口
+			beego.NSRouter("/uploadFile/OSS", &common.AliyunOSSController{}, "get:GetPolicy;post:PostCallback"),
+			// 文件上传 公共接口
+			beego.NSRouter("/uploadFile", &common.UploadFileController{}, "post:PostUploadFile"),
+			)
+	//注册 namespace
+	beego.AddNamespace(commonNameSpace)
 
 	// 管理后台路由
 	ns :=
@@ -62,64 +64,17 @@ func init() {
 			beego.NSRouter("/auth/menu", &admin.AuthController{}, "get:GetMenuList;post:PostAddMenu;put:PutUpdateMenu;delete:DeleteMenu"),
 			/************ 权限管理结束 ***********/
 
-			/************ 首页模块功能开始 ***********/
-			beego.NSRouter("/homepage/setting", &admin.HomepageControl{}, "get:ModuleList;patch:ModulePatch"),
-			/************ 首页模块功能设置 ***********/
 
 			/************ 视频功能开始 ***********/
-			// 视频分类
-			beego.NSRouter("/video/category", &admin.VideoCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory"),
-
 			// 视频管理
 			beego.NSRouter("/video", &admin.VideoControl{}, "get:GetVideoList;post:PostAddVideo;put:PutUpdateVideo;delete:DeleteVideo;patch:RecoveryVideo"),
 			beego.NSRouter("/video/info", &admin.VideoControl{}, "get:GetVideoInfo"),
 			/************ 视频功能结束 ***********/
 
-
-			/************ 资料分类功能开始 ***********/
-			beego.NSRouter("/documentation/category", &admin.DocumentationCategoryControl{}, "get:GetCategoryList;post:PostAddCategory;put:PutUpdateCategory;delete:DeleteCategory;patch:RecoveryCategory"),
-			// 资料管理
-			beego.NSRouter("/documentation", &admin.DocumentationControl{}, "get:GetDocumentationList;post:PostAddDocumentation;put:PutUpdateDocumentation;delete:DeleteDocumentation;patch:RecoveryDocumentation"),
-			beego.NSRouter("/documentation/info", &admin.DocumentationControl{}, "get:GetDocumentationInfo"),
-			/************ 资料分类功能结束 ***********/
-
-			/************ 轮播图功能开始 ***********/
-			beego.NSRouter("/banner", &admin.BannerControl{}, "get:GetBannerList;post:PostAddBanner;put:PutUpdateBanner;delete:DeleteBanner;patch:RecoveryBanner"),
-			/************ 轮播图功结束 ***********/
-
-			/************ 留言板功能开始 ***********/
-			beego.NSRouter("/message", &admin.MessageControl{}, "get:GetMessageList"),
-			/************ 留言板功能开始 ***********/
-
-			/************ 用户功能开始 ***********/
-			beego.NSRouter("/user", &admin.UserControl{}, "get:GetUserList;delete:DeleteUser;patch:RecoveryUser"),
-			/************ 用户功能开始 ***********/
-
-			// 菜单操作
-			beego.NSRouter("/navigator", &admin.NavigatorControl{}, "get:GetNavigatorList;post:PostAddNavigator;put:PutUpdateNavigator;delete:DeleteNavigator"),
-
-			/************ 权限管理结束 ***********/
-
-			/************ 工具箱功能开始 ***********/
-			// 文件上传
-			beego.NSRouter("/tools/uploadFile", &admin.ToolsController{}, "post:PostUploadFile"),
-			// 邮件发送
-			beego.NSRouter("/tools/sendEmail", &admin.ToolsController{}, "get:GetSendEmail;post:PostSendEmail"),
-			// excel导入导出
-			// 页面
-			// beego.NSRouter("/tools/excel", &admin.ToolsController{}, "get:GetExcel"),
-			// 导入
-			// beego.NSRouter("/tools/excelImport", &admin.ToolsController{}, "post:PostExcelImport"),
-			// 导出
-			// beego.NSRouter("/tools/excelExport", &admin.ToolsController{}, "get:GetExcelExport"),
-
-			/************ 工具箱功能结束 ***********/
 			// 退出
 			beego.NSRouter("/logout", &admin.IndexController{}, "*:Logout"),
 			// 登录页面
 			beego.NSRouter("/login", &admin.CommonController{}, "get:LoginPage;post:Login"))
-			// 错误提示页面
-			beego.Router("/error", &admin.CommonController{}, "get:Error")
 	//注册 namespace
 	beego.AddNamespace(ns)
 }

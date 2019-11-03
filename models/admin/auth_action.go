@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/go-ozzo/ozzo-validation"
 	"regexp"
+	"strings"
 )
 
 // 行为结构体
@@ -46,9 +47,23 @@ func (action Action)Validate() error {
 }
 
 // 行为列表
-func ActionList(page, pageSize int) (actions []Action, totalCount int64) {
-	models.DB.Model(&actions).Count(&totalCount)
-	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&actions).Error
+func ActionList(page, pageSize int, where map[string]interface{}) (actions []Action, totalCount int64) {
+	tempDb := models.DB.Model(&Role{})
+	// 如果有搜索条件 加入where条件中
+	if name, ok := where["name"]; ok != false{
+		tempDb = tempDb.Where( "name LIKE ? ", "%"+name.(string)+"%")
+	}
+
+	if method, ok := where["method"]; ok != false{
+		tempDb = tempDb.Where( "method LIKE ? ", "%"+strings.ToUpper(method.(string))+"%")
+	}
+
+	if route, ok := where["route"]; ok != false{
+		tempDb = tempDb.Where( "route LIKE ? ", "%"+route.(string)+"%")
+	}
+
+	tempDb.Count(&totalCount)
+	err := tempDb.Offset((page - 1) * pageSize).Limit(pageSize).Find(&actions).Error
 	if err != nil{
 		logs.Error("查询行为列表报错", err)
 		return nil, 0

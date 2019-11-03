@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"beego_admin/controllers/admin"
+	"fmt"
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/utils"
 )
@@ -14,25 +15,22 @@ func Auth() func(ctx *context.Context) {
 				ctx.Redirect(302, "/admin/login")
 			}
 		} else { // 已登录
-			// 读取游客权限
+			// 读取公共权限
 			customerAuth := ctx.Input.Session("AUTH_COMMON"+ctx.Input.Method())
 			var authSlice []string
 			switch t := customerAuth.(type) {
 			case []string:
-				for _, v := range t {
-					authSlice = append(authSlice, v)
-				}
+				authSlice = append(authSlice, t...)
 			}
 
 			// 读取当前用户权限路由
 			userAuth:= ctx.Input.Session("AUTH_"+ctx.Input.Method())
 			switch t := userAuth.(type) {
 			case []string:
-				for _, v := range t {
-					authSlice = append(authSlice, v)
-				}
+				authSlice = append(authSlice, t...)
 			}
-
+			fmt.Println(ctx.Input.URL())
+			fmt.Println(authSlice)
 			if !utils.InSlice(ctx.Input.URL(), authSlice) {
 				// ajax请求返回json
 				if ctx.Input.IsAjax() {
@@ -42,6 +40,8 @@ func Auth() func(ctx *context.Context) {
 					//data,_ := json.Marshal(responseJson)
 					ctx.Output.JSON(responseJson, false, false)
 				} else {
+					fmt.Println(1111111111111)
+
 					ctx.Output.Session("error", "权限不足")
 					ctx.Redirect(302, "/admin/error")
 				}

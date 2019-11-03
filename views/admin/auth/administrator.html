@@ -2,14 +2,37 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-table-tool">
-                    <div class="layui-table-tool-temp">
-                        <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增管理员</button>
-                        </div>
-                    </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-btn-sm" onclick="openForm('AddForm')">新增管理员</button>
                 </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">昵称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_Nickname" value="{{.Search_Nickname}}" placeholder="搜索管理员昵称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
 
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">用户名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_Username" value="{{.Search_Username}}" placeholder="搜索管理员用户名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-lg2">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="layui-card">
                 <div id="AdminHasRole" data-title="分配角色" style="display: none">
                     <div id="assignAdminRole">
 

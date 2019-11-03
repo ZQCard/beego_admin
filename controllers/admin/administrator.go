@@ -14,6 +14,7 @@ type AdministratorController struct {
 
 // 管理员列表
 func (c *AdministratorController) GetAdministratorList() {
+	search := c.KeepSearch()
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
 	if page == 0 {
@@ -23,7 +24,7 @@ func (c *AdministratorController) GetAdministratorList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	administrators, totalCount := admin.AdministratorList(page, pageSize)
+	administrators, totalCount := admin.AdministratorList(page, pageSize, search)
 	c.Data["Administrators"] = administrators
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page

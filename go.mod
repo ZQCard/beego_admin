@@ -13,6 +13,7 @@ replace (
 
 require (
 	github.com/360EntSecGroup-Skylar/excelize/v2 v2.0.1
+	github.com/aliyun/aliyun-oss-go-sdk v2.0.3+incompatible
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
 	github.com/astaxie/beego v1.11.1
 	github.com/denisenkom/go-mssqldb v0.0.0-20190910235433-dd40567e5238 // indirect
@@ -26,6 +27,7 @@ require (
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	golang.org/x/image v0.0.0-20190910094157-69e4b8554b2a // indirect
+	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 // indirect
 	google.golang.org/appengine v1.6.2 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df

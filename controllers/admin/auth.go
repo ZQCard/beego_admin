@@ -15,6 +15,7 @@ type AuthController struct {
 
 // 角色列表
 func (c *AuthController) GetRoleList() {
+	search := c.KeepSearch()
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
 	if page == 0 {
@@ -23,7 +24,7 @@ func (c *AuthController) GetRoleList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	roles, totalCount := admin.RoleList(page, pageSize)
+	roles, totalCount := admin.RoleList(page, pageSize, search)
 	c.Data["Roles"] = roles
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
@@ -128,6 +129,7 @@ func (c *AuthController) PutRolePermissions() {
 
 // 权限列表
 func (c *AuthController) GetPermissionList() {
+	search := c.KeepSearch()
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
 	if page == 0 {
@@ -137,7 +139,7 @@ func (c *AuthController) GetPermissionList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	permissions, totalCount := admin.PermissionList(page, pageSize)
+	permissions, totalCount := admin.PermissionList(page, pageSize, search)
 	c.Data["Permissions"] = permissions
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page
@@ -245,6 +247,7 @@ func (c *AuthController) PutPermissionActions() {
 
 // 行为列表
 func (c *AuthController) GetActionList() {
+	search := c.KeepSearch()
 	page := utils.MustInt(c.Input().Get("page"))
 	pageSize := utils.MustInt(c.Input().Get("pageSize"))
 	if page == 0 {
@@ -253,7 +256,7 @@ func (c *AuthController) GetActionList() {
 	if pageSize == 0 {
 		pageSize = PageSizeDefault
 	}
-	actions, totalCount := admin.ActionList(page, pageSize)
+	actions, totalCount := admin.ActionList(page, pageSize, search)
 	c.Data["Actions"] = actions
 	c.Data["TotalCount"] = totalCount
 	c.Data["Page"] = page

@@ -32,9 +32,14 @@ func (permission Permission)Validate() error {
 }
 
 // 权限列表
-func PermissionList(page, pageSize int) (permissions []Permission, totalCount int64) {
-	models.DB.Model(&permissions).Count(&totalCount)
-	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&permissions).Error
+func PermissionList(page, pageSize int, where map[string]interface{}) (permissions []Permission, totalCount int64) {
+	tempDb := models.DB.Model(&Role{})
+	// 如果有搜索条件 加入where条件中
+	if name, ok := where["name"]; ok != false{
+		tempDb = tempDb.Where( "name LIKE ? ", "%"+name.(string)+"%")
+	}
+	tempDb.Unscoped().Count(&totalCount)
+	err := tempDb.Offset((page - 1) * pageSize).Limit(pageSize).Find(&permissions).Error
 	if err != nil{
 		logs.Error("查询权限列表报错", err)
 		return nil, 0

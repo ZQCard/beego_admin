@@ -33,9 +33,16 @@ func (role Role)Validate() error {
 }
 
 // 角色列表
-func RoleList(page, pageSize int) (roles []Role, totalCount int64) {
-	models.DB.Model(&roles).Count(&totalCount)
-	err := models.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&roles).Error
+func RoleList(page, pageSize int, where map[string]interface{}) (roles []Role, totalCount int64) {
+	tempDb := models.DB.Model(&Role{})
+	// 如果有搜索条件 加入where条件中
+	if name, ok := where["name"]; ok != false{
+		tempDb = tempDb.Where( "name LIKE ? ", "%"+name.(string)+"%")
+	}
+	tempDb.Unscoped().Count(&totalCount)
+
+	tempDb.Count(&totalCount)
+	err := tempDb.Offset((page - 1) * pageSize).Limit(pageSize).Find(&roles).Error
 	if err != nil{
 		logs.Error("查询角色列表报错", err)
 		return nil, 0

@@ -1,0 +1,92 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="/admin/video/info" class="layui-btn layui-btn-sm">新增视频</a>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg2">
+                                <label class="layui-form-label">视频标题：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="Search_Title" value="{{.Search_Title}}" placeholder="搜索视频标题" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg2">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>视频标题</th>
+                            <th>观看次数</th>
+                            <th>地址</th>
+                            <th>创建时间</th>
+                            <th>删除时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{/*循环展示数据*/}}
+                        {{range .Videos}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.Title}}</td>
+                                <td>{{.ViewTimes}}</td>
+                                <td>{{.Url}}</td>
+                                <td>{{date .CreatedAt "Y-m-d"}}</td>
+                                <td>
+                                    {{if .DeletedAt}}
+                                        {{date .DeletedAt "Y-m-d"}}
+                                    {{else}}
+                                        未删除
+                                    {{end}}
+                                </td>
+                                <td>
+                                    {{/*编辑模态框*/}}
+                                    <a class="layui-btn layui-btn-xs" href="/admin/video/info?id={{.ID}}">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs DeleteRecordById" data-id="{{.ID}}" data-tips="{{.Title}}" data-url="/admin/video">删除</a>
+                                    <a class="layui-btn layui-btn-warm layui-btn-xs RecoverRecordById" data-id="{{.ID}}" data-tips="{{.Title}}" data-url="/admin/video">恢复</a>
+                                    <a class="layui-btn layui-btn-success layui-btn-xs generateQRCode" data-title={{.Title}} data-url="{{$.QRcode}}text={{$.Host}}?id={{.ID}}">生成二维码</a>
+                                </td>
+                            </tr>
+                        {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="pageShow" data-count="{{.TotalCount}}" data-page_size="{{.PageSize}}" data-page="{{.Page}}"></div>
+    </div>
+</div>
+<div id="showQRCode" style="display: none">
+    <h3 style="margin-left: 25%">微信扫一扫即可分享</h3>
+    <p>&nbsp;</p>
+    <img src="" id="QRCode" width="300px">
+</div>
+<script>
+    $(".generateQRCode").click(function () {
+        // 关闭其他弹窗
+        layer.closeAll();
+        layer.open({
+            type: 1,
+            shade:0,
+            shadeClose:true,
+            title: $(this).data('title'),
+            area: ['300px', '400px'],
+            content: $("#showQRCode")
+        });
+        $("#QRCode").attr("src", $(this).data("url"));
+    })
+</script>

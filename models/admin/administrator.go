@@ -21,10 +21,6 @@ type Administrator struct {
 	Email string
 }
 
-func (Administrator)TableName() string {
-	return "administrator"
-}
-
 func (administrator Administrator)Validate() error {
 	return validation.ValidateStruct(&administrator,
 		// 名称不得为空,且大小为1-20字
@@ -42,9 +38,20 @@ func (administrator Administrator)Validate() error {
 
 
 // 管理员列表
-func AdministratorList(page, pageSize int) (administrator []Administrator, totalCount int64) {
-	models.DB.Unscoped().Model(&administrator).Count(&totalCount)
-	err := models.DB.Unscoped().Offset((page - 1) * pageSize).Limit(pageSize).Find(&administrator).Error
+func AdministratorList(page, pageSize int, where map[string]interface{}) (administrator []Administrator, totalCount int64) {
+	tempDb := models.DB.Model(&Role{})
+	// 如果有搜索条件 加入where条件中
+	if nickname, ok := where["nickname"]; ok != false{
+		tempDb = tempDb.Where( "nickname LIKE ? ", "%"+nickname.(string)+"%")
+	}
+
+	if username, ok := where["username"]; ok != false{
+		tempDb = tempDb.Where( "username LIKE ? ", "%"+username.(string)+"%")
+	}
+
+
+	tempDb.Count(&totalCount)
+	err := tempDb.Unscoped().Offset((page - 1) * pageSize).Limit(pageSize).Find(&administrator).Error
 	if err != nil{
 		logs.Error("查询管理员列表报错", err)
 		return nil, 0
